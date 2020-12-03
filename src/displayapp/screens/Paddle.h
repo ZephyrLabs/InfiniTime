@@ -19,6 +19,8 @@ namespace Pinetime {
           bool OnTouchEvent(uint16_t x, uint16_t y) override;
           
         private:  
+          Pinetime::Components::LittleVgl& lvgl;
+        
           const int x_paddle_bottom = 0;
           int y_paddle_bottom = 90;            // bottom extreme of the paddle
 
