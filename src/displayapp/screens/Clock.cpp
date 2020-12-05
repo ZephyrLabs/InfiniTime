@@ -1,4 +1,5 @@
 #include "Clock.h"
+
 #include <date/date.h>
 #include <lvgl/lvgl.h>
 #include <cstdio>
@@ -19,6 +20,7 @@ extern lv_style_t* LabelBigStyle;
 static void event_handler(lv_obj_t * obj, lv_event_t event) {
   Clock* screen = static_cast<Clock *>(obj->user_data);
   screen->OnObjectEvent(obj, event);
+}
 
 //bitmap data
 static lv_img_dsc_t bitmap; 
@@ -277,7 +279,12 @@ Clock::Clock(DisplayApp* app,
         Controllers::NotificationManager& notificatioManager) : Screen(app), currentDateTime{{}},
                                            dateTimeController{dateTimeController}, batteryController{batteryController},
                                            bleController{bleController}, notificatioManager{notificatioManager} {
- 
+  displayedChar[0] = 0;
+  displayedChar[1] = 0;
+  displayedChar[2] = 0;
+  displayedChar[3] = 0;
+  displayedChar[4] = 0;
+
   bitmap.header.always_zero = 0;
   bitmap.header.w = 240;
   bitmap.header.h = 240;
@@ -287,43 +294,40 @@ Clock::Clock(DisplayApp* app,
   lv_obj_t *img_src = lv_img_create(lv_scr_act(), NULL);  
   lv_img_set_src(img_src, &bitmap);  
   lv_obj_set_pos(img_src, 0, 0);     
-  
-  displayedChar[0] = 0;
-  displayedChar[1] = 0;
-  displayedChar[2] = 0;
-  displayedChar[3] = 0;
-  displayedChar[4] = 0;
 
-  batteryIcon = lv_label_create(lv_scr_act(), NULL);
-  lv_label_set_text(batteryIcon, Symbols::batteryFull);                                            
-  lv_obj_align(batteryIcon, lv_scr_act(), LV_ALIGN_IN_TOP_MID, -5, 2);                                          
-                                             
-  batteryPlug = lv_label_create(lv_scr_act(), NULL);
-  lv_label_set_recolor(batteryPlug, true);                                           
+  batteryIcon = lv_label_create(lv_scr_act(), nullptr);
+  lv_label_set_text(batteryIcon, Symbols::batteryFull);
+  lv_obj_align(batteryIcon, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, -5, 2);
+
+  batteryPlug = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(batteryPlug, Symbols::plug);
   lv_obj_align(batteryPlug, batteryIcon, LV_ALIGN_OUT_LEFT_MID, -5, 0);
 
-  bleIcon = lv_label_create(lv_scr_act(), NULL);
+  bleIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(bleIcon, Symbols::bluetooth);
-  lv_obj_align(bleIcon, batteryPlug, LV_ALIGN_OUT_LEFT_MID, -5, 0);                                            
-                  
-  label_shadow_time = lv_label_create(lv_scr_act(), NULL);
+  lv_obj_align(bleIcon, batteryPlug, LV_ALIGN_OUT_LEFT_MID, -5, 0);
+
+  notificationIcon = lv_label_create(lv_scr_act(), nullptr);
+  lv_label_set_text(notificationIcon, NotificationIcon::GetIcon(false));
+  lv_obj_align(notificationIcon, nullptr, LV_ALIGN_IN_TOP_LEFT, 10, 0);
+
+  label_shadow_date = lv_label_create(lv_scr_act(), nullptr);  
+  lv_label_set_recolor(label_shadow_date, true);                                           
+  lv_obj_align(label_shadow_date, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 32, 1);
+
+  label_date = lv_label_create(lv_scr_act(), nullptr);
+  lv_obj_align(label_shadow_date, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 30, 0);
+
+  label_shadow_time = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_recolor(label_shadow_time, true);                                           
   lv_label_set_style(label_shadow_time, LV_LABEL_STYLE_MAIN, LabelBigStyle); 
   lv_obj_set_pos(label_shadow_time, 74, 32);
-                                             
-  label_time = lv_label_create(lv_scr_act(), NULL);
+
+  label_time = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
   lv_obj_set_pos(label_time, 70, 30);
-  
-  label_shadow_date = lv_label_create(lv_scr_act(), NULL);  
-  lv_label_set_recolor(label_shadow_date, true);                                           
-  lv_obj_align(label_shadow_date, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 32, 1);                                          
-                     					 
-  label_date = lv_label_create(lv_scr_act(), NULL);  
-  lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 30, 0);                                           
 
-  backgroundLabel = lv_label_create(lv_scr_act(), NULL);
+  backgroundLabel = lv_label_create(lv_scr_act(), nullptr);
   backgroundLabel->user_data = this;
   lv_obj_set_click(backgroundLabel, true);
   lv_obj_set_event_cb(backgroundLabel, event_handler);
@@ -333,23 +337,23 @@ Clock::Clock(DisplayApp* app,
   lv_label_set_text(backgroundLabel, "");
 
 
-  heartbeatIcon = lv_label_create(lv_scr_act(), NULL);
+  heartbeatIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(heartbeatIcon, Symbols::heartBeat);
   lv_obj_align(heartbeatIcon, lv_scr_act(), LV_ALIGN_IN_BOTTOM_LEFT, 5, -2);
 
-  heartbeatValue = lv_label_create(lv_scr_act(), NULL);
+  heartbeatValue = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(heartbeatValue, "0");
   lv_obj_align(heartbeatValue, heartbeatIcon, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
 
-  heartbeatBpm = lv_label_create(lv_scr_act(), NULL);
-  lv_label_set_text(heartbeatBpm, "bpm");
+  heartbeatBpm = lv_label_create(lv_scr_act(), nullptr);
+  lv_label_set_text(heartbeatBpm, "BPM");
   lv_obj_align(heartbeatBpm, heartbeatValue, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
 
-  stepValue = lv_label_create(lv_scr_act(), NULL);
+  stepValue = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(stepValue, "0");
   lv_obj_align(stepValue, lv_scr_act(), LV_ALIGN_IN_BOTTOM_RIGHT, -5, -2);
 
-  stepIcon = lv_label_create(lv_scr_act(), NULL);
+  stepIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(stepIcon, Symbols::shoe);
   lv_obj_align(stepIcon, stepValue, LV_ALIGN_OUT_LEFT_MID, -5, 0);
 }
@@ -379,6 +383,14 @@ bool Clock::Refresh() {
   lv_obj_align(batteryPlug, batteryIcon, LV_ALIGN_OUT_LEFT_MID, -5, 0);
   lv_obj_align(bleIcon, batteryPlug, LV_ALIGN_OUT_LEFT_MID, -5, 0);
 
+  notificationState = notificatioManager.AreNewNotificationsAvailable();
+  if(notificationState.IsUpdated()) {
+    if(notificationState.Get() == true)
+      lv_label_set_text(notificationIcon, NotificationIcon::GetIcon(true));
+    else
+      lv_label_set_text(notificationIcon, NotificationIcon::GetIcon(false));
+  }
+
   currentDateTime = dateTimeController.CurrentDateTime();
 
   if(currentDateTime.IsUpdated()) {
@@ -395,9 +407,8 @@ bool Clock::Refresh() {
 
     auto hour = time.hours().count();
     auto minute = time.minutes().count();
-    auto second = time.seconds().count();
 
-char minutesChar[3];
+    char minutesChar[3];
     sprintf(minutesChar, "%02d", static_cast<int>(minute));
 
     char hoursChar[3];
@@ -408,7 +419,7 @@ char minutesChar[3];
 
     char shadow_timeStr[24];
     sprintf(shadow_timeStr, "#404040 %c%c#\n\n#404040 %c%c#", hoursChar[0],hoursChar[1],minutesChar[0], minutesChar[1]);
-    
+
     if(hoursChar[0] != displayedChar[0] || hoursChar[1] != displayedChar[1] || minutesChar[0] != displayedChar[2] || minutesChar[1] != displayedChar[3]) {
       displayedChar[0] = hoursChar[0];
       displayedChar[1] = hoursChar[1];
@@ -420,13 +431,13 @@ char minutesChar[3];
     }
 
     if ((year != currentYear) || (month != currentMonth) || (dayOfWeek != currentDayOfWeek) || (day != currentDay)) {
-      char dateStr[22];
-      sprintf(dateStr, "%s %d %s %d", DayOfWeekToString(dayOfWeek), day, MonthToString(month), year);
       
       char shadow_dateStr[64];
       sprintf(shadow_dateStr, "#404040 %s# #404040 %d# #404040 %s# #404040 %d#", DayOfWeekToString(dayOfWeek), day, MonthToString(month), year);
-      
       lv_label_set_text(label_shadow_date, shadow_dateStr);
+
+      char dateStr[22];
+      sprintf(dateStr, "%s %d %s %d", DayOfWeekToString(dayOfWeek), day, MonthToString(month), year);
       lv_label_set_text(label_date, dateStr);
 
       currentYear = year;
@@ -478,7 +489,7 @@ char const *Clock::DaysString[] = {
 };
 
 char const *Clock::MonthsString[] = {
-       "",
+        "",
        "jan",
        "feb",
        "mar",
