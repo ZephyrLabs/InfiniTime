@@ -23,9 +23,6 @@ static void event_handler(lv_obj_t * obj, lv_event_t event) {
   screen->OnObjectEvent(obj, event);
 }
 
-//widgets
-lv_img_dsc_t bitmap;   
-
 //bitmap data
 static lv_img_dsc_t bitmap; 
 //
@@ -309,15 +306,15 @@ int second_len = 100;
 
 static lv_style_t hour_line;
 lv_style_copy(&style_line, &lv_style_plain);
-style_line.line.color = LV_COLOR_MAKE(0xf8, 0x7c, 0x28);
-style_line.line.width = 9;
-style_line.line.rounded = 1;
+hour_line.line.color = LV_COLOR_MAKE(0xf8, 0x7c, 0x28);
+hour_line.line.width = 9;
+hour_line.line.rounded = 1;
 
 static lv_style_t minute_line;
 lv_style_copy(&style_line, &lv_style_plain);
-style_line.line.color = LV_COLOR_MAKE(0xff, 0xff, 0xff);
-style_line.line.width = 5;
-style_line.line.rounded = 1;
+minute_line.line.color = LV_COLOR_MAKE(0xff, 0xff, 0xff);
+minute_line.line.width = 5;
+minute_line.line.rounded = 1;
 
 static lv_style_t second_line;
 lv_style_copy(&style_line, &lv_style_plain);
@@ -447,12 +444,12 @@ bool Clock::Refresh() {
 
     auto dp = date::floor<date::days>(newDateTime);
     auto time = date::make_time(newDateTime-dp);
-    auto yearMonthDay = date::year_month_day(dp);
+    //auto yearMonthDay = date::year_month_day(dp);
 
-    auto year = (int)yearMonthDay.year();
-    auto month = static_cast<Pinetime::Controllers::DateTime::Months>((unsigned)yearMonthDay.month());
-    auto day = (unsigned)yearMonthDay.day();
-    auto dayOfWeek = static_cast<Pinetime::Controllers::DateTime::Days>(date::weekday(yearMonthDay).iso_encoding());
+    //auto year = (int)yearMonthDay.year();
+    //auto month = static_cast<Pinetime::Controllers::DateTime::Months>((unsigned)yearMonthDay.month());
+    //auto day = (unsigned)yearMonthDay.day();
+    //auto dayOfWeek = static_cast<Pinetime::Controllers::DateTime::Days>(date::weekday(yearMonthDay).iso_encoding());
 
     auto hour = time.hours().count();
     auto minute = time.minutes().count();
@@ -489,7 +486,7 @@ bool Clock::Refresh() {
     lv_line_set_points(hour_hand, hour_points, 2);
     lv_line_set_points(minute_hand, minute_points, 2);
     lv_line_set_points(second_hand, second_points, 2);
-    
+
   }
 
   // TODO heartbeat = heartBeatController.GetValue();
