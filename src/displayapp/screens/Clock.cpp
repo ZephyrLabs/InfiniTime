@@ -300,7 +300,7 @@ Clock::Clock(DisplayApp* app,
                                              
   batteryPlug = lv_label_create(lv_scr_act(), NULL);
   lv_label_set_recolor(batteryPlug, true);                                           
-  lv_label_set_text(batteryPlug, Symbols::bolt);
+  lv_label_set_text(batteryPlug, Symbols::plug);
   lv_obj_align(batteryPlug, batteryIcon, LV_ALIGN_OUT_LEFT_MID, -5, 0);
 
   bleIcon = lv_label_create(lv_scr_act(), NULL);
