@@ -392,15 +392,15 @@ Clock::Clock(DisplayApp* app,
 
   hour_hand = lv_line_create(lv_scr_act(), nullptr);
   lv_line_set_style(hour_hand, LV_LINE_STYLE_MAIN, &hour_line);
-  lv_obj_align(hour_hand, nullptr, LV_ALIGN_CENTER, 0, 0);
+  lv_obj_set_pos(hour_hand,0, 0);
 
   minute_hand = lv_line_create(lv_scr_act(), nullptr);
   lv_line_set_style(minute_hand, LV_LINE_STYLE_MAIN, &minute_line);
-  lv_obj_align(minute_hand, nullptr, LV_ALIGN_CENTER, 0, 0);
+  lv_obj_set_pos(minute_hand, 0, 0);
 
   second_hand = lv_line_create(lv_scr_act(), nullptr);
   lv_line_set_style(second_hand, LV_LINE_STYLE_MAIN, &second_line);
-  lv_obj_align(second_hand, nullptr, LV_ALIGN_CENTER, 0, 0);
+  lv_obj_set_pos(second_hand, 0, 0);
 
 }
 
