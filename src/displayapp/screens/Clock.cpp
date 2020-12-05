@@ -455,11 +455,16 @@ bool Clock::Refresh() {
     auto minute = time.minutes().count();
     auto second = time.seconds().count();
 
+    if(hour <= 12){
     hour_angle = hour * 36;
-
+    }
+    else if(hour > 12){
+    hour_angle = (hour - 12) * 36;
+    }
+      
     minute_angle = minute * 6;
     
-    second_angle = second * 60;
+    second_angle = second * 6;
 
     hour_sin = sin(hour_angle);
     hour_cos = cos(hour_angle);
