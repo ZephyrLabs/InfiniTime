@@ -305,19 +305,19 @@ int minute_len = 70;
 int second_len = 100;
 
 static lv_style_t hour_line;
-lv_style_copy(&style_line, &lv_style_plain);
+lv_style_copy(&hour_line, &lv_style_plain);
 hour_line.line.color = LV_COLOR_MAKE(0xf8, 0x7c, 0x28);
 hour_line.line.width = 9;
 hour_line.line.rounded = 1;
 
 static lv_style_t minute_line;
-lv_style_copy(&style_line, &lv_style_plain);
+lv_style_copy(&minute_line, &lv_style_plain);
 minute_line.line.color = LV_COLOR_MAKE(0xff, 0xff, 0xff);
 minute_line.line.width = 5;
 minute_line.line.rounded = 1;
 
 static lv_style_t second_line;
-lv_style_copy(&style_line, &lv_style_plain);
+lv_style_copy(&second_line, &lv_style_plain);
 style_line.line.color = LV_COLOR_MAKE(0xed, 0x1c, 0x24);
 style_line.line.width = 3;
 style_line.line.rounded = 1;
