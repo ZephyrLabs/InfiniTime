@@ -304,24 +304,6 @@ int minute_len = 70;
 
 int second_len = 100;
 
-static lv_style_t hour_line;
-lv_style_copy(&hour_line, &lv_style_plain);
-hour_line.line.color = LV_COLOR_MAKE(0xf8, 0x7c, 0x28);
-hour_line.line.width = 9;
-hour_line.line.rounded = 1;
-
-static lv_style_t minute_line;
-lv_style_copy(&minute_line, &lv_style_plain);
-minute_line.line.color = LV_COLOR_MAKE(0xff, 0xff, 0xff);
-minute_line.line.width = 5;
-minute_line.line.rounded = 1;
-
-static lv_style_t second_line;
-lv_style_copy(&second_line, &lv_style_plain);
-style_line.line.color = LV_COLOR_MAKE(0xed, 0x1c, 0x24);
-style_line.line.width = 3;
-style_line.line.rounded = 1;
-
 Clock::Clock(DisplayApp* app,
         Controllers::DateTime& dateTimeController,
         Controllers::Battery& batteryController,
@@ -334,6 +316,24 @@ Clock::Clock(DisplayApp* app,
   displayedChar[2] = 0;
   displayedChar[3] = 0;
   displayedChar[4] = 0;
+
+  static lv_style_t hour_line;
+  lv_style_copy(&hour_line, &lv_style_plain);
+  hour_line.line.color = LV_COLOR_MAKE(0xf8, 0x7c, 0x28);
+  hour_line.line.width = 9;
+  hour_line.line.rounded = 1;
+
+  static lv_style_t minute_line;
+  lv_style_copy(&minute_line, &lv_style_plain);
+  minute_line.line.color = LV_COLOR_MAKE(0xff, 0xff, 0xff);
+  minute_line.line.width = 5;
+  minute_line.line.rounded = 1;
+
+  static lv_style_t second_line;
+  lv_style_copy(&second_line, &lv_style_plain);
+  style_line.line.color = LV_COLOR_MAKE(0xed, 0x1c, 0x24);
+  style_line.line.width = 3;
+  style_line.line.rounded = 1;
 
   bitmap.header.always_zero = 0;
   bitmap.header.w = 240;
@@ -399,7 +399,7 @@ Clock::Clock(DisplayApp* app,
   lv_obj_align(minute_hand, nullptr, LV_ALIGN_CENTER, 0, 0);
 
   second_hand = lv_line_create(lv_scr_act(), nullptr);
-  lv_line_set_style(line1, LV_LINE_STYLE_MAIN, &second_line);
+  lv_line_set_style(second_hand, LV_LINE_STYLE_MAIN, &second_line);
   lv_obj_align(second_hand, nullptr, LV_ALIGN_CENTER, 0, 0);
 
 }
