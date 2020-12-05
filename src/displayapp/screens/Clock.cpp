@@ -268,8 +268,8 @@ const uint8_t bitmap_map[] = {
 }; 
 //
 
-static lv_obj_t* label_shadow_time_time;
-static lv_obj_t* label_shadow_time_date;
+static lv_obj_t* label_shadow_time;
+static lv_obj_t* label_shadow_date;
 
 Clock::Clock(DisplayApp* app,
         Controllers::DateTime& dateTimeController,
@@ -396,11 +396,11 @@ bool Clock::Refresh() {
     auto minute = time.minutes().count();
     auto second = time.seconds().count();
 
-    char minutesChar[3];
-    sprintf(minutesChar, "%02d", minute);
+char minutesChar[3];
+    sprintf(minutesChar, "%02d", static_cast<int>(minute));
 
     char hoursChar[3];
-    sprintf(hoursChar, "%02d", hour);
+    sprintf(hoursChar, "%02d", static_cast<int>(hour));
 
     char timeStr[7];
     sprintf(timeStr, "%c%c\n\n%c%c", hoursChar[0],hoursChar[1],minutesChar[0], minutesChar[1]);
