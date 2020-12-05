@@ -470,14 +470,14 @@ bool Clock::Refresh() {
     second_sin = sin(second_angle);
     second_cos = cos(second_angle);
 
-    hour_x = 120 + ((int)hour_sin*hour_len);
-    hour_y = 120 + ((int)hour_cos*hour_len);
+    hour_x = floor(hour_sin*hour_len);
+    hour_y = floor(hour_cos*hour_len);
 
-    minute_x = 120 + ((int)minute_sin*minute_len);
-    minute_y = 120 + ((int)minute_cos*minute_len);
+    minute_x = floor(minute_sin*minute_len);
+    minute_y = floor(minute_cos*minute_len);
 
-    second_x = 120 + ((int)second_sin*second_len);
-    second_y = 120 + ((int)second_cos*second_len);
+    second_x = floor(second_sin*second_len);
+    second_y = floor(second_cos*second_len);
 
     static lv_point_t hour_points[] = { {120, 120}, {hour_x, hour_y} };
     static lv_point_t minute_points[] = { {120, 120}, {minute_x, minute_y} };
