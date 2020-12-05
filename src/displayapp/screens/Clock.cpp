@@ -316,7 +316,7 @@ Clock::Clock(DisplayApp* app,
   lv_obj_align(label_shadow_date, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 32, 1);
 
   label_date = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_align(label_shadow_date, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 30, 0);
+  lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 30, 0);
 
   label_shadow_time = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_recolor(label_shadow_time, true);                                           
