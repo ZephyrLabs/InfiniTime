@@ -19,7 +19,6 @@ extern lv_style_t* LabelBigStyle;
 static void event_handler(lv_obj_t * obj, lv_event_t event) {
   Clock* screen = static_cast<Clock *>(obj->user_data);
   screen->OnObjectEvent(obj, event);
-}
 
 //bitmap data
 static lv_img_dsc_t bitmap; 
@@ -274,8 +273,10 @@ static lv_obj_t* label_shadow_date;
 Clock::Clock(DisplayApp* app,
         Controllers::DateTime& dateTimeController,
         Controllers::Battery& batteryController,
-        Controllers::Ble& bleController) : Screen(app), currentDateTime{{}},
-                                           dateTimeController{dateTimeController}, batteryController{batteryController}, bleController{bleController} {
+        Controllers::Ble& bleController,
+        Controllers::NotificationManager& notificatioManager) : Screen(app), currentDateTime{{}},
+                                           dateTimeController{dateTimeController}, batteryController{batteryController},
+                                           bleController{bleController}, notificatioManager{notificatioManager} {
  
   bitmap.header.always_zero = 0;
   bitmap.header.w = 240;
