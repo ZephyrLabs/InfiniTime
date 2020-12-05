@@ -331,9 +331,9 @@ Clock::Clock(DisplayApp* app,
 
   static lv_style_t second_line;
   lv_style_copy(&second_line, &lv_style_plain);
-  style_line.line.color = LV_COLOR_MAKE(0xed, 0x1c, 0x24);
-  style_line.line.width = 3;
-  style_line.line.rounded = 1;
+  second_line.line.color = LV_COLOR_MAKE(0xed, 0x1c, 0x24);
+  second_line.line.width = 3;
+  second_line.line.rounded = 1;
 
   bitmap.header.always_zero = 0;
   bitmap.header.w = 240;
