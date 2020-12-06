@@ -494,6 +494,10 @@ bool Clock::Refresh() {
     static lv_point_t second_points[] = { {120, 120}, {const_cast<int&>(second_x), const_cast<int&>(second_y)} };
     */
 
+    //test
+    second_x = 141;
+    second_y = 141;
+    
     lv_line_set_points(hour_hand, hour_points, 2);
     lv_line_set_points(minute_hand, minute_points, 2);
     lv_line_set_points(second_hand, second_points, 2);
