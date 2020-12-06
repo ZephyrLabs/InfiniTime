@@ -470,14 +470,14 @@ bool Clock::Refresh() {
     
     second_angle = second * 6;
     
-    hour_sin = sin(hour_angle*0.174);
-    hour_cos = cos(hour_angle*0.174);
+    hour_sin = sin(hour_angle*0.0174);
+    hour_cos = cos(hour_angle*0.0174);
 
-    minute_sin = sin(minute_angle*0.174);
-    minute_cos = cos(minute_angle*0.174);
+    minute_sin = sin(minute_angle*0.0174);
+    minute_cos = cos(minute_angle*0.0174);
 
-    second_sin = sin(second_angle*0.174);
-    second_cos = cos(second_angle*0.174);
+    second_sin = sin(second_angle*0.0174);
+    second_cos = cos(second_angle*0.0174);
 
     hour_x = 120 + floor(hour_sin*hour_len);
     hour_y = 120 - floor(hour_cos*hour_len);
