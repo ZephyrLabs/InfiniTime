@@ -289,14 +289,14 @@ double minute_cos = 1;
 double second_sin = 0;
 double second_cos = 1;
 
-short hour_x = 0;
-short hour_y = 50;
+int hour_x = 0;
+int hour_y = 50;
 
-short minute_x = 0;
-short minute_y = 70;
+int minute_x = 0;
+int minute_y = 70;
 
-short second_x = 0;
-short second_y = 100;
+int second_x = 0;
+int second_y = 100;
 
 int hour_len = 50;
 
@@ -479,24 +479,18 @@ bool Clock::Refresh() {
     second_sin = sin(second_angle);
     second_cos = cos(second_angle);
 
-    hour_x = const_cast<short&>(120 + floor(hour_sin*hour_len));
-    hour_y = const_cast<short&>(120 - floor(hour_cos*hour_len));
+    hour_x = 120 + floor(hour_sin*hour_len);
+    hour_y = 120 - floor(hour_cos*hour_len);
 
-    minute_x = const_cast<short&>(120 + floor(minute_sin*minute_len));
-    minute_y = const_cast<short&>(120 - floor(minute_cos*minute_len));
+    minute_x = 120 + floor(minute_sin*minute_len);
+    minute_y = 120 - floor(minute_cos*minute_len);
 
-    second_x = const_cast<short&>(120 + floor(second_sin*second_len));
-    second_y = const_cast<short&>(120 - floor(second_cos*second_len));
+    second_x = 120 + floor(second_sin*second_len);
+    second_y = 120 - floor(second_cos*second_len);
 
-    /*
-    static lv_point_t hour_points[] = { {120, 120}, {const_cast<int&>(hour_x), const_cast<int&>(hour_y)} };
-    static lv_point_t minute_points[] = { {120, 120}, {const_cast<int&>(minute_x), const_cast<int&>(minute_y)} };
-    static lv_point_t second_points[] = { {120, 120}, {const_cast<int&>(second_x), const_cast<int&>(second_y)} };
-    */
-
-    //test
-    second_x = 141;
-    second_y = 141;
+    hour_points[1] = {const_cast<int&>(hour_x),  const_cast<int&>(hour_y)};
+    minute_points[1] = {const_cast<int&>(minute_x),  const_cast<int&>(minute_y)};
+    second_points[1] = {const_cast<int&>(second_x),  const_cast<int&>(second_y)};
     
     lv_line_set_points(hour_hand, hour_points, 2);
     lv_line_set_points(minute_hand, minute_points, 2);
