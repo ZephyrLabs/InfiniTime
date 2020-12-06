@@ -304,9 +304,9 @@ int minute_len = 70;
 
 int second_len = 100;
 
-static lv_point_t hour_points[] = { {120, 120}, {const_cast<int&>(hour_x), const_cast<int&>(hour_y)} };
-static lv_point_t minute_points[] = { {120, 120}, {const_cast<int&>(minute_x), const_cast<int&>(minute_y)} };
-static lv_point_t second_points[] = { {120, 120}, {const_cast<int&>(second_x), const_cast<int&>(second_y)} };
+const lv_point_t hour_points[] = { {120, 120}, {const_cast<int&>(hour_x), const_cast<int&>(hour_y)} };
+const lv_point_t minute_points[] = { {120, 120}, {const_cast<int&>(minute_x), const_cast<int&>(minute_y)} };
+const lv_point_t second_points[] = { {120, 120}, {const_cast<int&>(second_x), const_cast<int&>(second_y)} };
 
 Clock::Clock(DisplayApp* app,
         Controllers::DateTime& dateTimeController,
@@ -470,14 +470,14 @@ bool Clock::Refresh() {
     
     second_angle = second * 6;
     
-    hour_sin = sin(hour_angle*0.0174);
-    hour_cos = cos(hour_angle*0.0174);
+    hour_sin = sin(hour_angle);
+    hour_cos = cos(hour_angle);
 
-    minute_sin = sin(minute_angle*0.0174);
-    minute_cos = cos(minute_angle*0.0174);
+    minute_sin = sin(minute_angle);
+    minute_cos = cos(minute_angle);
 
-    second_sin = sin(second_angle*0.0174);
-    second_cos = cos(second_angle*0.0174);
+    second_sin = sin(second_angle);
+    second_cos = cos(second_angle);
 
     hour_x = 120 + floor(hour_sin*hour_len);
     hour_y = 120 - floor(hour_cos*hour_len);
