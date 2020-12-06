@@ -276,27 +276,27 @@ lv_obj_t *hour_hand;
 lv_obj_t *minute_hand;
 lv_obj_t *second_hand;
 
-int hour_angle;
-int minute_angle;
-int second_angle;
+int hour_angle = 0;
+int minute_angle = 0;
+int second_angle = 0;
 
-double hour_sin;
-double hour_cos;
+double hour_sin = 0;
+double hour_cos = 1;
 
-double minute_sin;
-double minute_cos;
+double minute_sin = 0;
+double minute_cos = 1;
 
-double second_sin;
-double second_cos;
+double second_sin = 0;
+double second_cos = 1;
 
-int hour_x;
-int hour_y;
+int hour_x = 0;
+int hour_y = 50;
 
-int minute_x;
-int minute_y;
+int minute_x = 0;
+int minute_y = 70;
 
-int second_x;
-int second_y;
+int second_x = 0;
+int second_y = 100;
 
 int hour_len = 50;
 
@@ -304,9 +304,9 @@ int minute_len = 70;
 
 int second_len = 100;
 
-static lv_point_t hour_points[] = {};
-static lv_point_t minute_points[] = {};
-static lv_point_t second_points[] = {};
+static lv_point_t hour_points[] = { {120, 120}, {hour_x, hour_y} };
+static lv_point_t minute_points[] = { {120, 120}, {minute_x, minute_y} };
+static lv_point_t second_points[] = second_points[] = { {120, 120}, {second_x, second_y} };
 
 Clock::Clock(DisplayApp* app,
         Controllers::DateTime& dateTimeController,
