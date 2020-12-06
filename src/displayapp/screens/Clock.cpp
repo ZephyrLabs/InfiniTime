@@ -350,19 +350,19 @@ Clock::Clock(DisplayApp* app,
   lv_obj_set_pos(img_src, 0, 0);     
 
   batteryIcon = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(batteryIcon, #f87c28 Symbols::batteryFull#);
+  lv_label_set_text(batteryIcon, Symbols::batteryFull);
   lv_obj_align(batteryIcon, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, -5, 2);
 
   batteryPlug = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(batteryPlug, #f87c28 Symbols::plug#);
+  lv_label_set_text(batteryPlug, Symbols::plug);
   lv_obj_align(batteryPlug, batteryIcon, LV_ALIGN_OUT_LEFT_MID, -5, 0);
 
   bleIcon = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(bleIcon, #f87c28 Symbols::bluetooth#);
+  lv_label_set_text(bleIcon, Symbols::bluetooth);
   lv_obj_align(bleIcon, batteryPlug, LV_ALIGN_OUT_LEFT_MID, -5, 0);
 
   notificationIcon = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(notificationIcon, #f87c28 NotificationIcon::GetIcon(false)#);
+  lv_label_set_text(notificationIcon, NotificationIcon::GetIcon(false));
   lv_obj_align(notificationIcon, nullptr, LV_ALIGN_IN_TOP_LEFT, 10, 0);
 
   backgroundLabel = lv_label_create(lv_scr_act(), nullptr);
@@ -375,23 +375,23 @@ Clock::Clock(DisplayApp* app,
   lv_label_set_text(backgroundLabel, "");
 
   heartbeatIcon = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(heartbeatIcon, #f87c28 Symbols::heartBeat#);
+  lv_label_set_text(heartbeatIcon, Symbols::heartBeat);
   lv_obj_align(heartbeatIcon, lv_scr_act(), LV_ALIGN_IN_BOTTOM_LEFT, 5, -2);
 
   heartbeatValue = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(heartbeatValue, #f87c28 "0"#);
+  lv_label_set_text(heartbeatValue, "0");
   lv_obj_align(heartbeatValue, heartbeatIcon, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
 
   heartbeatBpm = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(heartbeatBpm, #f87c28 "BPM"#);
+  lv_label_set_text(heartbeatBpm, "BPM");
   lv_obj_align(heartbeatBpm, heartbeatValue, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
 
   stepValue = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(stepValue, #f87c28 "0"#);
+  lv_label_set_text(stepValue, "0");
   lv_obj_align(stepValue, lv_scr_act(), LV_ALIGN_IN_BOTTOM_RIGHT, -5, -2);
 
   stepIcon = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(stepIcon, #f87c28 Symbols::shoe#);
+  lv_label_set_text(stepIcon, Symbols::shoe);
   lv_obj_align(stepIcon, stepValue, LV_ALIGN_OUT_LEFT_MID, -5, 0);
 
   hour_hand = lv_line_create(lv_scr_act(), nullptr);
@@ -416,17 +416,17 @@ bool Clock::Refresh() {
   batteryPercentRemaining = batteryController.PercentRemaining();
   if (batteryPercentRemaining.IsUpdated()) {
     auto batteryPercent = batteryPercentRemaining.Get();
-    lv_label_set_text(batteryIcon, #f87c28 BatteryIcon::GetBatteryIcon(batteryPercent)#);
+    lv_label_set_text(batteryIcon, BatteryIcon::GetBatteryIcon(batteryPercent));
     auto isCharging = batteryController.IsCharging() || batteryController.IsPowerPresent();
-    lv_label_set_text(batteryPlug, #f87c28 BatteryIcon::GetPlugIcon(isCharging)#);
+    lv_label_set_text(batteryPlug, BatteryIcon::GetPlugIcon(isCharging));
   }
 
   bleState = bleController.IsConnected();
   if (bleState.IsUpdated()) {
     if(bleState.Get() == true) {
-      lv_label_set_text(bleIcon, #f87c28 BleIcon::GetIcon(true)#);
+      lv_label_set_text(bleIcon, BleIcon::GetIcon(true));
     } else {
-      lv_label_set_text(bleIcon, #f87c28 BleIcon::GetIcon(false)#);
+      lv_label_set_text(bleIcon, BleIcon::GetIcon(false));
     }
   }
   lv_obj_align(batteryIcon, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, -5, 5);
@@ -436,9 +436,9 @@ bool Clock::Refresh() {
   notificationState = notificatioManager.AreNewNotificationsAvailable();
   if(notificationState.IsUpdated()) {
     if(notificationState.Get() == true)
-      lv_label_set_text(notificationIcon, #f87c28 NotificationIcon::GetIcon(true)#);
+      lv_label_set_text(notificationIcon, NotificationIcon::GetIcon(true));
     else
-      lv_label_set_text(notificationIcon, #f87c28 NotificationIcon::GetIcon(false)#);
+      lv_label_set_text(notificationIcon, NotificationIcon::GetIcon(false));
   }
 
   currentDateTime = dateTimeController.CurrentDateTime();
@@ -502,7 +502,7 @@ bool Clock::Refresh() {
   if(heartbeat.IsUpdated()) {
     char heartbeatBuffer[4];
     sprintf(heartbeatBuffer, "%d", heartbeat.Get());
-    lv_label_set_text(heartbeatValue, #f87c28 heartbeatBuffer#);
+    lv_label_set_text(heartbeatValue, heartbeatBuffer);
     lv_obj_align(heartbeatIcon, lv_scr_act(), LV_ALIGN_IN_BOTTOM_LEFT, 5, -2);
     lv_obj_align(heartbeatValue, heartbeatIcon, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
     lv_obj_align(heartbeatBpm, heartbeatValue, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
@@ -512,7 +512,7 @@ bool Clock::Refresh() {
   if(stepCount.IsUpdated()) {
     char stepBuffer[5];
     sprintf(stepBuffer, "%lu", stepCount.Get());
-    lv_label_set_text(stepValue, #f87c28 stepBuffer#);
+    lv_label_set_text(stepValue, stepBuffer);
     lv_obj_align(stepValue, lv_scr_act(), LV_ALIGN_IN_BOTTOM_RIGHT, -5, -2);
     lv_obj_align(stepIcon, stepValue, LV_ALIGN_OUT_LEFT_MID, -5, 0);
   }
