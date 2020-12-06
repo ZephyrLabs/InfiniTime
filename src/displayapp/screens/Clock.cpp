@@ -526,41 +526,6 @@ bool Clock::Refresh() {
   return running;
 }
 
-const char *Clock::MonthToString(Pinetime::Controllers::DateTime::Months month) {
-  return Clock::MonthsString[static_cast<uint8_t>(month)];
-}
-
-const char *Clock::DayOfWeekToString(Pinetime::Controllers::DateTime::Days dayOfWeek) {
-  return Clock::DaysString[static_cast<uint8_t>(dayOfWeek)];
-}
-
-char const *Clock::DaysString[] = {
-        "",
-        "mon.",
-        "tue.",
-        "wed.",
-        "thu.",
-        "fri.",
-        "sat.",
-        "sun."
-};
-
-char const *Clock::MonthsString[] = {
-        "",
-       "jan",
-       "feb",
-       "mar",
-       "apr",
-       "may",
-       "jun",
-       "jul",
-       "aug",
-       "sep",
-       "oct",
-       "nov",
-       "dec"
-};
-
 void Clock::OnObjectEvent(lv_obj_t *obj, lv_event_t event) {
   if(obj == backgroundLabel) {
     if (event == LV_EVENT_CLICKED) {
