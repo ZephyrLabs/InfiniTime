@@ -304,9 +304,9 @@ int minute_len = 70;
 
 int second_len = 100;
 
-const lv_point_t hour_points[] = { {120, 120}, {hour_x, hour_y} };
-const lv_point_t minute_points[] = { {120, 120}, {minute_x, minute_y} };
-const lv_point_t second_points[] = { {120, 120}, {second_x, second_y} };
+static lv_point_t hour_points[] = { {120, 120}, {hour_x, hour_y} };
+static lv_point_t minute_points[] = { {120, 120}, {minute_x, minute_y} };
+static lv_point_t second_points[] = { {120, 120}, {second_x, second_y} };
 
 Clock::Clock(DisplayApp* app,
         Controllers::DateTime& dateTimeController,
