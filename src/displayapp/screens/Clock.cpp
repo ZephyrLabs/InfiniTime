@@ -343,7 +343,7 @@ int minute_len = 77;
 
 int second_len = 97;
 
-int chono_second_len = 25;
+int chrono_second_len = 25;
 
 int chrono_minute_len = 25;
 
