@@ -386,7 +386,7 @@ Clock::Clock(DisplayApp* app,
   second_line.line.rounded = 1;
                                              
   static lv_style_t chrono_line;
-  lv_style_copy(&second_line, &lv_style_plain);
+  lv_style_copy(&chrono_line, &lv_style_plain);
   second_line.line.color = LV_COLOR_MAKE(0x00, 0x00, 0xff);
   second_line.line.width = 1;
   second_line.line.rounded = 1;                        
