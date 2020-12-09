@@ -59,10 +59,14 @@ namespace Pinetime {
           float getCurrentTime();
 
           float currentTime = 0.0f;
-          uint16_t x_coord;
-          uint y_coord;
           bool stopWatchRunning = false;
         
+          uint16_t x_coord;
+          uint y_coord;
+        
+          Controllers::DateTime& dateTimeController;
+          std::chrono::system_clock::time_point startTime;
+
           static const char* MonthToString(Pinetime::Controllers::DateTime::Months month);
           static const char* DayOfWeekToString(Pinetime::Controllers::DateTime::Days dayOfWeek);
           static char const *DaysString[];
