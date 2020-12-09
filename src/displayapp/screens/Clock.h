@@ -48,7 +48,6 @@ namespace Pinetime {
           bool Refresh() override;
           bool OnButtonPushed() override;
           bool OnTouchEvent(TouchEvents event) override;
-          bool OnTouchEvent(uint16_t x, uint16_t y) override;
         
           void OnObjectEvent(lv_obj_t *pObj, lv_event_t i);
         private:
@@ -60,9 +59,6 @@ namespace Pinetime {
 
           float currentTime = 0.0f;
           bool stopWatchRunning = false;
-        
-          uint16_t x_coord;
-          uint y_coord;
         
           std::chrono::system_clock::time_point startTime;
 
