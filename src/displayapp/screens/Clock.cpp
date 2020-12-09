@@ -13,9 +13,14 @@
 #include <math.h>
 
 using namespace Pinetime::Applications::Screens;
+
+using std::chrono::duration;
+using std::chrono::duration_cast;
+
 extern lv_font_t jetbrains_mono_extrabold_compressed;
 extern lv_font_t jetbrains_mono_bold_20;
 extern lv_style_t* LabelBigStyle;
+
 
 static void event_handler(lv_obj_t * obj, lv_event_t event) {
   Clock* screen = static_cast<Clock *>(obj->user_data);
@@ -597,7 +602,7 @@ void Clock::OnObjectEvent(lv_obj_t *obj, lv_event_t event) {
 bool Clock::OnTouchEvent(TouchEvents event) {
   switch(event) {
     case TouchEvents::Tap:
-      if(x + y >= 56){
+      if(x_coord + y_coord >= 56){
          if (stopWatchRunning) {
           stop();
          } 
@@ -607,7 +612,7 @@ bool Clock::OnTouchEvent(TouchEvents event) {
         return true;
       }  
     case TouchEvents::LongTap:
-      if(x + y >= 56){
+      if(x_coord + y_coord >= 56){
         if (!stopWatchRunning) {
           reset();
         }
@@ -619,6 +624,8 @@ bool Clock::OnTouchEvent(TouchEvents event) {
 }
 
 bool Clock::OnTouchEvent(uint16_t x, uint16_t y) {
+  x_coord = x
+  y_coord = y
   return true;
 }
 
@@ -635,9 +642,8 @@ void Clock::reset() {
   currentTime = 0.0f;
 }
 
-float StopWatch::getCurrentTime() {
-  duration<float> delta =
-  duration_cast<duration<float>>(dateTimeController.CurrentDateTime() - startTime);
+float Clock::getCurrentTime() {
+  duration<float> delta = duration_cast<duration<float>>(dateTimeController.CurrentDateTime() - startTime);
   return (float) delta.count();
 }
 
