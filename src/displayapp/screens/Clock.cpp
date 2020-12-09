@@ -531,7 +531,7 @@ bool Clock::Refresh() {
 
     chrono_second = static_cast<int&>(currentTime);
     
-    chrono_minute = floor(chrono_second/60));
+    chrono_minute = floor(chrono_second/60);
     chrono_second = chrono_second % 60;
     
     if(hour <= 12){
