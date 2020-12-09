@@ -529,10 +529,10 @@ bool Clock::Refresh() {
     auto minute = time.minutes().count();
     auto second = time.seconds().count();
 
-    chrono_second = currentTime;
+    chrono_second = static_cast<int&>(currentTime);
     
-    chrono_minute = static_cast<int&>(floor(chrono_second/60))
-    chrono_second = static_cast<int&>(chrono_second % 60)
+    chrono_minute = floor(chrono_second/60))
+    chrono_second = chrono_second % 60
     
     if(hour <= 12){
     hour_angle = hour * 30;
