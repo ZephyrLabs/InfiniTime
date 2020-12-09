@@ -387,9 +387,9 @@ Clock::Clock(DisplayApp* app,
                                              
   static lv_style_t chrono_line;
   lv_style_copy(&chrono_line, &lv_style_plain);
-  second_line.line.color = LV_COLOR_MAKE(0x00, 0x00, 0xff);
-  second_line.line.width = 1;
-  second_line.line.rounded = 1;                        
+  chrono_line.line.color = LV_COLOR_MAKE(0x00, 0x00, 0xff);
+  chrono_line.line.width = 1;
+  chrono_line.line.rounded = 1;                        
 
   bitmap.header.always_zero = 0;
   bitmap.header.w = 240;
