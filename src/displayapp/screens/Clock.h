@@ -59,6 +59,8 @@ namespace Pinetime {
           float getCurrentTime();
 
           float currentTime = 0.0f;
+          uint16_t x_coord;
+          uint y_coord;
           bool stopWatchRunning = false;
         
           static const char* MonthToString(Pinetime::Controllers::DateTime::Months month);
