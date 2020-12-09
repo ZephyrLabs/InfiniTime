@@ -528,8 +528,8 @@ bool Clock::Refresh() {
     auto hour = time.hours().count();
     auto minute = time.minutes().count();
     auto second = time.seconds().count();
-
-    chrono_second = static_cast<int&>(floor(currentTime));
+    
+    chrono_second = static_cast<int>(currentTime);
     
     chrono_minute = floor(chrono_second/60);
     chrono_second = chrono_second % 60;
