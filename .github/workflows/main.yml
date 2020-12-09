@@ -124,7 +124,7 @@ jobs:
       - name: Upload binary package
         uses: actions/upload-artifact@v2
         with:
-          name: pinetime-mcuboot-app-dfu
+          name: pinetime-mcuboot-app-img
           path: build/src/pinetime-mcuboot-app-img.bin
 
         #########################################################################################
