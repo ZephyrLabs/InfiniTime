@@ -350,8 +350,8 @@ int chrono_minute_len = 25;
 static lv_point_t hour_points[] = { {120, 120}, {hour_x, hour_y} };
 static lv_point_t minute_points[] = { {120, 120}, {minute_x, minute_y} };
 static lv_point_t second_points[] = { {120, 120}, {second_x, second_y} };
-static lv_point_t chrono_second_points[] = { {60, 120}, {chrono_second_x, chrono_second_y} };
-static lv_point_t chrono_minute_points[] = { {180, 120}, {chrono_minute_x, chrono_minute_y} };
+static lv_point_t chrono_second_points[] = { {180, 120}, {chrono_second_x, chrono_second_y} };
+static lv_point_t chrono_minute_points[] = { {60, 120}, {chrono_minute_x, chrono_minute_y} };
 
 
 Clock::Clock(DisplayApp* app,
