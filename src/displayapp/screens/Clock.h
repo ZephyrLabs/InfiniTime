@@ -52,6 +52,15 @@ namespace Pinetime {
         
           void OnObjectEvent(lv_obj_t *pObj, lv_event_t i);
         private:
+
+          void start();
+          void stop();
+          void reset();
+          float getCurrentTime();
+
+          float currentTime = 0.0f;
+          bool stopWatchRunning = false;
+        
           static const char* MonthToString(Pinetime::Controllers::DateTime::Months month);
           static const char* DayOfWeekToString(Pinetime::Controllers::DateTime::Days dayOfWeek);
           static char const *DaysString[];
@@ -83,6 +92,7 @@ namespace Pinetime {
           lv_obj_t* stepIcon;
           lv_obj_t* stepValue;
           lv_obj_t* notificationIcon;
+          lv_obj_t* time_lapsed;
 
           Controllers::DateTime& dateTimeController;
           Controllers::Battery& batteryController;
