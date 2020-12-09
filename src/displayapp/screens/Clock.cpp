@@ -624,8 +624,8 @@ bool Clock::OnTouchEvent(TouchEvents event) {
 }
 
 bool Clock::OnTouchEvent(uint16_t x, uint16_t y) {
-  x_coord = x
-  y_coord = y
+  x_coord = x;
+  y_coord = y;
   return true;
 }
 
