@@ -47,7 +47,9 @@ namespace Pinetime {
 
           bool Refresh() override;
           bool OnButtonPushed() override;
-
+          bool OnTouchEvent(TouchEvents event) override;
+          bool OnTouchEvent(uint16_t x, uint16_t y) override;
+        
           void OnObjectEvent(lv_obj_t *pObj, lv_event_t i);
         private:
           static const char* MonthToString(Pinetime::Controllers::DateTime::Months month);
