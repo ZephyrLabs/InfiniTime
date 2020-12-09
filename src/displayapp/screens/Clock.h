@@ -64,7 +64,6 @@ namespace Pinetime {
           uint16_t x_coord;
           uint y_coord;
         
-          Controllers::DateTime& dateTimeController;
           std::chrono::system_clock::time_point startTime;
 
           static const char* MonthToString(Pinetime::Controllers::DateTime::Months month);
