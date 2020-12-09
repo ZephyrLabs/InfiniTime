@@ -634,8 +634,8 @@ void Clock::reset() {
 }
 
 float Clock::getCurrentTime() {
-  TickType_t delta = (xTaskGetTickCount()/1000) - startTime;
-  return (float) delta.count();
+  TickType_t delta = xTaskGetTickCount() - startTime;
+  return (float) delta
 }
 
 bool Clock::OnButtonPushed() {
