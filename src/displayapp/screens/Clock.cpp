@@ -297,6 +297,9 @@ lv_obj_t* second_hand;
 lv_obj_t* chrono_second_hand;
 lv_obj_t* chrono_minute_hand;
 
+int chrono_second = 0;
+int chrono_minute = 0;
+
 int hour_angle = 0;
 int minute_angle = 0;
 int second_angle = 0;
@@ -526,6 +529,13 @@ bool Clock::Refresh() {
     auto minute = time.minutes().count();
     auto second = time.seconds().count();
 
+    chrono_second = currentTime;
+    
+    while (chrono_second > 60){
+      chrono_second -= 60;
+      chrono_minute ++;
+    }
+    
     if(hour <= 12){
     hour_angle = hour * 30;
     }
@@ -536,6 +546,10 @@ bool Clock::Refresh() {
     minute_angle = minute * 6;
     
     second_angle = second * 6;
+
+    chrono_second_angle = chrono_second * 6;
+    
+    chrono_minute_angle = chrono_minute * 6;
     
     hour_sin = sin(hour_angle * 0.017);
     hour_cos = cos(hour_angle * 0.017);
@@ -546,6 +560,12 @@ bool Clock::Refresh() {
     second_sin = sin(second_angle * 0.017);
     second_cos = cos(second_angle * 0.017);
 
+    chrono_minute_sin = sin(chrono_minute_angle * 0.017);
+    chrono_minute_cos = cos(chrono_minute_angle * 0.017);
+
+    chrono_second_sin = sin(chrono_second_angle * 0.017);
+    chrono_second_cos = cos(chrono_second_angle * 0.017);
+
     hour_x = 120 + floor(hour_sin*hour_len);
     hour_y = 120 - floor(hour_cos*hour_len);
 
@@ -555,12 +575,21 @@ bool Clock::Refresh() {
     second_x = 120 + floor(second_sin*second_len);
     second_y = 120 - floor(second_cos*second_len);
 
+    chrono_minute_x = 60 + floor(chrono_minute_sin*chrono_minute_len);
+    chrono_minute_y = 120 - floor(chrono_minute_cos*chrono_minute_len);
+
+    chrono_second_x = 180 + floor(chrono_second_sin*chrono_second_len);
+    chrono_second_y = 120 - floor(chrono_second_cos*chrono_second_len);
+
     hour_points[1] = {const_cast<int&>(hour_x),  const_cast<int&>(hour_y)};
     minute_points[1] = {const_cast<int&>(minute_x),  const_cast<int&>(minute_y)};
     second_points[1] = {const_cast<int&>(second_x),  const_cast<int&>(second_y)};
     
-    lv_line_set_points(chrono_second_hand, second_points, 2);
-    lv_line_set_points(chrono_minute_hand, second_points, 2);
+    chrono_minute_points[1] = {const_cast<int&>(chrono_minute_x),  const_cast<int&>(chrono_minute_y)};
+    chrono_second_points[1] = {const_cast<int&>(chrono_second_x),  const_cast<int&>(chrono_second_y)};    
+
+    lv_line_set_points(chrono_second_hand, chrono_second_points, 2);
+    lv_line_set_points(chrono_minute_hand, chrono_minute_points, 2);
 
     lv_line_set_points(hour_hand, hour_points, 2);
     lv_line_set_points(minute_hand, minute_points, 2);
@@ -604,6 +633,8 @@ bool Clock::OnTouchEvent(TouchEvents event) {
     case TouchEvents::SwipeRight:
       if (stopWatchRunning) {
           stop();
+          chrono_second = 0;
+          chrono_minute = 0;
         } 
       else {
          start();
@@ -634,8 +665,8 @@ void Clock::reset() {
 }
 
 float Clock::getCurrentTime() {
-  TickType_t delta = duration_cast<duration<float>>(xTaskGetTickCount() - startTime);
-  return (float) delta;
+  duration<float> delta = duration_cast<duration<float>>(dateTimeController.CurrentDateTime() - startTime);
+  return (float) delta.count();
 }
 
 bool Clock::OnButtonPushed() {
