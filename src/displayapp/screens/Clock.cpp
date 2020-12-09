@@ -443,10 +443,14 @@ Clock::Clock(DisplayApp* app,
   lv_label_set_text(stepIcon, Symbols::shoe);
   lv_obj_align(stepIcon, stepValue, LV_ALIGN_OUT_LEFT_MID, -5, 0);
 
+  time_lapsed = lv_label_create(lv_scr_act(), nullptr);
+  lv_obj_align(time_lapsed, lv_scr_act(), LV_ALIGN_CENTER, 16, 16);
+  lv_label_set_align(time_lapsed, LV_LABEL_ALIGN_CENTER);
+                                             
   hour_hand = lv_line_create(lv_scr_act(), nullptr);
   lv_line_set_style(hour_hand, LV_LINE_STYLE_MAIN, &hour_line);
   lv_obj_set_pos(hour_hand,0, 0);
-
+                               
   minute_hand = lv_line_create(lv_scr_act(), nullptr);
   lv_line_set_style(minute_hand, LV_LINE_STYLE_MAIN, &minute_line);
   lv_obj_set_pos(minute_hand, 0, 0);
@@ -462,10 +466,6 @@ Clock::Clock(DisplayApp* app,
   chrono_minute_hand = lv_line_create(lv_scr_act(), nullptr);
   lv_line_set_style(chrono_minute_hand, LV_LINE_STYLE_MAIN, &chrono_line);
   lv_obj_set_pos(chrono_minute_hand, 0, 0);
-
-  time_lapsed = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_align(time_lapsed, lv_scr_act(), LV_ALIGN_CENTER, 0, 16);
-  lv_label_set_align(time_lapsed, LV_LABEL_ALIGN_CENTER);
 
 }
 
@@ -634,7 +634,7 @@ void Clock::reset() {
 }
 
 float Clock::getCurrentTime() {
-  duration<float> delta = duration_cast<duration<float>>(dateTimeController.CurrentDateTime() - startTime);
+  TickType_t delta = (xTaskGetTickCount()/1000) - startTime;
   return (float) delta.count();
 }
 
