@@ -601,32 +601,23 @@ void Clock::OnObjectEvent(lv_obj_t *obj, lv_event_t event) {
 
 bool Clock::OnTouchEvent(TouchEvents event) {
   switch(event) {
-    case TouchEvents::Tap:
-      if(x_coord + y_coord >= 56){
-         if (stopWatchRunning) {
+    case TouchEvents::SwipeRight:
+      if (stopWatchRunning) {
           stop();
-         } 
-         else {
-           start();
-         }
-        return true;
-      }  
-    case TouchEvents::LongTap:
-      if(x_coord + y_coord >= 56){
-        if (!stopWatchRunning) {
-          reset();
+        } 
+      else {
+         start();
         }
+        return true;
+       
+    case TouchEvents::LongTap:
+      if (!stopWatchRunning) {
+        reset();
       }
       return true;
     default:
       return false;
   }
-}
-
-bool Clock::OnTouchEvent(uint16_t x, uint16_t y) {
-  x_coord = x;
-  y_coord = y;
-  return true;
 }
 
 void Clock::start() {
