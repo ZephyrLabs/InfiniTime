@@ -447,7 +447,7 @@ Clock::Clock(DisplayApp* app,
   lv_obj_align(stepIcon, stepValue, LV_ALIGN_OUT_LEFT_MID, -5, 0);
 
   time_lapsed = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_align(time_lapsed, lv_scr_act(), LV_ALIGN_CENTER, 16, 16);
+  lv_obj_align(time_lapsed, lv_scr_act(), LV_ALIGN_CENTER, -16, 16);
   lv_label_set_align(time_lapsed, LV_LABEL_ALIGN_CENTER);
                                              
   hour_hand = lv_line_create(lv_scr_act(), nullptr);
@@ -531,10 +531,8 @@ bool Clock::Refresh() {
 
     chrono_second = currentTime;
     
-    while (chrono_second > 60){
-      chrono_second -= 60;
-      chrono_minute ++;
-    }
+    chrono_minute = static_cast<&int>(floor(chrono_second/60))
+    chrono_second = static_cast<&int>(chrono_second % 60)
     
     if(hour <= 12){
     hour_angle = hour * 30;
