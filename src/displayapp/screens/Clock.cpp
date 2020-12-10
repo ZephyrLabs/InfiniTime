@@ -11,6 +11,7 @@
 #include "components/ble/NotificationManager.h"
 #include "../DisplayApp.h"
 #include <math.h>
+#include "earth.h"
 
 using namespace Pinetime::Applications::Screens;
 
@@ -30,7 +31,8 @@ static void event_handler(lv_obj_t * obj, lv_event_t event) {
 namespace {
 //bitmap data
 static lv_img_dsc_t bitmap; 
-
+static lv_img_dsc_t globe; 
+  
 const uint8_t bitmap_map[] = {
   0x04, 0x02, 0x04, 0xff, 	/*Color of index 0*/
   0x04, 0x82, 0x04, 0xff, 	/*Color of index 1*/
@@ -297,6 +299,7 @@ lv_obj_t* minute_hand;
 lv_obj_t* second_hand;
 lv_obj_t* chrono_second_hand;
 lv_obj_t* chrono_minute_hand;
+lv_obj_t *img_src_globe;
 
 int chrono_second = 0;
 int chrono_minute = 0;
@@ -398,6 +401,17 @@ Clock::Clock(DisplayApp* app,
   lv_obj_t *img_src = lv_img_create(lv_scr_act(), NULL);  
   lv_img_set_src(img_src, &bitmap);  
   lv_obj_set_pos(img_src, 0, 0);     
+
+  globe.header.always_zero = 0;
+  globe.header.w = 60;
+  globe.header.h = 60;
+  globe.data_size = 4624;
+  globe.header.cf = LV_IMG_CF_INDEXED_8BIT;
+  globe.data = bitmap_1_map;                     
+  img_src_globe = lv_img_create(lv_scr_act(), NULL);  
+       
+  lv_img_set_src(img_src_globe, &globe);  
+  lv_obj_set_pos(img_src_globe, 120, 180);
 
   batteryIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(batteryIcon, Symbols::batteryFull);
@@ -521,6 +535,152 @@ bool Clock::Refresh() {
     auto minute = time.minutes().count();
     auto second = time.seconds().count();
     
+///////////////////////////////////////////////////    
+    
+    if(hour == 0){
+      globe.data = bitmap_1_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+
+    if(hour == 1){
+      globe.data = bitmap_2_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+    
+    if(hour == 2){
+      globe.data = bitmap_3_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+
+    if(hour == 3){
+      globe.data = bitmap_4_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+
+    if(hour == 4){
+      globe.data = bitmap_5_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+
+    if(hour == 5){
+      globe.data = bitmap_6_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+
+    if(hour == 6){
+      globe.data = bitmap_7_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+    
+    if(hour == 7){
+      globe.data = bitmap_8_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+
+    if(hour == 8){
+      globe.data = bitmap_9_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+    
+    if(hour == 9){
+      globe.data = bitmap_10_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+
+    if(hour == 10){
+      globe.data = bitmap_11_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+
+    if(hour == 11){
+      globe.data = bitmap_12_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+
+    if(hour == 12){
+      globe.data = bitmap_13_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+
+    if(hour == 13){
+      globe.data = bitmap_14_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+
+    if(hour == 14){
+      globe.data = bitmap_15_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+
+    if(hour == 15){
+      globe.data = bitmap_16_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+
+    if(hour == 16){
+      globe.data = bitmap_17_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+    
+    if(hour == 17){
+      globe.data = bitmap_18_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+
+    if(hour == 18){
+      globe.data = bitmap_19_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+    
+    if(hour == 19){
+      globe.data = bitmap_20_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+
+    if(hour == 20){
+      globe.data = bitmap_21_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+
+    if(hour == 21){
+      globe.data = bitmap_22_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+
+    if(hour == 22){
+      globe.data = bitmap_23_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+
+    if(hour == 23){
+      globe.data = bitmap_24_map;         
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 120, 180);
+    }
+////////////////////////////////////////////////////
     chrono_second = static_cast<int>(currentTime);
     
     chrono_minute = floor(chrono_second/60);
