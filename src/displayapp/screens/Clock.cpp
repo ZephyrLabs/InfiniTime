@@ -360,7 +360,7 @@ Clock::Clock(DisplayApp* app,
 
   static lv_style_t hour_line;
   lv_style_copy(&hour_line, &lv_style_plain);
-  hour_line.line.color = LV_COLOR_MAKE(0xcc, 0xcc, 0xcc);
+  hour_line.line.color = LV_COLOR_MAKE(0xee, 0xee, 0xee);
   hour_line.line.width = 9;
   hour_line.line.rounded = 1;
 
@@ -378,7 +378,7 @@ Clock::Clock(DisplayApp* app,
                                              
   static lv_style_t chrono_line;
   lv_style_copy(&chrono_line, &lv_style_plain);
-  chrono_line.line.color = LV_COLOR_MAKE(0x00, 0x00, 0xff);
+  chrono_line.line.color = LV_COLOR_MAKE(0xee, 0xee, 0xee);
   chrono_line.line.width = 1;
   chrono_line.line.rounded = 1;                        
 
