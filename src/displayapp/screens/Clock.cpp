@@ -301,6 +301,8 @@ lv_obj_t* chrono_second_hand;
 lv_obj_t* chrono_minute_hand;
 lv_obj_t* img_src_globe;
 
+int counter = 0;  
+  
 int chrono_second = 0;
 int chrono_minute = 0;
 
@@ -536,103 +538,107 @@ bool Clock::Refresh() {
     auto second = time.seconds().count();
     
 ///////////////////////////////////////////////////    
+    counter++;
+    if(counter > 1000){
+      counter = 0;
+        
+     if(hour == 0){
+       globe.data = bitmap_1_map;         
+      }
+
+     else if(hour == 1){
+        globe.data = bitmap_2_map;         
+      }
     
-    if(hour == 0){
-      globe.data = bitmap_1_map;         
-    }
+     else if(hour == 2){
+       globe.data = bitmap_3_map;         
+     }
 
-    else if(hour == 1){
-      globe.data = bitmap_2_map;         
+     else if(hour == 3){
+        globe.data = bitmap_4_map;         
+     }
+
+      else if(hour == 4){
+        globe.data = bitmap_5_map;         
+     }
+
+     else if(hour == 5){
+        globe.data = bitmap_6_map;         
+     }
+
+      else if(hour == 6){
+       globe.data = bitmap_7_map;         
+     }
+    
+      else if(hour == 7){
+        globe.data = bitmap_8_map;         
+     }
+
+      else if(hour == 8){
+        globe.data = bitmap_9_map;         
+     }
+    
+      else if(hour == 9){
+        globe.data = bitmap_10_map;         
+      }
+
+      else if(hour == 10){
+       globe.data = bitmap_11_map;         
+      }
+
+     else if(hour == 11){
+       globe.data = bitmap_12_map;         
+      }
+
+     else if(hour == 12){
+        globe.data = bitmap_13_map;         
+     }
+
+     else if(hour == 13){
+       globe.data = bitmap_14_map;         
+      }
+
+      else if(hour == 14){
+       globe.data = bitmap_15_map;         
+      }
+
+     else if(hour == 15){
+        globe.data = bitmap_16_map;         
+      }
+
+      else if(hour == 16){
+        globe.data = bitmap_17_map;         
+      }
+    
+      else if(hour == 17){
+       globe.data = bitmap_18_map;         
+      }
+
+      else if(hour == 18){
+       globe.data = bitmap_19_map;         
+     }
+    
+      else if(hour == 19){
+       globe.data = bitmap_20_map;         
+      }
+
+     else if(hour == 20){
+        globe.data = bitmap_21_map;         
+      }
+
+      else if(hour == 21){
+        globe.data = bitmap_22_map;         
+      }
+
+      else if(hour == 22){
+        globe.data = bitmap_23_map;         
+      }
+
+      else if(hour == 23){
+        globe.data = bitmap_24_map;         
+      }
     }
     
-    else if(hour == 2){
-      globe.data = bitmap_3_map;         
-    }
-
-    else if(hour == 3){
-      globe.data = bitmap_4_map;         
-    }
-
-    else if(hour == 4){
-      globe.data = bitmap_5_map;         
-    }
-
-    else if(hour == 5){
-      globe.data = bitmap_6_map;         
-    }
-
-    else if(hour == 6){
-      globe.data = bitmap_7_map;         
-    }
-    
-    else if(hour == 7){
-      globe.data = bitmap_8_map;         
-    }
-
-    else if(hour == 8){
-      globe.data = bitmap_9_map;         
-    }
-    
-    else if(hour == 9){
-      globe.data = bitmap_10_map;         
-    }
-
-    else if(hour == 10){
-      globe.data = bitmap_11_map;         
-    }
-
-    else if(hour == 11){
-      globe.data = bitmap_12_map;         
-    }
-
-    else if(hour == 12){
-      globe.data = bitmap_13_map;         
-    }
-
-    else if(hour == 13){
-      globe.data = bitmap_14_map;         
-    }
-
-    else if(hour == 14){
-      globe.data = bitmap_15_map;         
-    }
-
-    else if(hour == 15){
-      globe.data = bitmap_16_map;         
-    }
-
-    else if(hour == 16){
-      globe.data = bitmap_17_map;         
-    }
-    
-    else if(hour == 17){
-      globe.data = bitmap_18_map;         
-    }
-
-    else if(hour == 18){
-      globe.data = bitmap_19_map;         
-    }
-    
-    else if(hour == 19){
-      globe.data = bitmap_20_map;         
-    }
-
-    else if(hour == 20){
-      globe.data = bitmap_21_map;         
-    }
-
-    else if(hour == 21){
-      globe.data = bitmap_22_map;         
-    }
-
-    else if(hour == 22){
-      globe.data = bitmap_23_map;         
-    }
-
-    else if(hour == 23){
-      globe.data = bitmap_24_map;         
-    }
-
     lv_img_set_src(img_src_globe, &globe);  
     lv_obj_set_pos(img_src_globe, 90, 150);
     
