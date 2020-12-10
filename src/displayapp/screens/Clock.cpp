@@ -637,11 +637,11 @@ bool Clock::Refresh() {
       else if(hour == 23){
         globe.data = bitmap_24_map;         
       }
-    }
-    
+      
     lv_img_set_src(img_src_globe, &globe);  
     lv_obj_set_pos(img_src_globe, 90, 150);
-    
+    }
+   
 ////////////////////////////////////////////////////
     chrono_second = static_cast<int>(currentTime);
     
