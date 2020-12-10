@@ -29,7 +29,7 @@ static void event_handler(lv_obj_t * obj, lv_event_t event) {
 }
 
 namespace {
-//bitmap data
+
 static lv_img_dsc_t bitmap; 
 static lv_img_dsc_t globe; 
   
