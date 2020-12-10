@@ -539,7 +539,7 @@ bool Clock::Refresh() {
     
 ///////////////////////////////////////////////////    
     counter++;
-    if(counter > 1000){
+    if(counter > 100){
       counter = 0;
         
      if(hour == 0){
