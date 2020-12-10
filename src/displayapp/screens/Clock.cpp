@@ -299,7 +299,7 @@ lv_obj_t* minute_hand;
 lv_obj_t* second_hand;
 lv_obj_t* chrono_second_hand;
 lv_obj_t* chrono_minute_hand;
-lv_obj_t *img_src_globe;
+lv_obj_t* img_src_globe;
 
 int chrono_second = 0;
 int chrono_minute = 0;
@@ -398,7 +398,7 @@ Clock::Clock(DisplayApp* app,
   bitmap.data_size = 28864;
   bitmap.header.cf = LV_IMG_CF_INDEXED_4BIT;
   bitmap.data = bitmap_map;
-  lv_obj_t *img_src = lv_img_create(lv_scr_act(), NULL);  
+  img_src = lv_img_create(lv_scr_act(), NULL);  
   lv_img_set_src(img_src, &bitmap);  
   lv_obj_set_pos(img_src, 0, 0);     
 
