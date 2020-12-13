@@ -64,8 +64,6 @@ namespace Pinetime {
 
           static const char* MonthToString(Pinetime::Controllers::DateTime::Months month);
           static const char* DayOfWeekToString(Pinetime::Controllers::DateTime::Days dayOfWeek);
-          static char const *DaysString[];
-          static char const *MonthsString[];
 
           char displayedChar[5];
 
