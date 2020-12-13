@@ -289,6 +289,10 @@ lv_obj_t* chrono_second_hand;
 lv_obj_t* chrono_minute_hand;
 lv_obj_t* img_src_globe;
 
+int hour_offset = 0;
+
+int hour_utc = 0;
+
 int counter = 0;  
   
 int chrono_second = 0;
@@ -525,104 +529,106 @@ bool Clock::Refresh() {
     auto minute = time.minutes().count();
     auto second = time.seconds().count();
     
-///////////////////////////////////////////////////    
+///////////////////////////////////////////////////   
+    hour_utc = hour + hour_offset;
+
     counter++;
-    if(counter > 100){
+    if(counter > 50){
       counter = 0;
         
-     if(hour == 0){
+     if(hour_offset == 0){
        globe.data = bitmap_1_map;         
       }
 
-     else if(hour == 1){
+     else if(hour_offset == 1){
         globe.data = bitmap_2_map;         
       }
     
-     else if(hour == 2){
+     else if(hour_offset == 2){
        globe.data = bitmap_3_map;         
      }
 
-     else if(hour == 3){
+     else if(hour_offset == 3){
         globe.data = bitmap_4_map;         
      }
 
-      else if(hour == 4){
+      else if(hour_offset == 4){
         globe.data = bitmap_5_map;         
      }
 
-     else if(hour == 5){
+     else if(hour_offset == 5){
         globe.data = bitmap_6_map;         
      }
 
-      else if(hour == 6){
+      else if(hour_offset == 6){
        globe.data = bitmap_7_map;         
      }
     
-      else if(hour == 7){
+      else if(hour_offset == 7){
         globe.data = bitmap_8_map;         
      }
 
-      else if(hour == 8){
+      else if(hour_offset == 8){
         globe.data = bitmap_9_map;         
      }
     
-      else if(hour == 9){
+      else if(hour_offset == 9){
         globe.data = bitmap_10_map;         
       }
 
-      else if(hour == 10){
+      else if(hour_offset == 10){
        globe.data = bitmap_11_map;         
       }
 
-     else if(hour == 11){
+     else if(hour_offset == 11){
        globe.data = bitmap_12_map;         
       }
 
-     else if(hour == 12){
+     else if(hour_offset == 12){
         globe.data = bitmap_13_map;         
      }
 
-     else if(hour == 13){
+     else if(hour_offset == 13){
        globe.data = bitmap_14_map;         
       }
 
-      else if(hour == 14){
+      else if(hour_offset == 14){
        globe.data = bitmap_15_map;         
       }
 
-     else if(hour == 15){
+     else if(hour_offset == 15){
         globe.data = bitmap_16_map;         
       }
 
-      else if(hour == 16){
+      else if(hour_offset == 16){
         globe.data = bitmap_17_map;         
       }
     
-      else if(hour == 17){
+      else if(hour_offset == 17){
        globe.data = bitmap_18_map;         
       }
 
-      else if(hour == 18){
+      else if(hour_offset == 18){
        globe.data = bitmap_19_map;         
      }
     
-      else if(hour == 19){
+      else if(hour_offset == 19){
        globe.data = bitmap_20_map;         
       }
 
-     else if(hour == 20){
+     else if(hour_offset == 20){
         globe.data = bitmap_21_map;         
       }
 
-      else if(hour == 21){
+      else if(hour_offset == 21){
         globe.data = bitmap_22_map;         
       }
 
-      else if(hour == 22){
+      else if(hour_offset == 22){
         globe.data = bitmap_23_map;         
       }
 
-      else if(hour == 23){
+      else if(hour_offset == 23){
         globe.data = bitmap_24_map;         
       }
       
@@ -631,8 +637,8 @@ bool Clock::Refresh() {
     }
    
 ////////////////////////////////////////////////////
-    chrono_second = static_cast<int>(currentTime);
-    
+
+    chrono_second = static_cast<int>(currentTime);    
     chrono_minute = floor(chrono_second/60);
     chrono_second = chrono_second % 60;
     
@@ -646,6 +652,14 @@ bool Clock::Refresh() {
     minute_angle = minute * 6;
     
     second_angle = second * 6;
+
+///// create smooth movement angle
+
+hour_angle += (minute_angle/12);
+
+minute_angle += (second_angle/12);
+
+/////
 
     chrono_second_angle = chrono_second * 6;
     
