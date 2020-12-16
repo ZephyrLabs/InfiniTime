@@ -289,8 +289,6 @@ lv_obj_t* chrono_second_hand;
 lv_obj_t* chrono_minute_hand;
 lv_obj_t* img_src_globe;
 
-static uint8_t atlas[4624];
-
 int hour_offset = 0;
 
 int hour_utc = 0;
@@ -537,101 +535,150 @@ bool Clock::Refresh() {
     counter++;
     if(counter > 50){
       counter = 0;
-        
+      static uint8_t atlas[4624];
+
      if(hour_offset == 0){
-       atlas = bitmap_1_map;         
+        for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_1_map[i];
+        }         
       }
 
      else if(hour_offset == 1){
-        atlas = bitmap_2_map;         
+        for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_2_map[i];
+        }           
       }
     
      else if(hour_offset == 2){
-       atlas = bitmap_3_map;         
+       for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_3_map[i];
+        }           
      }
 
      else if(hour_offset == 3){
-        atlas = bitmap_4_map;         
+        for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_4_map[i];
+        }          
      }
 
       else if(hour_offset == 4){
-        atlas = bitmap_5_map;         
+        for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_5_map[i];
+        }           
      }
 
      else if(hour_offset == 5){
-        atlas = bitmap_6_map;         
+        for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_6_map[i];
+        }           
      }
 
       else if(hour_offset == 6){
-       atlas = bitmap_7_map;         
+       for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_7_map[i];
+        }           
      }
     
       else if(hour_offset == 7){
-        atlas = bitmap_8_map;         
+        for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_8_map[i];
+        }           
      }
 
       else if(hour_offset == 8){
-        atlas = bitmap_9_map;         
+        for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_9_map[i];
+        }           
      }
     
       else if(hour_offset == 9){
-        atlas = bitmap_10_map;         
+        for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_10_map[i];
+        }           
       }
 
       else if(hour_offset == 10){
-       atlas = bitmap_11_map;         
+       for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_11_map[i];
+        }           
       }
 
      else if(hour_offset == 11){
-       atlas = bitmap_12_map;         
+       for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_12_map[i];
+        }           
       }
 
      else if(hour_offset == 12){
-       atlas = bitmap_13_map;         
+       for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_13_map[i];
+        }           
      }
 
      else if(hour_offset == 13){
-       atlas = bitmap_14_map;         
+       for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_14_map[i];
+        }           
       }
 
       else if(hour_offset == 14){
-       atlas = bitmap_15_map;         
+       for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_15_map[i];
+        }           
       }
 
      else if(hour_offset == 15){
-        atlas = bitmap_16_map;         
+        for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_16_map[i];
+        }           
       }
 
       else if(hour_offset == 16){
-        atlas = bitmap_17_map;         
+        for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_17_map[i];
+        }           
       }
     
       else if(hour_offset == 17){
-       atlas = bitmap_18_map;         
+       for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_18_map[i];
+        }           
       }
 
       else if(hour_offset == 18){
-       atlas = bitmap_19_map;         
+       for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_19_map[i];
+        }           
      }
     
       else if(hour_offset == 19){
-       atlas = bitmap_20_map;         
+       for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_20_map[i];
+        }          
       }
 
      else if(hour_offset == 20){
-        atlas = bitmap_21_map;         
+        for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_21_map[i];
+        }           
       }
 
       else if(hour_offset == 21){
-        atlas = bitmap_22_map;         
+        for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_22_map[i];
+        }           
       }
 
       else if(hour_offset == 22){
-        atlas = bitmap_23_map;         
+        for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_23_map[i];
+        }           
       }
 
       else if(hour_offset == 23){
-        atlas = bitmap_24_map;         
+        for(int i=0; i<4624; i++){
+          atlas[i] = bitmap_24_map[i];
+        }           
       }
 
     globe.data = atlas;  
