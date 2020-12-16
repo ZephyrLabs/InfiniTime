@@ -280,518 +280,6 @@ const uint8_t bitmap_map[] = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 
 };
 
-lv_obj_t* img_src;
-lv_obj_t* hour_hand;
-lv_obj_t* minute_hand;
-lv_obj_t* second_hand;
-lv_obj_t* chrono_second_hand;
-lv_obj_t* chrono_minute_hand;
-lv_obj_t* img_src_globe;
-
-int hour_offset = 0;    // set the hour offset of your timezone from UTC, eg. 2, 5, -6 hours (round the offset to nearest integer, do not use decimal)
-
-int hour_utc = 0;
-
-int counter = 1;   
-
-int chrono_second = 0;
-int chrono_minute = 0;
-
-int hour_angle = 0;
-int minute_angle = 0;
-int second_angle = 0;
-int chrono_second_angle = 0;
-int chrono_minute_angle = 0;
-
-double hour_sin = 0;
-double hour_cos = 1;
-
-double minute_sin = 0;
-double minute_cos = 1;
-
-double second_sin = 0;
-double second_cos = 1;
-
-double chrono_second_sin = 0;
-double chrono_second_cos = 1;
-
-double chrono_minute_sin = 0;
-double chrono_minute_cos = 1;
-
-int hour_x = 0;
-int hour_y = 57;
-
-int minute_x = 0;
-int minute_y = 77;
-
-int second_x = 0;
-int second_y = 97;
-
-int chrono_second_x = 0;
-int chrono_second_y = 25;
-
-int chrono_minute_x = 0;
-int chrono_minute_y = 25;
-
-
-int hour_len = 57;
-int minute_len = 77;
-int second_len = 97;
-int chrono_second_len = 25;
-int chrono_minute_len = 25;
-
-static lv_point_t hour_points[] = { {120, 120}, {hour_x, hour_y} };
-static lv_point_t minute_points[] = { {120, 120}, {minute_x, minute_y} };
-static lv_point_t second_points[] = { {120, 120}, {second_x, second_y} };
-static lv_point_t chrono_second_points[] = { {180, 120}, {chrono_second_x, chrono_second_y} };
-static lv_point_t chrono_minute_points[] = { {60, 120}, {chrono_minute_x, chrono_minute_y} };
-
-}
-
-Clock::Clock(DisplayApp* app,
-        Controllers::DateTime& dateTimeController,
-        Controllers::Battery& batteryController,
-        Controllers::Ble& bleController,
-        Controllers::NotificationManager& notificatioManager) : Screen(app), currentDateTime{{}},
-                                           dateTimeController{dateTimeController}, batteryController{batteryController},
-                                           bleController{bleController}, notificatioManager{notificatioManager} {
-  displayedChar[0] = 0;
-  displayedChar[1] = 0;
-  displayedChar[2] = 0;
-  displayedChar[3] = 0;
-  displayedChar[4] = 0;
-
-  counter = 1; 
-
-  static lv_style_t hour_line;
-  lv_style_copy(&hour_line, &lv_style_plain);
-  hour_line.line.color = LV_COLOR_MAKE(0xee, 0xee, 0xee);
-  hour_line.line.width = 9;
-  hour_line.line.rounded = 1;
-
-  static lv_style_t minute_line;
-  lv_style_copy(&minute_line, &lv_style_plain);
-  minute_line.line.color = LV_COLOR_MAKE(0xcc, 0xcc, 0xcc);
-  minute_line.line.width = 5;
-  minute_line.line.rounded = 1;
-
-  static lv_style_t second_line;
-  lv_style_copy(&second_line, &lv_style_plain);
-  second_line.line.color = LV_COLOR_MAKE(0xed, 0x1c, 0x24);
-  second_line.line.width = 3;
-  second_line.line.rounded = 1;
-                                             
-  static lv_style_t chrono_line;
-  lv_style_copy(&chrono_line, &lv_style_plain);
-  chrono_line.line.color = LV_COLOR_MAKE(0xee, 0xee, 0xee);
-  chrono_line.line.width = 1;
-  chrono_line.line.rounded = 1;                        
-
-  bitmap.header.always_zero = 0;
-  bitmap.header.w = 240;
-  bitmap.header.h = 240;
-  bitmap.data_size = 14416;
-  bitmap.header.cf = LV_IMG_CF_INDEXED_2BIT;
-  bitmap.data = bitmap_map;
-  img_src = lv_img_create(lv_scr_act(), NULL);  
-  lv_img_set_src(img_src, &bitmap);  
-  lv_obj_set_pos(img_src, 0, 0);      
-
-  batteryIcon = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(batteryIcon, Symbols::batteryFull);
-  lv_obj_align(batteryIcon, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, -5, 2);
-
-  batteryPlug = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(batteryPlug, Symbols::plug);
-  lv_obj_align(batteryPlug, batteryIcon, LV_ALIGN_OUT_LEFT_MID, -5, 0);
-
-  bleIcon = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(bleIcon, Symbols::bluetooth);
-  lv_obj_align(bleIcon, batteryPlug, LV_ALIGN_OUT_LEFT_MID, -5, 0);
-
-  notificationIcon = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(notificationIcon, NotificationIcon::GetIcon(false));
-  lv_obj_align(notificationIcon, nullptr, LV_ALIGN_IN_TOP_LEFT, 10, 0);
-
-  backgroundLabel = lv_label_create(lv_scr_act(), nullptr);
-  backgroundLabel->user_data = this;
-  lv_obj_set_click(backgroundLabel, true);
-  lv_obj_set_event_cb(backgroundLabel, event_handler);
-  lv_label_set_long_mode(backgroundLabel, LV_LABEL_LONG_CROP);
-  lv_obj_set_size(backgroundLabel, 240, 240);
-  lv_obj_set_pos(backgroundLabel, 0, 0);
-  lv_label_set_text(backgroundLabel, "");
-
-  heartbeatIcon = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(heartbeatIcon, Symbols::heartBeat);
-  lv_obj_align(heartbeatIcon, lv_scr_act(), LV_ALIGN_IN_BOTTOM_LEFT, 5, -2);
-
-  heartbeatValue = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(heartbeatValue, "0");
-  lv_obj_align(heartbeatValue, heartbeatIcon, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
-
-  heartbeatBpm = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(heartbeatBpm, "BPM");
-  lv_obj_align(heartbeatBpm, heartbeatValue, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
-
-  stepValue = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(stepValue, "0");
-  lv_obj_align(stepValue, lv_scr_act(), LV_ALIGN_IN_BOTTOM_RIGHT, -5, -2);
-
-  stepIcon = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(stepIcon, Symbols::shoe);
-  lv_obj_align(stepIcon, stepValue, LV_ALIGN_OUT_LEFT_MID, -5, 0);
-                                             
-  hour_hand = lv_line_create(lv_scr_act(), nullptr);
-  lv_line_set_style(hour_hand, LV_LINE_STYLE_MAIN, &hour_line);
-  lv_obj_set_pos(hour_hand,0, 0);
-                               
-  minute_hand = lv_line_create(lv_scr_act(), nullptr);
-  lv_line_set_style(minute_hand, LV_LINE_STYLE_MAIN, &minute_line);
-  lv_obj_set_pos(minute_hand, 0, 0);
-
-  second_hand = lv_line_create(lv_scr_act(), nullptr);
-  lv_line_set_style(second_hand, LV_LINE_STYLE_MAIN, &second_line);
-  lv_obj_set_pos(second_hand, 0, 0);
-                                             
-  chrono_second_hand = lv_line_create(lv_scr_act(), nullptr);
-  lv_line_set_style(chrono_second_hand, LV_LINE_STYLE_MAIN, &chrono_line);
-  lv_obj_set_pos(chrono_second_hand, 0, 0);
-
-  chrono_minute_hand = lv_line_create(lv_scr_act(), nullptr);
-  lv_line_set_style(chrono_minute_hand, LV_LINE_STYLE_MAIN, &chrono_line);
-  lv_obj_set_pos(chrono_minute_hand, 0, 0);
-
-}
-
-Clock::~Clock() {
-  lv_obj_clean(lv_scr_act());
-}
-
-bool Clock::Refresh() {
-  batteryPercentRemaining = batteryController.PercentRemaining();
-  if (batteryPercentRemaining.IsUpdated()) {
-    auto batteryPercent = batteryPercentRemaining.Get();
-    lv_label_set_text(batteryIcon, BatteryIcon::GetBatteryIcon(batteryPercent));
-    auto isCharging = batteryController.IsCharging() || batteryController.IsPowerPresent();
-    lv_label_set_text(batteryPlug, BatteryIcon::GetPlugIcon(isCharging));
-  }
-
-  bleState = bleController.IsConnected();
-  if (bleState.IsUpdated()) {
-    if(bleState.Get() == true) {
-      lv_label_set_text(bleIcon, BleIcon::GetIcon(true));
-    } else {
-      lv_label_set_text(bleIcon, BleIcon::GetIcon(false));
-    }
-  }
-  lv_obj_align(batteryIcon, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, -5, 5);
-  lv_obj_align(batteryPlug, batteryIcon, LV_ALIGN_OUT_LEFT_MID, -5, 0);
-  lv_obj_align(bleIcon, batteryPlug, LV_ALIGN_OUT_LEFT_MID, -5, 0);
-
-  notificationState = notificatioManager.AreNewNotificationsAvailable();
-  if(notificationState.IsUpdated()) {
-    if(notificationState.Get() == true)
-      lv_label_set_text(notificationIcon, NotificationIcon::GetIcon(true));
-    else
-      lv_label_set_text(notificationIcon, NotificationIcon::GetIcon(false));
-  }
-
-  currentDateTime = dateTimeController.CurrentDateTime();
-
-  if(currentDateTime.IsUpdated()) {
-    auto newDateTime = currentDateTime.Get();
-
-    if (stopWatchRunning) {
-       currentTime = getCurrentTime();
-    }
-
-    auto dp = date::floor<date::days>(newDateTime);
-    auto time = date::make_time(newDateTime-dp);
-    //auto yearMonthDay = date::year_month_day(dp);
-
-    //auto year = (int)yearMonthDay.year();
-    //auto month = static_cast<Pinetime::Controllers::DateTime::Months>((unsigned)yearMonthDay.month());
-    //auto day = (unsigned)yearMonthDay.day();
-    //auto dayOfWeek = static_cast<Pinetime::Controllers::DateTime::Days>(date::weekday(yearMonthDay).iso_encoding());
-
-    auto hour = time.hours().count();
-    auto minute = time.minutes().count();
-    auto second = time.seconds().count();
-    
-///////////////////////////////////////////////////   
-    hour_utc = hour - hour_offset;
-
-    if(hour_utc > 24){
-      hour_utc -= 24;
-    }
-
-    else if(hour_utc < 0){
-      hour_utc += 24;
-    }
-
-    if(counter > 0){
-      counter = 0;
-
-      globe.header.always_zero = 0;
-      globe.header.w = 60;
-      globe.header.h = 60;
-      globe.data_size = 4624;
-      globe.header.cf = LV_IMG_CF_INDEXED_8BIT;
-
-     if(hour_utc == 0){
-        globe.data = bitmap_1_map; 
-      }
-
-     else if(hour_utc == 1){
-        globe.data = bitmap_2_map;         
-      }
-    
-     else if(hour_utc == 2){
-       globe.data = bitmap_3_map;      
-     }
-
-     else if(hour_utc == 3){
-        globe.data = bitmap_4_map;         
-     }
-
-      else if(hour_utc == 4){
-        globe.data = bitmap_5_map;          
-     }
-
-     else if(hour_utc == 5){
-        globe.data = bitmap_6_map;        
-     }
-
-      else if(hour_utc == 6){
-       globe.data = bitmap_7_map;          
-     }
-    
-      else if(hour_utc == 7){
-        globe.data = bitmap_8_map;           
-     }
-
-      else if(hour_utc == 8){
-        globe.data = bitmap_9_map;           
-     }
-    
-      else if(hour_utc == 9){
-        globe.data = bitmap_10_map;         
-      }
-
-      else if(hour_utc == 10){
-       globe.data = bitmap_11_map;           
-      }
-
-     else if(hour_utc == 11){
-       globe.data = bitmap_12_map;        
-      }
-
-     else if(hour_utc == 12){
-       globe.data = bitmap_13_map;          
-     }
-
-     else if(hour_utc == 13){
-       globe.data = bitmap_14_map;         
-      }
-
-      else if(hour_utc == 14){
-       globe.data = bitmap_15_map;         
-      }
-
-     else if(hour_utc == 15){
-        globe.data = bitmap_16_map;         
-      }
-
-      else if(hour_utc == 16){
-        globe.data = bitmap_17_map;          
-      }
-    
-      else if(hour_utc == 17){
-       globe.data = bitmap_18_map;           
-      }
-
-      else if(hour_utc == 18){
-       globe.data = bitmap_19_map;        
-     }
-    
-      else if(hour_utc == 19){
-       globe.data = bitmap_20_map;         
-      }
-
-     else if(hour_utc == 20){
-        globe.data = bitmap_21_map;        
-      }
-
-      else if(hour_utc == 21){
-        globe.data = bitmap_22_map;          
-      }
-
-      else if(hour_utc == 22){
-        globe.data = bitmap_23_map;        
-      }
-
-      else if(hour_utc == 23){
-        globe.data = bitmap_24_map;          
-      }
-
-      img_src_globe = lv_img_create(lv_scr_act(), NULL); 
-      lv_img_set_src(img_src_globe, &globe);  
-      lv_obj_set_pos(img_src_globe, 90, 150);
-    }
-
-////////////////////////////////////////////////////
-
-    chrono_second = static_cast<int>(currentTime);    
-    chrono_minute = floor(chrono_second/60);
-    chrono_second = chrono_second % 60;
-    
-    if(hour <= 12){
-    hour_angle = hour * 30;
-    }
-    else if(hour > 12){
-    hour_angle = (hour - 12) * 30;
-    }
-      
-    minute_angle = minute * 6;
-    
-    second_angle = second * 6;
-
-///// create smooth movement angle
-
-hour_angle += (minute_angle/12);
-
-minute_angle += (second_angle/60);
-
-/////
-
-    chrono_second_angle = chrono_second * 6;
-    
-    chrono_minute_angle = chrono_minute * 6;
-    
-    hour_sin = sin(hour_angle * 0.017);
-    hour_cos = cos(hour_angle * 0.017);
-
-    minute_sin = sin(minute_angle * 0.017);
-    minute_cos = cos(minute_angle * 0.017);
-
-    second_sin = sin(second_angle * 0.017);
-    second_cos = cos(second_angle * 0.017);
-
-    chrono_minute_sin = sin(chrono_minute_angle * 0.017);
-    chrono_minute_cos = cos(chrono_minute_angle * 0.017);
-
-    chrono_second_sin = sin(chrono_second_angle * 0.017);
-    chrono_second_cos = cos(chrono_second_angle * 0.017);
-
-    hour_x = 120 + floor(hour_sin*hour_len);
-    hour_y = 120 - floor(hour_cos*hour_len);
-
-    minute_x = 120 + floor(minute_sin*minute_len);
-    minute_y = 120 - floor(minute_cos*minute_len);
-
-    second_x = 120 + floor(second_sin*second_len);
-    second_y = 120 - floor(second_cos*second_len);
-
-    chrono_minute_x = 60 + floor(chrono_minute_sin*chrono_minute_len);
-    chrono_minute_y = 120 - floor(chrono_minute_cos*chrono_minute_len);
-
-    chrono_second_x = 180 + floor(chrono_second_sin*chrono_second_len);
-    chrono_second_y = 120 - floor(chrono_second_cos*chrono_second_len);
-
-    hour_points[1] = {const_cast<int&>(hour_x),  const_cast<int&>(hour_y)};
-    minute_points[1] = {const_cast<int&>(minute_x),  const_cast<int&>(minute_y)};
-    second_points[1] = {const_cast<int&>(second_x),  const_cast<int&>(second_y)};
-    chrono_minute_points[1] = {const_cast<int&>(chrono_minute_x),  const_cast<int&>(chrono_minute_y)};
-    chrono_second_points[1] = {const_cast<int&>(chrono_second_x),  const_cast<int&>(chrono_second_y)};    
-
-    lv_line_set_points(chrono_second_hand, chrono_second_points, 2);
-    lv_line_set_points(chrono_minute_hand, chrono_minute_points, 2);
-    lv_line_set_points(hour_hand, hour_points, 2);
-    lv_line_set_points(minute_hand, minute_points, 2);
-    lv_line_set_points(second_hand, second_points, 2);
-
-  }
-
-  // TODO heartbeat = heartBeatController.GetValue();
-  if(heartbeat.IsUpdated()) {
-    char heartbeatBuffer[4];
-    sprintf(heartbeatBuffer, "%d", heartbeat.Get());
-    lv_label_set_text(heartbeatValue, heartbeatBuffer);
-    lv_obj_align(heartbeatIcon, lv_scr_act(), LV_ALIGN_IN_BOTTOM_LEFT, 5, -2);
-    lv_obj_align(heartbeatValue, heartbeatIcon, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
-    lv_obj_align(heartbeatBpm, heartbeatValue, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
-  }
-
-  // TODO stepCount = stepController.GetValue();
-  if(stepCount.IsUpdated()) {
-    char stepBuffer[5];
-    sprintf(stepBuffer, "%lu", stepCount.Get());
-    lv_label_set_text(stepValue, stepBuffer);
-    lv_obj_align(stepValue, lv_scr_act(), LV_ALIGN_IN_BOTTOM_RIGHT, -5, -2);
-    lv_obj_align(stepIcon, stepValue, LV_ALIGN_OUT_LEFT_MID, -5, 0);
-  }
-
-  return running;
-}
-
-void Clock::OnObjectEvent(lv_obj_t *obj, lv_event_t event) {
-  if(obj == backgroundLabel) {
-    if (event == LV_EVENT_CLICKED) {
-
-      running = false;
-    }
-  }
-}
-
-bool Clock::OnTouchEvent(TouchEvents event) {
-  switch(event) {
-    case TouchEvents::SwipeRight:
-      if (stopWatchRunning) {
-          stop();
-          chrono_second = 0;
-          chrono_minute = 0;
-        } 
-      else {
-         start();
-        }
-        return true;
-       
-    case TouchEvents::LongTap:
-      if (!stopWatchRunning) {
-        reset();
-      }
-      return true;
-    default:
-      return false;
-  }
-}
-
-void Clock::start() {
-  startTime = dateTimeController.CurrentDateTime();
-  stopWatchRunning = true;
-}
-
-void Clock::stop() {
-  stopWatchRunning = false;
-}
-
-void Clock::reset() {
-  currentTime = 0.0f;
-}
-
-float Clock::getCurrentTime() {
-  duration<float> delta = duration_cast<duration<float>>(dateTimeController.CurrentDateTime() - startTime);
-  return (float) delta.count();
-}
-
-bool Clock::OnButtonPushed() {
-  running = false;
-  return false;
-}
-
-namespace{
-
  const uint8_t bitmap_1_map[] = {
   0x04, 0x02, 0x04, 0xff, 	/*Color of index 0*/
   0xa4, 0x76, 0x4c, 0xff, 	/*Color of index 1*/
@@ -8472,4 +7960,513 @@ const uint8_t bitmap_24_map[] = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
 };
 
+lv_obj_t* img_src;
+lv_obj_t* hour_hand;
+lv_obj_t* minute_hand;
+lv_obj_t* second_hand;
+lv_obj_t* chrono_second_hand;
+lv_obj_t* chrono_minute_hand;
+lv_obj_t* img_src_globe;
+
+int hour_offset = 0;    // set the hour offset of your timezone from UTC, eg. 2, 5, -6 hours (round the offset to nearest integer, do not use decimal)
+
+int hour_utc = 0;
+
+int counter = 1;   
+
+int chrono_second = 0;
+int chrono_minute = 0;
+
+int hour_angle = 0;
+int minute_angle = 0;
+int second_angle = 0;
+int chrono_second_angle = 0;
+int chrono_minute_angle = 0;
+
+double hour_sin = 0;
+double hour_cos = 1;
+
+double minute_sin = 0;
+double minute_cos = 1;
+
+double second_sin = 0;
+double second_cos = 1;
+
+double chrono_second_sin = 0;
+double chrono_second_cos = 1;
+
+double chrono_minute_sin = 0;
+double chrono_minute_cos = 1;
+
+int hour_x = 0;
+int hour_y = 57;
+
+int minute_x = 0;
+int minute_y = 77;
+
+int second_x = 0;
+int second_y = 97;
+
+int chrono_second_x = 0;
+int chrono_second_y = 25;
+
+int chrono_minute_x = 0;
+int chrono_minute_y = 25;
+
+
+int hour_len = 57;
+int minute_len = 77;
+int second_len = 97;
+int chrono_second_len = 25;
+int chrono_minute_len = 25;
+
+static lv_point_t hour_points[] = { {120, 120}, {hour_x, hour_y} };
+static lv_point_t minute_points[] = { {120, 120}, {minute_x, minute_y} };
+static lv_point_t second_points[] = { {120, 120}, {second_x, second_y} };
+static lv_point_t chrono_second_points[] = { {180, 120}, {chrono_second_x, chrono_second_y} };
+static lv_point_t chrono_minute_points[] = { {60, 120}, {chrono_minute_x, chrono_minute_y} };
+
 }
+
+Clock::Clock(DisplayApp* app,
+        Controllers::DateTime& dateTimeController,
+        Controllers::Battery& batteryController,
+        Controllers::Ble& bleController,
+        Controllers::NotificationManager& notificatioManager) : Screen(app), currentDateTime{{}},
+                                           dateTimeController{dateTimeController}, batteryController{batteryController},
+                                           bleController{bleController}, notificatioManager{notificatioManager} {
+  displayedChar[0] = 0;
+  displayedChar[1] = 0;
+  displayedChar[2] = 0;
+  displayedChar[3] = 0;
+  displayedChar[4] = 0;
+
+  counter = 1; 
+
+  static lv_style_t hour_line;
+  lv_style_copy(&hour_line, &lv_style_plain);
+  hour_line.line.color = LV_COLOR_MAKE(0xee, 0xee, 0xee);
+  hour_line.line.width = 9;
+  hour_line.line.rounded = 1;
+
+  static lv_style_t minute_line;
+  lv_style_copy(&minute_line, &lv_style_plain);
+  minute_line.line.color = LV_COLOR_MAKE(0xcc, 0xcc, 0xcc);
+  minute_line.line.width = 5;
+  minute_line.line.rounded = 1;
+
+  static lv_style_t second_line;
+  lv_style_copy(&second_line, &lv_style_plain);
+  second_line.line.color = LV_COLOR_MAKE(0xed, 0x1c, 0x24);
+  second_line.line.width = 3;
+  second_line.line.rounded = 1;
+                                             
+  static lv_style_t chrono_line;
+  lv_style_copy(&chrono_line, &lv_style_plain);
+  chrono_line.line.color = LV_COLOR_MAKE(0xee, 0xee, 0xee);
+  chrono_line.line.width = 1;
+  chrono_line.line.rounded = 1;                        
+
+  bitmap.header.always_zero = 0;
+  bitmap.header.w = 240;
+  bitmap.header.h = 240;
+  bitmap.data_size = 14416;
+  bitmap.header.cf = LV_IMG_CF_INDEXED_2BIT;
+  bitmap.data = bitmap_map;
+  img_src = lv_img_create(lv_scr_act(), NULL);  
+  lv_img_set_src(img_src, &bitmap);  
+  lv_obj_set_pos(img_src, 0, 0);      
+
+  batteryIcon = lv_label_create(lv_scr_act(), nullptr);
+  lv_label_set_text(batteryIcon, Symbols::batteryFull);
+  lv_obj_align(batteryIcon, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, -5, 2);
+
+  batteryPlug = lv_label_create(lv_scr_act(), nullptr);
+  lv_label_set_text(batteryPlug, Symbols::plug);
+  lv_obj_align(batteryPlug, batteryIcon, LV_ALIGN_OUT_LEFT_MID, -5, 0);
+
+  bleIcon = lv_label_create(lv_scr_act(), nullptr);
+  lv_label_set_text(bleIcon, Symbols::bluetooth);
+  lv_obj_align(bleIcon, batteryPlug, LV_ALIGN_OUT_LEFT_MID, -5, 0);
+
+  notificationIcon = lv_label_create(lv_scr_act(), nullptr);
+  lv_label_set_text(notificationIcon, NotificationIcon::GetIcon(false));
+  lv_obj_align(notificationIcon, nullptr, LV_ALIGN_IN_TOP_LEFT, 10, 0);
+
+  backgroundLabel = lv_label_create(lv_scr_act(), nullptr);
+  backgroundLabel->user_data = this;
+  lv_obj_set_click(backgroundLabel, true);
+  lv_obj_set_event_cb(backgroundLabel, event_handler);
+  lv_label_set_long_mode(backgroundLabel, LV_LABEL_LONG_CROP);
+  lv_obj_set_size(backgroundLabel, 240, 240);
+  lv_obj_set_pos(backgroundLabel, 0, 0);
+  lv_label_set_text(backgroundLabel, "");
+
+  heartbeatIcon = lv_label_create(lv_scr_act(), nullptr);
+  lv_label_set_text(heartbeatIcon, Symbols::heartBeat);
+  lv_obj_align(heartbeatIcon, lv_scr_act(), LV_ALIGN_IN_BOTTOM_LEFT, 5, -2);
+
+  heartbeatValue = lv_label_create(lv_scr_act(), nullptr);
+  lv_label_set_text(heartbeatValue, "0");
+  lv_obj_align(heartbeatValue, heartbeatIcon, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
+
+  heartbeatBpm = lv_label_create(lv_scr_act(), nullptr);
+  lv_label_set_text(heartbeatBpm, "BPM");
+  lv_obj_align(heartbeatBpm, heartbeatValue, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
+
+  stepValue = lv_label_create(lv_scr_act(), nullptr);
+  lv_label_set_text(stepValue, "0");
+  lv_obj_align(stepValue, lv_scr_act(), LV_ALIGN_IN_BOTTOM_RIGHT, -5, -2);
+
+  stepIcon = lv_label_create(lv_scr_act(), nullptr);
+  lv_label_set_text(stepIcon, Symbols::shoe);
+  lv_obj_align(stepIcon, stepValue, LV_ALIGN_OUT_LEFT_MID, -5, 0);
+                                             
+  hour_hand = lv_line_create(lv_scr_act(), nullptr);
+  lv_line_set_style(hour_hand, LV_LINE_STYLE_MAIN, &hour_line);
+  lv_obj_set_pos(hour_hand,0, 0);
+                               
+  minute_hand = lv_line_create(lv_scr_act(), nullptr);
+  lv_line_set_style(minute_hand, LV_LINE_STYLE_MAIN, &minute_line);
+  lv_obj_set_pos(minute_hand, 0, 0);
+
+  second_hand = lv_line_create(lv_scr_act(), nullptr);
+  lv_line_set_style(second_hand, LV_LINE_STYLE_MAIN, &second_line);
+  lv_obj_set_pos(second_hand, 0, 0);
+                                             
+  chrono_second_hand = lv_line_create(lv_scr_act(), nullptr);
+  lv_line_set_style(chrono_second_hand, LV_LINE_STYLE_MAIN, &chrono_line);
+  lv_obj_set_pos(chrono_second_hand, 0, 0);
+
+  chrono_minute_hand = lv_line_create(lv_scr_act(), nullptr);
+  lv_line_set_style(chrono_minute_hand, LV_LINE_STYLE_MAIN, &chrono_line);
+  lv_obj_set_pos(chrono_minute_hand, 0, 0);
+
+}
+
+Clock::~Clock() {
+  lv_obj_clean(lv_scr_act());
+}
+
+bool Clock::Refresh() {
+  batteryPercentRemaining = batteryController.PercentRemaining();
+  if (batteryPercentRemaining.IsUpdated()) {
+    auto batteryPercent = batteryPercentRemaining.Get();
+    lv_label_set_text(batteryIcon, BatteryIcon::GetBatteryIcon(batteryPercent));
+    auto isCharging = batteryController.IsCharging() || batteryController.IsPowerPresent();
+    lv_label_set_text(batteryPlug, BatteryIcon::GetPlugIcon(isCharging));
+  }
+
+  bleState = bleController.IsConnected();
+  if (bleState.IsUpdated()) {
+    if(bleState.Get() == true) {
+      lv_label_set_text(bleIcon, BleIcon::GetIcon(true));
+    } else {
+      lv_label_set_text(bleIcon, BleIcon::GetIcon(false));
+    }
+  }
+  lv_obj_align(batteryIcon, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, -5, 5);
+  lv_obj_align(batteryPlug, batteryIcon, LV_ALIGN_OUT_LEFT_MID, -5, 0);
+  lv_obj_align(bleIcon, batteryPlug, LV_ALIGN_OUT_LEFT_MID, -5, 0);
+
+  notificationState = notificatioManager.AreNewNotificationsAvailable();
+  if(notificationState.IsUpdated()) {
+    if(notificationState.Get() == true)
+      lv_label_set_text(notificationIcon, NotificationIcon::GetIcon(true));
+    else
+      lv_label_set_text(notificationIcon, NotificationIcon::GetIcon(false));
+  }
+
+  currentDateTime = dateTimeController.CurrentDateTime();
+
+  if(currentDateTime.IsUpdated()) {
+    auto newDateTime = currentDateTime.Get();
+
+    if (stopWatchRunning) {
+       currentTime = getCurrentTime();
+    }
+
+    auto dp = date::floor<date::days>(newDateTime);
+    auto time = date::make_time(newDateTime-dp);
+    //auto yearMonthDay = date::year_month_day(dp);
+
+    //auto year = (int)yearMonthDay.year();
+    //auto month = static_cast<Pinetime::Controllers::DateTime::Months>((unsigned)yearMonthDay.month());
+    //auto day = (unsigned)yearMonthDay.day();
+    //auto dayOfWeek = static_cast<Pinetime::Controllers::DateTime::Days>(date::weekday(yearMonthDay).iso_encoding());
+
+    auto hour = time.hours().count();
+    auto minute = time.minutes().count();
+    auto second = time.seconds().count();
+    
+///////////////////////////////////////////////////   
+    hour_utc = hour - hour_offset;
+
+    if(hour_utc > 24){
+      hour_utc -= 24;
+    }
+
+    else if(hour_utc < 0){
+      hour_utc += 24;
+    }
+
+    if(counter > 0){
+      counter = 0;
+
+      globe.header.always_zero = 0;
+      globe.header.w = 60;
+      globe.header.h = 60;
+      globe.data_size = 4624;
+      globe.header.cf = LV_IMG_CF_INDEXED_8BIT;
+
+     if(hour_utc == 0){
+        globe.data = bitmap_1_map; 
+      }
+
+     else if(hour_utc == 1){
+        globe.data = bitmap_2_map;         
+      }
+    
+     else if(hour_utc == 2){
+       globe.data = bitmap_3_map;      
+     }
+
+     else if(hour_utc == 3){
+        globe.data = bitmap_4_map;         
+     }
+
+      else if(hour_utc == 4){
+        globe.data = bitmap_5_map;          
+     }
+
+     else if(hour_utc == 5){
+        globe.data = bitmap_6_map;        
+     }
+
+      else if(hour_utc == 6){
+       globe.data = bitmap_7_map;          
+     }
+    
+      else if(hour_utc == 7){
+        globe.data = bitmap_8_map;           
+     }
+
+      else if(hour_utc == 8){
+        globe.data = bitmap_9_map;           
+     }
+    
+      else if(hour_utc == 9){
+        globe.data = bitmap_10_map;         
+      }
+
+      else if(hour_utc == 10){
+       globe.data = bitmap_11_map;           
+      }
+
+     else if(hour_utc == 11){
+       globe.data = bitmap_12_map;        
+      }
+
+     else if(hour_utc == 12){
+       globe.data = bitmap_13_map;          
+     }
+
+     else if(hour_utc == 13){
+       globe.data = bitmap_14_map;         
+      }
+
+      else if(hour_utc == 14){
+       globe.data = bitmap_15_map;         
+      }
+
+     else if(hour_utc == 15){
+        globe.data = bitmap_16_map;         
+      }
+
+      else if(hour_utc == 16){
+        globe.data = bitmap_17_map;          
+      }
+    
+      else if(hour_utc == 17){
+       globe.data = bitmap_18_map;           
+      }
+
+      else if(hour_utc == 18){
+       globe.data = bitmap_19_map;        
+     }
+    
+      else if(hour_utc == 19){
+       globe.data = bitmap_20_map;         
+      }
+
+     else if(hour_utc == 20){
+        globe.data = bitmap_21_map;        
+      }
+
+      else if(hour_utc == 21){
+        globe.data = bitmap_22_map;          
+      }
+
+      else if(hour_utc == 22){
+        globe.data = bitmap_23_map;        
+      }
+
+      else if(hour_utc == 23){
+        globe.data = bitmap_24_map;          
+      }
+
+      img_src_globe = lv_img_create(lv_scr_act(), NULL); 
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 90, 150);
+    }
+
+////////////////////////////////////////////////////
+
+    chrono_second = static_cast<int>(currentTime);    
+    chrono_minute = floor(chrono_second/60);
+    chrono_second = chrono_second % 60;
+    
+    if(hour <= 12){
+    hour_angle = hour * 30;
+    }
+    else if(hour > 12){
+    hour_angle = (hour - 12) * 30;
+    }
+      
+    minute_angle = minute * 6;
+    
+    second_angle = second * 6;
+
+///// create smooth movement angle
+
+hour_angle += (minute_angle/12);
+
+minute_angle += (second_angle/60);
+
+/////
+
+    chrono_second_angle = chrono_second * 6;
+    
+    chrono_minute_angle = chrono_minute * 6;
+    
+    hour_sin = sin(hour_angle * 0.017);
+    hour_cos = cos(hour_angle * 0.017);
+
+    minute_sin = sin(minute_angle * 0.017);
+    minute_cos = cos(minute_angle * 0.017);
+
+    second_sin = sin(second_angle * 0.017);
+    second_cos = cos(second_angle * 0.017);
+
+    chrono_minute_sin = sin(chrono_minute_angle * 0.017);
+    chrono_minute_cos = cos(chrono_minute_angle * 0.017);
+
+    chrono_second_sin = sin(chrono_second_angle * 0.017);
+    chrono_second_cos = cos(chrono_second_angle * 0.017);
+
+    hour_x = 120 + floor(hour_sin*hour_len);
+    hour_y = 120 - floor(hour_cos*hour_len);
+
+    minute_x = 120 + floor(minute_sin*minute_len);
+    minute_y = 120 - floor(minute_cos*minute_len);
+
+    second_x = 120 + floor(second_sin*second_len);
+    second_y = 120 - floor(second_cos*second_len);
+
+    chrono_minute_x = 60 + floor(chrono_minute_sin*chrono_minute_len);
+    chrono_minute_y = 120 - floor(chrono_minute_cos*chrono_minute_len);
+
+    chrono_second_x = 180 + floor(chrono_second_sin*chrono_second_len);
+    chrono_second_y = 120 - floor(chrono_second_cos*chrono_second_len);
+
+    hour_points[1] = {const_cast<int&>(hour_x),  const_cast<int&>(hour_y)};
+    minute_points[1] = {const_cast<int&>(minute_x),  const_cast<int&>(minute_y)};
+    second_points[1] = {const_cast<int&>(second_x),  const_cast<int&>(second_y)};
+    chrono_minute_points[1] = {const_cast<int&>(chrono_minute_x),  const_cast<int&>(chrono_minute_y)};
+    chrono_second_points[1] = {const_cast<int&>(chrono_second_x),  const_cast<int&>(chrono_second_y)};    
+
+    lv_line_set_points(chrono_second_hand, chrono_second_points, 2);
+    lv_line_set_points(chrono_minute_hand, chrono_minute_points, 2);
+    lv_line_set_points(hour_hand, hour_points, 2);
+    lv_line_set_points(minute_hand, minute_points, 2);
+    lv_line_set_points(second_hand, second_points, 2);
+
+  }
+
+  // TODO heartbeat = heartBeatController.GetValue();
+  if(heartbeat.IsUpdated()) {
+    char heartbeatBuffer[4];
+    sprintf(heartbeatBuffer, "%d", heartbeat.Get());
+    lv_label_set_text(heartbeatValue, heartbeatBuffer);
+    lv_obj_align(heartbeatIcon, lv_scr_act(), LV_ALIGN_IN_BOTTOM_LEFT, 5, -2);
+    lv_obj_align(heartbeatValue, heartbeatIcon, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
+    lv_obj_align(heartbeatBpm, heartbeatValue, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
+  }
+
+  // TODO stepCount = stepController.GetValue();
+  if(stepCount.IsUpdated()) {
+    char stepBuffer[5];
+    sprintf(stepBuffer, "%lu", stepCount.Get());
+    lv_label_set_text(stepValue, stepBuffer);
+    lv_obj_align(stepValue, lv_scr_act(), LV_ALIGN_IN_BOTTOM_RIGHT, -5, -2);
+    lv_obj_align(stepIcon, stepValue, LV_ALIGN_OUT_LEFT_MID, -5, 0);
+  }
+
+  return running;
+}
+
+void Clock::OnObjectEvent(lv_obj_t *obj, lv_event_t event) {
+  if(obj == backgroundLabel) {
+    if (event == LV_EVENT_CLICKED) {
+
+      running = false;
+    }
+  }
+}
+
+bool Clock::OnTouchEvent(TouchEvents event) {
+  switch(event) {
+    case TouchEvents::SwipeRight:
+      if (stopWatchRunning) {
+          stop();
+          chrono_second = 0;
+          chrono_minute = 0;
+        } 
+      else {
+         start();
+        }
+        return true;
+       
+    case TouchEvents::LongTap:
+      if (!stopWatchRunning) {
+        reset();
+      }
+      return true;
+    default:
+      return false;
+  }
+}
+
+void Clock::start() {
+  startTime = dateTimeController.CurrentDateTime();
+  stopWatchRunning = true;
+}
+
+void Clock::stop() {
+  stopWatchRunning = false;
+}
+
+void Clock::reset() {
+  currentTime = 0.0f;
+}
+
+float Clock::getCurrentTime() {
+  duration<float> delta = duration_cast<duration<float>>(dateTimeController.CurrentDateTime() - startTime);
+  return (float) delta.count();
+}
+
+bool Clock::OnButtonPushed() {
+  running = false;
+  return false;
+}
+
