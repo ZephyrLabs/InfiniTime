@@ -714,7 +714,7 @@ bool Clock::Refresh() {
 
 hour_angle += (minute_angle/12);
 
-minute_angle += (second_angle/12);
+minute_angle += (second_angle/60);
 
 /////
 
