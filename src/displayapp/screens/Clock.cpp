@@ -8041,8 +8041,6 @@ Clock::Clock(DisplayApp* app,
   displayedChar[3] = 0;
   displayedChar[4] = 0;
 
-  counter = 1; 
-
   static lv_style_t hour_line;
   lv_style_copy(&hour_line, &lv_style_plain);
   hour_line.line.color = LV_COLOR_MAKE(0xee, 0xee, 0xee);
