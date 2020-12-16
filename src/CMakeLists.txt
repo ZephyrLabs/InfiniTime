@@ -410,7 +410,6 @@ set(INCLUDE_FILES
         displayapp/TouchEvents.h
         displayapp/screens/Screen.h
         displayapp/screens/Clock.h
-        displayapp/screens/earth.h
         displayapp/screens/Tile.h
         displayapp/screens/Meter.h
         displayapp/screens/Gauge.h
