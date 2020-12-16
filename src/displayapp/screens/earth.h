@@ -1,3 +1,5 @@
+ #pragma once
+ 
  //bitmaps of earth (1 starts at GMT)
 namespace{
  const uint8_t bitmap_1_map[] = {
