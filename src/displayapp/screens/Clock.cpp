@@ -406,8 +406,6 @@ Clock::Clock(DisplayApp* app,
   globe.data = atlas;                       
   img_src_globe = lv_img_create(lv_scr_act(), NULL);  
   lv_img_set_src(img_src_globe, &globe);  
-
-  lv_img_set_src(img_src_globe, &globe);  
   lv_obj_set_pos(img_src_globe, 90, 150);
 
   batteryIcon = lv_label_create(lv_scr_act(), nullptr);
@@ -692,7 +690,7 @@ bool Clock::Refresh() {
         }           
       }
     }
-  lv_obj_set_pos(img_src_globe, 90, 150);
+//  lv_obj_set_pos(img_src_globe, 90, 150);
 ////////////////////////////////////////////////////
 
     chrono_second = static_cast<int>(currentTime);    
