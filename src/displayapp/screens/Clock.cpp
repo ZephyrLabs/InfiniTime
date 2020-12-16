@@ -11,7 +11,6 @@
 #include "components/ble/NotificationManager.h"
 #include "../DisplayApp.h"
 #include <math.h>
-#include "earth.h"
 
 using namespace Pinetime::Applications::Screens;
 
