@@ -533,9 +533,12 @@ bool Clock::Refresh() {
     hour_utc = hour + hour_offset;
 
     counter++;
+
+    static uint8_t atlas[4624];
+
     if(counter > 50){
       counter = 0;
-      static uint8_t atlas[4624];
+
 
      if(hour_offset == 0){
         for(int i=0; i<4624; i++){
