@@ -289,7 +289,7 @@ lv_obj_t* chrono_second_hand;
 lv_obj_t* chrono_minute_hand;
 lv_obj_t* img_src_globe;
 
-static uint8_t atlas[];
+static uint8_t atlas[4624];
 
 int hour_offset = 0;
 
