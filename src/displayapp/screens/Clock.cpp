@@ -536,11 +536,11 @@ bool Clock::Refresh() {
     hour_utc = hour - hour_offset;
 
     if(hour_utc > 24){
-      hour_utc -= 24
+      hour_utc -= 24;
     }
 
     else if(hour_utc < 0){
-      hour_utc += 24
+      hour_utc += 24;
     }
 
     counter++;
