@@ -289,11 +289,13 @@ lv_obj_t* chrono_second_hand;
 lv_obj_t* chrono_minute_hand;
 lv_obj_t* img_src_globe;
 
-int hour_offset = 0;
+static uint8_t atlas[4624];
+
+int hour_offset = 0;    // set the hour offset of your timezone from UTC, eg. 2, 5, -6 hours (round the offset to nearest integer, do not use decimal)
 
 int hour_utc = 0;
 
-int counter = 0;  
+int counter = 49;  
   
 int chrono_second = 0;
 int chrono_minute = 0;
@@ -401,9 +403,10 @@ Clock::Clock(DisplayApp* app,
   globe.header.h = 60;
   globe.data_size = 4624;
   globe.header.cf = LV_IMG_CF_INDEXED_8BIT;
-  globe.data = bitmap_1_map;                     
+  globe.data = atlas;                       
   img_src_globe = lv_img_create(lv_scr_act(), NULL);  
-       
+  lv_img_set_src(img_src_globe, &globe);  
+
   lv_img_set_src(img_src_globe, &globe);  
   lv_obj_set_pos(img_src_globe, 90, 150);
 
@@ -530,15 +533,20 @@ bool Clock::Refresh() {
     auto second = time.seconds().count();
     
 ///////////////////////////////////////////////////   
-    hour_utc = hour + hour_offset;
+    hour_utc = hour - hour_offset;
+
+    if(hour_utc > 24){
+      hour_utc -= 24
+    }
+
+    else if(hour_utc < 0){
+      hour_utc += 24
+    }
 
     counter++;
 
-    static uint8_t atlas[4624];
-
     if(counter > 50){
       counter = 0;
-
 
      if(hour_offset == 0){
         for(int i=0; i<4624; i++){
@@ -683,9 +691,6 @@ bool Clock::Refresh() {
           atlas[i] = bitmap_24_map[i];
         }           
       }
-
-    globe.data = atlas;  
-    lv_img_set_src(img_src_globe, &globe);  
     }
   lv_obj_set_pos(img_src_globe, 90, 150);
 ////////////////////////////////////////////////////
