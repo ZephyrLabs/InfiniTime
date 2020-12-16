@@ -289,8 +289,6 @@ lv_obj_t* chrono_second_hand;
 lv_obj_t* chrono_minute_hand;
 lv_obj_t* img_src_globe;
 
-static uint8_t atlas[4624];
-
 int hour_offset = 0;    // set the hour offset of your timezone from UTC, eg. 2, 5, -6 hours (round the offset to nearest integer, do not use decimal)
 
 int hour_utc = 0;
@@ -398,14 +396,7 @@ Clock::Clock(DisplayApp* app,
   bitmap.data = bitmap_map;
   img_src = lv_img_create(lv_scr_act(), NULL);  
   lv_img_set_src(img_src, &bitmap);  
-  lv_obj_set_pos(img_src, 0, 0);     
-
-  globe.header.always_zero = 0;
-  globe.header.w = 60;
-  globe.header.h = 60;
-  globe.data_size = 4624;
-  globe.header.cf = LV_IMG_CF_INDEXED_8BIT;                      
-  img_src_globe = lv_img_create(lv_scr_act(), NULL);  
+  lv_obj_set_pos(img_src, 0, 0);      
 
   batteryIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(batteryIcon, Symbols::batteryFull);
@@ -543,151 +534,109 @@ bool Clock::Refresh() {
     if(counter > 0){
       counter = 0;
 
+      globe.header.always_zero = 0;
+      globe.header.w = 60;
+      globe.header.h = 60;
+      globe.data_size = 4624;
+      globe.header.cf = LV_IMG_CF_INDEXED_8BIT;
+
      if(hour_utc == 0){
-        for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_1_map[i];
-        }         
+        globe.data = bitmap_1_map; 
       }
 
      else if(hour_utc == 1){
-        for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_2_map[i];
-        }           
+        globe.data = bitmap_2_map;         
       }
     
      else if(hour_utc == 2){
-       for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_3_map[i];
-        }           
+       globe.data = bitmap_3_map;      
      }
 
      else if(hour_utc == 3){
-        for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_4_map[i];
-        }          
+        globe.data = bitmap_4_map;         
      }
 
       else if(hour_utc == 4){
-        for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_5_map[i];
-        }           
+        globe.data = bitmap_5_map;          
      }
 
      else if(hour_utc == 5){
-        for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_6_map[i];
-        }           
+        globe.data = bitmap_6_map;        
      }
 
       else if(hour_utc == 6){
-       for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_7_map[i];
-        }           
+       globe.data = bitmap_7_map;          
      }
     
       else if(hour_utc == 7){
-        for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_8_map[i];
-        }           
+        globe.data = bitmap_8_map;           
      }
 
       else if(hour_utc == 8){
-        for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_9_map[i];
-        }           
+        globe.data = bitmap_9_map;           
      }
     
       else if(hour_utc == 9){
-        for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_10_map[i];
-        }           
+        globe.data = bitmap_10_map;         
       }
 
       else if(hour_utc == 10){
-       for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_11_map[i];
-        }           
+       globe.data = bitmap_11_map;           
       }
 
      else if(hour_utc == 11){
-       for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_12_map[i];
-        }           
+       globe.data = bitmap_12_map;        
       }
 
      else if(hour_utc == 12){
-       for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_13_map[i];
-        }           
+       globe.data = bitmap_13_map;          
      }
 
      else if(hour_utc == 13){
-       for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_14_map[i];
-        }           
+       globe.data = bitmap_14_map;         
       }
 
       else if(hour_utc == 14){
-       for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_15_map[i];
-        }           
+       globe.data = bitmap_15_map;         
       }
 
      else if(hour_utc == 15){
-        for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_16_map[i];
-        }           
+        globe.data = bitmap_16_map;         
       }
 
       else if(hour_utc == 16){
-        for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_17_map[i];
-        }           
+        globe.data = bitmap_17_map;          
       }
     
       else if(hour_utc == 17){
-       for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_18_map[i];
-        }           
+       globe.data = bitmap_18_map;           
       }
 
       else if(hour_utc == 18){
-       for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_19_map[i];
-        }           
+       globe.data = bitmap_19_map;        
      }
     
       else if(hour_utc == 19){
-       for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_20_map[i];
-        }          
+       globe.data = bitmap_20_map;         
       }
 
      else if(hour_utc == 20){
-        for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_21_map[i];
-        }           
+        globe.data = bitmap_21_map;        
       }
 
       else if(hour_utc == 21){
-        for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_22_map[i];
-        }           
+        globe.data = bitmap_22_map;          
       }
 
       else if(hour_utc == 22){
-        for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_23_map[i];
-        }           
+        globe.data = bitmap_23_map;        
       }
 
       else if(hour_utc == 23){
-        for(int i=0; i<4624; i++){
-          atlas[i] = bitmap_24_map[i];
-        }           
+        globe.data = bitmap_24_map;          
       }
 
-      globe.data = atlas; 
+      img_src_globe = lv_img_create(lv_scr_act(), NULL); 
       lv_img_set_src(img_src_globe, &globe);  
       lv_obj_set_pos(img_src_globe, 90, 150);
     }
