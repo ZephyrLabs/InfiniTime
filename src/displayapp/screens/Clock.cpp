@@ -8090,7 +8090,9 @@ Clock::Clock(DisplayApp* app,
   globe.header.h = 60;
   globe.data_size = 4624;
   globe.header.cf = LV_IMG_CF_INDEXED_8BIT;
+  globe.data = bitmap_1_map;
 
+/*
   if(hour_utc == 0){
     globe.data = bitmap_1_map; 
   }
@@ -8186,6 +8188,7 @@ Clock::Clock(DisplayApp* app,
   else if(hour_utc == 23){
     globe.data = bitmap_24_map;          
   }
+*/
 
   img_src_globe = lv_img_create(lv_scr_act(), NULL); 
   lv_img_set_src(img_src_globe, &globe);  
