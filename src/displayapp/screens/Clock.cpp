@@ -295,7 +295,7 @@ int hour_offset = 0;    // set the hour offset of your timezone from UTC, eg. 2,
 
 int hour_utc = 0;
 
-int counter = 8;  
+int counter = 1;  
   
 int chrono_second = 0;
 int chrono_minute = 0;
@@ -397,16 +397,6 @@ Clock::Clock(DisplayApp* app,
   img_src = lv_img_create(lv_scr_act(), NULL);  
   lv_img_set_src(img_src, &bitmap);  
   lv_obj_set_pos(img_src, 0, 0);     
-
-  globe.header.always_zero = 0;
-  globe.header.w = 60;
-  globe.header.h = 60;
-  globe.data_size = 4624;
-  globe.header.cf = LV_IMG_CF_INDEXED_8BIT;
-  globe.data = atlas;                       
-  img_src_globe = lv_img_create(lv_scr_act(), NULL);  
-  lv_img_set_src(img_src_globe, &globe);  
-  lv_obj_set_pos(img_src_globe, 90, 150);
 
   batteryIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(batteryIcon, Symbols::batteryFull);
@@ -541,9 +531,7 @@ bool Clock::Refresh() {
       hour_utc += 24;
     }
 
-    counter++;
-
-    if(counter > 10){
+    if(counter > 0){
       counter = 0;
 
      if(hour_utc == 0){
@@ -689,8 +677,18 @@ bool Clock::Refresh() {
           atlas[i] = bitmap_24_map[i];
         }           
       }
+
+      globe.header.always_zero = 0;
+      globe.header.w = 60;
+      globe.header.h = 60;
+      globe.data_size = 4624;
+      globe.header.cf = LV_IMG_CF_INDEXED_8BIT;
+      globe.data = atlas;                       
+      img_src_globe = lv_img_create(lv_scr_act(), NULL);  
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 90, 150);
     }
-//  lv_obj_set_pos(img_src_globe, 90, 150);
+    
 ////////////////////////////////////////////////////
 
     chrono_second = static_cast<int>(currentTime);    
