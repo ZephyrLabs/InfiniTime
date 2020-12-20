@@ -154,7 +154,7 @@ bool Paddle::Refresh() {
   
     //checks if it is in the position of the paddle	  
     if(ballY <= (paddleBottomY + 16) && ballY >= (paddleTopY - 8)){ 
-      if(ballX >= 0 && ballX < 4){    
+      if(ballX >= 0 && ballX < 5){    
           lv_obj_set_pos(ball_image, 5, ballY);
           dx *= -1;   
           score++;
