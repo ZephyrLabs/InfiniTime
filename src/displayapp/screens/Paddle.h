@@ -30,7 +30,7 @@ namespace Pinetime {
           int ballX = 107;	            // Initial x_coordinate for the ball (12px offset from the center to counteract the ball's 24px size)
           int ballY = 107;	            // Initial y_coordinate for the ball
 
-          int dx = 2;		            // Velocity of the ball in the x_coordinate
+          int dx = 4;		            // Velocity of the ball in the x_coordinate
           int dy = 3;		            // Velocity of the ball in the y_coordinate
 
           int counter = 0;	            // init Frame refresh limit counter
