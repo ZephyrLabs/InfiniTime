@@ -289,6 +289,8 @@ lv_obj_t* chrono_second_hand;
 lv_obj_t* chrono_minute_hand;
 lv_obj_t* img_src_globe;
 
+uint8_t img_buffer[4624];
+
 int hour_offset = 0;    // set the hour offset of your timezone from UTC, eg. 2, 5, -6 hours (round the offset to nearest integer, do not use decimal)
 
 int hour_utc = 0;
@@ -397,6 +399,15 @@ Clock::Clock(DisplayApp* app,
   img_src = lv_img_create(lv_scr_act(), NULL);  
   lv_img_set_src(img_src, &bitmap);  
   lv_obj_set_pos(img_src, 0, 0);      
+
+  globe.header.always_zero = 0;
+  globe.header.w = 60;
+  globe.header.h = 60;
+  globe.data_size = 4624;
+  globe.header.cf = LV_IMG_CF_INDEXED_8BIT;
+  img_src_globe = lv_img_create(lv_scr_act(), NULL); 
+  lv_img_set_src(img_src_globe, &globe);  
+  lv_obj_set_pos(img_src_globe, 90, 150);
 
   batteryIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(batteryIcon, Symbols::batteryFull);
@@ -524,121 +535,111 @@ bool Clock::Refresh() {
     hour_utc = hour - hour_offset;
 
     if(hour_utc > 24){
-      hour_utc -= 24;
+      hour_utc -= 12;
     }
 
     else if(hour_utc < 0){
-      hour_utc += 24;
+      hour_utc += 12;
     }
 
     if(counter > 0){
       counter = 0;
 
-      globe.header.always_zero = 0;
-      globe.header.w = 60;
-      globe.header.h = 60;
-      globe.data_size = 4624;
-      globe.header.cf = LV_IMG_CF_INDEXED_8BIT;
-
-     if(hour_utc == 0){
-        globe.data = bitmap_1_map; 
+      if(hour_utc == 0){
+        memcpy(img_buffer, bitmap_1_map, 4624); 
       }
 
-     else if(hour_utc == 1){
-        globe.data = bitmap_2_map;         
+      else if(hour_utc == 1){
+        memcpy(img_buffer, bitmap_2_map, 4624);
       }
     
-     else if(hour_utc == 2){
-       globe.data = bitmap_3_map;      
-     }
+      else if(hour_utc == 2){
+        memcpy(img_buffer, bitmap_3_map, 4624);      
+      }
 
-     else if(hour_utc == 3){
-        globe.data = bitmap_4_map;         
-     }
+      else if(hour_utc == 3){
+		    memcpy(img_buffer, bitmap_4_map, 4624);         
+      }
 
       else if(hour_utc == 4){
-        globe.data = bitmap_5_map;          
-     }
+        memcpy(img_buffer, bitmap_5_map, 4624);          
+      }
 
-     else if(hour_utc == 5){
-        globe.data = bitmap_6_map;        
-     }
+      else if(hour_utc == 5){
+        memcpy(img_buffer, bitmap_6_map, 4624);        
+      }
 
       else if(hour_utc == 6){
-       globe.data = bitmap_7_map;          
-     }
+	    	memcpy(img_buffer, bitmap_7_map, 4624);          
+      }
     
       else if(hour_utc == 7){
-        globe.data = bitmap_8_map;           
-     }
+	  	  memcpy(img_buffer, bitmap_8_map, 4624);           
+      }
 
       else if(hour_utc == 8){
-        globe.data = bitmap_9_map;           
-     }
+	  	  memcpy(img_buffer, bitmap_9_map, 4624);        
+      }
     
       else if(hour_utc == 9){
-        globe.data = bitmap_10_map;         
+        memcpy(img_buffer, bitmap_10_map, 4624);         
       }
 
       else if(hour_utc == 10){
-       globe.data = bitmap_11_map;           
+        memcpy(img_buffer, bitmap_11_map, 4624);          
       }
 
-     else if(hour_utc == 11){
-       globe.data = bitmap_12_map;        
+      else if(hour_utc == 11){
+        memcpy(img_buffer, bitmap_12_map, 4624);        
       }
 
-     else if(hour_utc == 12){
-       globe.data = bitmap_13_map;          
-     }
+      else if(hour_utc == 12){
+        memcpy(img_buffer, bitmap_13_map, 4624);          
+      }
 
-     else if(hour_utc == 13){
-       globe.data = bitmap_14_map;         
+      else if(hour_utc == 13){
+        memcpy(img_buffer, bitmap_14_map, 4624);         
       }
 
       else if(hour_utc == 14){
-       globe.data = bitmap_15_map;         
+        memcpy(img_buffer, bitmap_15_map, 4624);         
       }
 
-     else if(hour_utc == 15){
-        globe.data = bitmap_16_map;         
+      else if(hour_utc == 15){
+        memcpy(img_buffer, bitmap_16_map, 4624);         
       }
 
       else if(hour_utc == 16){
-        globe.data = bitmap_17_map;          
+        memcpy(img_buffer, bitmap_17_map, 4624);          
       }
     
       else if(hour_utc == 17){
-       globe.data = bitmap_18_map;           
+        memcpy(img_buffer, bitmap_18_map, 4624);           
       }
 
       else if(hour_utc == 18){
-       globe.data = bitmap_19_map;        
-     }
+        memcpy(img_buffer, bitmap_19_map, 4624);        
+      }
     
       else if(hour_utc == 19){
-       globe.data = bitmap_20_map;         
+        memcpy(img_buffer, bitmap_20_map, 4624);         
       }
 
-     else if(hour_utc == 20){
-        globe.data = bitmap_21_map;        
+      else if(hour_utc == 20){
+        memcpy(img_buffer, bitmap_21_map, 4624);        
       }
 
       else if(hour_utc == 21){
-        globe.data = bitmap_22_map;          
+        memcpy(img_buffer, bitmap_22_map, 4624);          
       }
 
       else if(hour_utc == 22){
-        globe.data = bitmap_23_map;        
+        memcpy(img_buffer, bitmap_23_map, 4624);        
       }
 
       else if(hour_utc == 23){
-        globe.data = bitmap_24_map;          
+        memcpy(img_buffer, bitmap_24_map, 4624);          
       }
-
-      img_src_globe = lv_img_create(lv_scr_act(), NULL); 
-      lv_img_set_src(img_src_globe, &globe);  
-      lv_obj_set_pos(img_src_globe, 90, 150);
     }
 
 ////////////////////////////////////////////////////

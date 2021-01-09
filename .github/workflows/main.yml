@@ -65,7 +65,6 @@ jobs:
           curl https://developer.nordicsemi.com/nRF5_SDK/nRF5_SDK_v15.x.x/nRF5_SDK_15.3.0_59ac345.zip -o nrf5_sdk.zip
           unzip nrf5_sdk.zip
           mv nRF5_SDK_15.3.0_59ac345 nrf5_sdk
-          
       - name: Check cache for MCUBoot
         id:   cache-mcuboot
         uses: actions/cache@v2
@@ -84,6 +83,11 @@ jobs:
       - name: Install imgtool dependencies
         run:  pip3 install --user -r ${{ runner.temp }}/mcuboot/scripts/requirements.txt
 
+      - name: Install adafruit-nrfutil
+        run:  |
+          pip3 install --user wheel
+          pip3 install --user setuptools
+          pip3 install --user adafruit-nrfutil
         #########################################################################################
         # Checkout
 
@@ -113,19 +117,23 @@ jobs:
         run:  |
           cd build
           make pinetime-mcuboot-app
-          
       - name: Create firmware image
         run:  |
           # The generated firmware binary looks like "pinetime-mcuboot-app-0.8.2.bin"
           ls -l build/src/pinetime-mcuboot-app*.bin
           ${{ runner.temp }}/mcuboot/scripts/imgtool.py create --align 4 --version 1.0.0 --header-size 32 --slot-size 475136 --pad-header build/src/pinetime-mcuboot-app*.bin build/src/pinetime-mcuboot-app-img.bin
           ${{ runner.temp }}/mcuboot/scripts/imgtool.py verify build/src/pinetime-mcuboot-app-img.bin
-      
-      - name: Upload binary package
+      - name: Create DFU package
+        run:  |
+          ~/.local/bin/adafruit-nrfutil dfu genpkg --dev-type 0x0052 --application build/src/pinetime-mcuboot-app-img.bin build/src/pinetime-mcuboot-app-dfu.zip
+          unzip -v build/src/pinetime-mcuboot-app-dfu.zip
+          # Unzip the package because Upload Artifact will zip up the files
+          unzip build/src/pinetime-mcuboot-app-dfu.zip -d build/src/pinetime-mcuboot-app-dfu
+      - name: Upload DFU package
         uses: actions/upload-artifact@v2
         with:
-          name: pinetime-mcuboot-app-img
-          path: build/src/pinetime-mcuboot-app-img.bin
+          name: pinetime-mcuboot-app-dfu
+          path: build/src/pinetime-mcuboot-app-dfu/*
 
         #########################################################################################
         # Make and Upload Standalone Firmware
@@ -147,6 +155,5 @@ jobs:
         run:  |
           find . -name "pinetime-app.*" -ls
           find . -name "pinetime-mcuboot-app.*" -ls
-
 # Embedded Arm Toolchain and nRF5 SDK will only be cached if the build succeeds.
 # So make sure that the first build always succeeds, e.g. comment out the "Make" step.
