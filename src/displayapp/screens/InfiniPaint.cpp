@@ -3,12 +3,19 @@
 #include "../LittleVgl.h"
 
 using namespace Pinetime::Applications::Screens;
-extern lv_font_t jetbrains_mono_extrabold_compressed;
-extern lv_font_t jetbrains_mono_bold_20;
+//extern lv_font_t jetbrains_mono_extrabold_compressed;
+//extern lv_font_t jetbrains_mono_bold_20;
 
 InfiniPaint::InfiniPaint(Pinetime::Applications::DisplayApp* app, Pinetime::Components::LittleVgl& lvgl) : Screen(app), lvgl{lvgl} {
   app->SetTouchMode(DisplayApp::TouchModes::Polling);
   std::fill(b, b + bufferSize, LV_COLOR_WHITE);
+
+  lv_obj_t * backgroundLabel = lv_label_create(lv_scr_act(), nullptr);
+  lv_label_set_long_mode(backgroundLabel, LV_LABEL_LONG_CROP);
+  lv_obj_set_size(backgroundLabel, 240, 240);
+  lv_obj_set_pos(backgroundLabel, 0, 0);
+  lv_label_set_text(backgroundLabel, "");
+  
 }
 
 InfiniPaint::~InfiniPaint() {

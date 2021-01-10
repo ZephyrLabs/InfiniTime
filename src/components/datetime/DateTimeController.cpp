@@ -64,3 +64,126 @@ void DateTime::UpdateTime(uint32_t systickCounter) {
   second = time.seconds().count();
 }
 
+
+const char *DateTime::MonthToString() {
+  return DateTime::MonthsString[(uint8_t)month];
+}
+
+const char *DateTime::DayOfWeekToString() {
+  return DateTime::DaysString[(uint8_t)dayOfWeek];
+}
+
+const char *DateTime::DayOfWeekShortToString() {
+  return DateTime::DaysStringShort[(uint8_t)dayOfWeek];
+}
+
+
+char const *DateTime::DaysString[] = {
+        "",
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "SUNDAY"
+};
+
+char const *DateTime::DaysStringShort[] = {
+        "",
+        "MON",
+        "TUE",
+        "WED",
+        "THU",
+        "FRI",
+        "SAT",
+        "SUN"
+};
+
+char const *DateTime::MonthsString[] = {
+        "",
+        "JAN",
+        "FEB",
+        "MAR",
+        "APR",
+        "MAY",
+        "JUN",
+        "JUL",
+        "AUG",
+        "SEP",
+        "OCT",
+        "NOV",
+        "DEC"
+};
+
+
+const char *DateTime::MonthToStringLow() {
+  return DateTime::MonthsStringLow[(uint8_t)month];
+}
+
+const char *DateTime::MonthsGetLow() {
+  return DateTime::MonthsLow[(uint8_t)month];
+}
+
+const char *DateTime::DayOfWeekToStringLow() {
+  return DateTime::DaysStringLow[(uint8_t)dayOfWeek];
+}
+
+const char *DateTime::DayOfWeekShortToStringLow() {
+  return DateTime::DaysStringShortLow[(uint8_t)dayOfWeek];
+}
+
+
+char const *DateTime::DaysStringLow[] = {
+        "",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+};
+
+char const *DateTime::DaysStringShortLow[] = {
+        "",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+        "Sun"
+};
+
+char const *DateTime::MonthsStringLow[] = {
+        "",
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+};
+
+char const *DateTime::MonthsLow[] = {
+        "",
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+};

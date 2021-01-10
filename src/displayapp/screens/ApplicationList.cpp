@@ -6,20 +6,45 @@
 #include "displayapp/Apps.h"
 #include "../DisplayApp.h"
 
+  LV_IMG_DECLARE(icon_settings);
+  LV_IMG_DECLARE(icon_information);
+  LV_IMG_DECLARE(icon_iot);
+  LV_IMG_DECLARE(icon_brightness);
+
+  LV_IMG_DECLARE(icon_raining);
+  LV_IMG_DECLARE(icon_folder);
+  LV_IMG_DECLARE(icon_running);
+  LV_IMG_DECLARE(icon_heart_rate);
+
+  LV_IMG_DECLARE(icon_game);
+  LV_IMG_DECLARE(icon_two);
+  LV_IMG_DECLARE(icon_music);
+  LV_IMG_DECLARE(icon_paddle);
+
+
 using namespace Pinetime::Applications::Screens;
 
-ApplicationList::ApplicationList(Pinetime::Applications::DisplayApp *app) :
+
+ApplicationList::ApplicationList(Pinetime::Applications::DisplayApp *app, 
+        Pinetime::Controllers::DateTime& dateTimeController,
+        Pinetime::Controllers::Settings &settingsController) :
         Screen(app),
-        screens{app, {
+        dateTimeController{dateTimeController},
+        settingsController{settingsController},
+        screens{app, 
+          settingsController.GetAppMenu(),
+          {
                 [this]() -> std::unique_ptr<Screen> { return CreateScreen1(); },
                 [this]() -> std::unique_ptr<Screen> { return CreateScreen2(); },
-                //[this]() -> std::unique_ptr<Screen> { return CreateScreen3(); }
-          }
-        } {}
+                [this]() -> std::unique_ptr<Screen> { return CreateScreen3(); }
+          },
+          Screens::ScreenListModes::UpDown          
+        }        
+{}
 
 
 ApplicationList::~ApplicationList() {
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_scr_act());  
 }
 
 bool ApplicationList::Refresh() {
@@ -39,46 +64,47 @@ bool ApplicationList::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
 }
 
 std::unique_ptr<Screen> ApplicationList::CreateScreen1() {
-  std::array<Screens::Tile::Applications, 6> applications {
-          {{Symbols::clock, Apps::Clock},
-          {Symbols::music, Apps::Music},
-          {Symbols::sun, Apps::Brightness},
-          {Symbols::list, Apps::SysInfo},
-          {Symbols::check, Apps::FirmwareValidation},
-          {Symbols::none, Apps::None}
-          }
 
+  std::array<Screens::Tile::Applications, 4> applications {
+          {                        
+            {&icon_settings,    "Settings",       Apps::FirmwareValidation},
+            {&icon_information, "Sysinfo",        Apps::SysInfo},
+            {&icon_brightness,  "Brightness",     Apps::Brightness},
+            {&icon_iot,         "Iot",            Apps::Iot}            
+          }
 
   };
 
-  return std::unique_ptr<Screen>(new Screens::Tile(app, applications));
+  return std::unique_ptr<Screen>(new Screens::Tile(0, 3, app, dateTimeController, settingsController, applications));
 }
 
-std::unique_ptr<Screen> ApplicationList::CreateScreen2() {
-  std::array<Screens::Tile::Applications, 6> applications {
-          {{Symbols::tachometer, Apps::Gauge},
-           {Symbols::asterisk, Apps::Meter},
-           {Symbols::paintbrush, Apps::Paint},
-                  {Symbols::info, Apps::Notifications},
-                  {Symbols::paddle, Apps::Paddle},
-                  {Symbols::none, Apps::None}
+std::unique_ptr<Screen> ApplicationList::CreateScreen2() {  
+
+  std::array<Screens::Tile::Applications, 4> applications {
+          {                                    
+            {&icon_running,     "Steps",      Apps::Steps},
+            {&icon_heart_rate,  "Heart Rate", Apps::HeartRate},
+            {&icon_raining,     "Weather",    Apps::Weather},
+            {&icon_folder,      "File",       Apps::FileManager}
           }
+
   };
 
-  return std::unique_ptr<Screen>(new Screens::Tile(app, applications));
+  return std::unique_ptr<Screen>(new Screens::Tile(1, 3, app, dateTimeController, settingsController, applications));
 }
 
 std::unique_ptr<Screen> ApplicationList::CreateScreen3() {
-  std::array<Screens::Tile::Applications, 6> applications {
-          {{"A", Apps::Meter},
-           {"B", Apps::Gauge},
-           {"C", Apps::Clock},
-           {"D", Apps::Music},
-           {"E", Apps::SysInfo},
-           {"F", Apps::Brightness}
+
+  std::array<Screens::Tile::Applications, 4> applications {
+          {
+            {&icon_paddle,      "Paddle",     Apps::Paddle}, 
+            {&icon_music,       "Music",      Apps::Music},
+            {&icon_game,        "Paint",      Apps::Paint},
+            {&icon_two,         "2048",       Apps::Twos}
           }
+
   };
 
-  return std::unique_ptr<Screen>(new Screens::Tile(app, applications));
+  return std::unique_ptr<Screen>(new Screens::Tile(2, 3, app, dateTimeController, settingsController, applications));
 }
 

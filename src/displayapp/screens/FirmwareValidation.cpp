@@ -5,8 +5,8 @@
 #include "../DisplayApp.h"
 
 using namespace Pinetime::Applications::Screens;
-extern lv_font_t jetbrains_mono_extrabold_compressed;
-extern lv_font_t jetbrains_mono_bold_20;
+//extern lv_font_t jetbrains_mono_extrabold_compressed;
+//extern lv_font_t jetbrains_mono_bold_20;
 
 namespace {
   static void ButtonEventHandler(lv_obj_t * obj, lv_event_t event)
@@ -22,15 +22,14 @@ FirmwareValidation::FirmwareValidation(Pinetime::Applications::DisplayApp *app,
                                        : Screen{app}, validator{validator} {
   labelVersionInfo = lv_label_create(lv_scr_act(), nullptr);
   lv_obj_align(labelVersionInfo, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 0);
-  lv_label_set_text(labelVersionInfo, "Version : ");
+  lv_label_set_text(labelVersionInfo, "Version ");
   lv_label_set_align(labelVersionInfo, LV_LABEL_ALIGN_LEFT);
 
 
   labelVersionValue = lv_label_create(lv_scr_act(), nullptr);
   lv_obj_align(labelVersionValue, labelVersionInfo, LV_ALIGN_OUT_RIGHT_MID, 0, 0);
-  lv_label_set_recolor(labelVersionValue, true);
-  sprintf(version, "%ld.%ld.%ld", Version::Major(), Version::Minor(), Version::Patch());
-  lv_label_set_text(labelVersionValue, version);
+  lv_obj_set_style_local_text_color(labelVersionValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xFFFF00));
+  lv_label_set_text_fmt(labelVersionValue, "%ld.%ld.%ld", Version::Major(), Version::Minor(), Version::Patch());
 
   labelIsValidated = lv_label_create(lv_scr_act(), nullptr);
   lv_obj_align(labelIsValidated, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 50);
@@ -52,16 +51,16 @@ FirmwareValidation::FirmwareValidation(Pinetime::Applications::DisplayApp *app,
     labelButtonValidate = lv_label_create(buttonValidate, nullptr);
     lv_label_set_recolor(labelButtonValidate, true);
     lv_label_set_text(labelButtonValidate, "#00ff00 Validate#");
-
-    buttonReset = lv_btn_create(lv_scr_act(), nullptr);
-    buttonReset->user_data = this;
-    lv_obj_align(buttonReset, nullptr, LV_ALIGN_IN_BOTTOM_RIGHT, 0, 0);
-    lv_obj_set_event_cb(buttonReset, ButtonEventHandler);
-
-    labelButtonReset = lv_label_create(buttonReset, nullptr);
-    lv_label_set_recolor(labelButtonReset, true);
-    lv_label_set_text(labelButtonReset, "#ff0000 Reset#");
   }
+  buttonReset = lv_btn_create(lv_scr_act(), nullptr);
+  buttonReset->user_data = this;
+  lv_obj_align(buttonReset, nullptr, LV_ALIGN_IN_BOTTOM_RIGHT, 0, 0);
+  lv_obj_set_event_cb(buttonReset, ButtonEventHandler);
+
+  labelButtonReset = lv_label_create(buttonReset, nullptr);
+  lv_label_set_recolor(labelButtonReset, true);
+  lv_label_set_text(labelButtonReset, "#AA0000 Reset#");
+  
 }
 
 
