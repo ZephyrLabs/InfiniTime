@@ -398,6 +398,17 @@ Clock::Clock(DisplayApp* app,
   lv_img_set_src(img_src, &bitmap);  
   lv_obj_set_pos(img_src, 0, 0);     
 
+  globe.header.always_zero = 0;
+  globe.header.w = 60;
+  globe.header.h = 60;
+  globe.data_size = 4624;
+  globe.header.cf = LV_IMG_CF_INDEXED_8BIT;
+  globe.data = bitmap_1_map;
+  img_src_globe = lv_img_create(lv_scr_act(), NULL);         
+
+  lv_img_set_src(img_src_globe, &globe);  
+  lv_obj_set_pos(img_src_globe, 90, 150);
+
   batteryIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(batteryIcon, Symbols::batteryFull);
   lv_obj_align(batteryIcon, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, -5, 2);
@@ -522,7 +533,7 @@ bool Clock::Refresh() {
     
 ///////////////////////////////////////////////////   
     hour_utc = hour + hour_offset;
-
+/*
     if(counter > 0){
       counter = 0;
 
@@ -533,7 +544,7 @@ bool Clock::Refresh() {
     globe.header.cf = LV_IMG_CF_INDEXED_8BIT;
     globe.data = bitmap_1_map;
 
-/*
+
     if(hour_utc == 0){
       globe.data = bitmap_1_map; 
     }
@@ -629,13 +640,13 @@ bool Clock::Refresh() {
     else if(hour_utc == 23){
       globe.data = bitmap_24_map;          
     }
-*/
+
     img_src_globe = lv_img_create(lv_scr_act(), NULL);         
 
     lv_img_set_src(img_src_globe, &globe);  
     lv_obj_set_pos(img_src_globe, 90, 150);
     }
-   
+*/   
 ////////////////////////////////////////////////////
 
     chrono_second = static_cast<int>(currentTime);    
