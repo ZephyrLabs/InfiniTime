@@ -546,99 +546,99 @@ bool Clock::Refresh() {
       counter = 0;
 
       if(hour_utc == 0){
-        memcpy(img_buffer, bitmap_1_map, 4624); 
+        memcpy(img_buffer, bitmap_1_map, sizeof(bitmap_1_map)); 
       }
 
       else if(hour_utc == 1){
-        memcpy(img_buffer, bitmap_2_map, 4624);
+        memcpy(img_buffer, bitmap_2_map, sizeof(bitmap_1_map));
       }
     
       else if(hour_utc == 2){
-        memcpy(img_buffer, bitmap_3_map, 4624);      
+        memcpy(img_buffer, bitmap_3_map, sizeof(bitmap_1_map));      
       }
 
       else if(hour_utc == 3){
-		    memcpy(img_buffer, bitmap_4_map, 4624);         
+		    memcpy(img_buffer, bitmap_4_map, sizeof(bitmap_1_map));         
       }
 
       else if(hour_utc == 4){
-        memcpy(img_buffer, bitmap_5_map, 4624);          
+        memcpy(img_buffer, bitmap_5_map, sizeof(bitmap_1_map));          
       }
 
       else if(hour_utc == 5){
-        memcpy(img_buffer, bitmap_6_map, 4624);        
+        memcpy(img_buffer, bitmap_6_map, sizeof(bitmap_1_map));        
       }
 
       else if(hour_utc == 6){
-	    	memcpy(img_buffer, bitmap_7_map, 4624);          
+	    	memcpy(img_buffer, bitmap_7_map, sizeof(bitmap_1_map));          
       }
     
       else if(hour_utc == 7){
-	  	  memcpy(img_buffer, bitmap_8_map, 4624);           
+	  	  memcpy(img_buffer, bitmap_8_map, sizeof(bitmap_1_map));           
       }
 
       else if(hour_utc == 8){
-	  	  memcpy(img_buffer, bitmap_9_map, 4624);        
+	  	  memcpy(img_buffer, bitmap_9_map, sizeof(bitmap_1_map));        
       }
     
       else if(hour_utc == 9){
-        memcpy(img_buffer, bitmap_10_map, 4624);         
+        memcpy(img_buffer, bitmap_10_map, sizeof(bitmap_1_map));         
       }
 
       else if(hour_utc == 10){
-        memcpy(img_buffer, bitmap_11_map, 4624);          
+        memcpy(img_buffer, bitmap_11_map, sizeof(bitmap_1_map));          
       }
 
       else if(hour_utc == 11){
-        memcpy(img_buffer, bitmap_12_map, 4624);        
+        memcpy(img_buffer, bitmap_12_map, sizeof(bitmap_1_map));        
       }
 
       else if(hour_utc == 12){
-        memcpy(img_buffer, bitmap_13_map, 4624);          
+        memcpy(img_buffer, bitmap_13_map, sizeof(bitmap_1_map));          
       }
 
       else if(hour_utc == 13){
-        memcpy(img_buffer, bitmap_14_map, 4624);         
+        memcpy(img_buffer, bitmap_14_map, sizeof(bitmap_1_map));         
       }
 
       else if(hour_utc == 14){
-        memcpy(img_buffer, bitmap_15_map, 4624);         
+        memcpy(img_buffer, bitmap_15_map, sizeof(bitmap_1_map));         
       }
 
       else if(hour_utc == 15){
-        memcpy(img_buffer, bitmap_16_map, 4624);         
+        memcpy(img_buffer, bitmap_16_map, sizeof(bitmap_1_map));         
       }
 
       else if(hour_utc == 16){
-        memcpy(img_buffer, bitmap_17_map, 4624);          
+        memcpy(img_buffer, bitmap_17_map, sizeof(bitmap_1_map));          
       }
     
       else if(hour_utc == 17){
-        memcpy(img_buffer, bitmap_18_map, 4624);           
+        memcpy(img_buffer, bitmap_18_map, sizeof(bitmap_1_map));           
       }
 
       else if(hour_utc == 18){
-        memcpy(img_buffer, bitmap_19_map, 4624);        
+        memcpy(img_buffer, bitmap_19_map, sizeof(bitmap_1_map));        
       }
     
       else if(hour_utc == 19){
-        memcpy(img_buffer, bitmap_20_map, 4624);         
+        memcpy(img_buffer, bitmap_20_map, sizeof(bitmap_1_map));         
       }
 
       else if(hour_utc == 20){
-        memcpy(img_buffer, bitmap_21_map, 4624);        
+        memcpy(img_buffer, bitmap_21_map, sizeof(bitmap_1_map));        
       }
 
       else if(hour_utc == 21){
-        memcpy(img_buffer, bitmap_22_map, 4624);          
+        memcpy(img_buffer, bitmap_22_map, sizeof(bitmap_1_map));          
       }
 
       else if(hour_utc == 22){
-        memcpy(img_buffer, bitmap_23_map, 4624);        
+        memcpy(img_buffer, bitmap_23_map, sizeof(bitmap_1_map));        
       }
 
       else if(hour_utc == 23){
-        memcpy(img_buffer, bitmap_24_map, 4624);          
+        memcpy(img_buffer, bitmap_24_map, sizeof(bitmap_1_map));          
       }
     }
 
