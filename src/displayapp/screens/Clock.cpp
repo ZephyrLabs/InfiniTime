@@ -398,17 +398,6 @@ Clock::Clock(DisplayApp* app,
   lv_img_set_src(img_src, &bitmap);  
   lv_obj_set_pos(img_src, 0, 0);     
 
-  globe.header.always_zero = 0;
-  globe.header.w = 60;
-  globe.header.h = 60;
-  globe.data_size = 4624;
-  globe.header.cf = LV_IMG_CF_INDEXED_8BIT;
-  globe.data = bitmap_1_map;                     
-  img_src_globe = lv_img_create(lv_scr_act(), NULL);  
-       
-  lv_img_set_src(img_src_globe, &globe);  
-  lv_obj_set_pos(img_src_globe, 90, 150);
-
   batteryIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(batteryIcon, Symbols::batteryFull);
   lv_obj_align(batteryIcon, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, -5, 2);
@@ -536,103 +525,111 @@ bool Clock::Refresh() {
 
     if(counter > 0){
       counter = 0;
-        
-     if(hour_offset == 0){
-       globe.data = bitmap_1_map;         
-      }
 
-     else if(hour_offset == 1){
-        globe.data = bitmap_2_map;         
-      }
-    
-     else if(hour_offset == 2){
-       globe.data = bitmap_3_map;         
-     }
+    globe.header.always_zero = 0;
+    globe.header.w = 60;
+    globe.header.h = 60;
+    globe.data_size = 4624;
+    globe.header.cf = LV_IMG_CF_INDEXED_8BIT;
 
-     else if(hour_offset == 3){
-        globe.data = bitmap_4_map;         
-     }
+    if(hour_utc == 0){
+      globe.data = bitmap_1_map; 
+    }
 
-      else if(hour_offset == 4){
-        globe.data = bitmap_5_map;         
-     }
+    else if(hour_utc == 1){
+      globe.data = bitmap_2_map;         
+    }
+  
+    else if(hour_utc == 2){
+      globe.data = bitmap_3_map;      
+    }
 
-     else if(hour_offset == 5){
-        globe.data = bitmap_6_map;         
-     }
+    else if(hour_utc == 3){
+      globe.data = bitmap_4_map;         
+    }
 
-      else if(hour_offset == 6){
-       globe.data = bitmap_7_map;         
-     }
-    
-      else if(hour_offset == 7){
-        globe.data = bitmap_8_map;         
-     }
+    else if(hour_utc == 4){
+      globe.data = bitmap_5_map;          
+    }
 
-      else if(hour_offset == 8){
-        globe.data = bitmap_9_map;         
-     }
-    
-      else if(hour_offset == 9){
-        globe.data = bitmap_10_map;         
-      }
+    else if(hour_utc == 5){
+      globe.data = bitmap_6_map;        
+    }
 
-      else if(hour_offset == 10){
-       globe.data = bitmap_11_map;         
-      }
+    else if(hour_utc == 6){
+      globe.data = bitmap_7_map;          
+    }
+  
+    else if(hour_utc == 7){
+      globe.data = bitmap_8_map;           
+    }
 
-     else if(hour_offset == 11){
-       globe.data = bitmap_12_map;         
-      }
+    else if(hour_utc == 8){
+      globe.data = bitmap_9_map;           
+    }
+  
+    else if(hour_utc == 9){
+      globe.data = bitmap_10_map;         
+    }
 
-     else if(hour_offset == 12){
-        globe.data = bitmap_13_map;         
-     }
+    else if(hour_utc == 10){
+      globe.data = bitmap_11_map;           
+    }
 
-     else if(hour_offset == 13){
-       globe.data = bitmap_14_map;         
-      }
+    else if(hour_utc == 11){
+      globe.data = bitmap_12_map;        
+    }
 
-      else if(hour_offset == 14){
-       globe.data = bitmap_15_map;         
-      }
+    else if(hour_utc == 12){
+      globe.data = bitmap_13_map;          
+    }
 
-     else if(hour_offset == 15){
-        globe.data = bitmap_16_map;         
-      }
+    else if(hour_utc == 13){
+      globe.data = bitmap_14_map;         
+    }
 
-      else if(hour_offset == 16){
-        globe.data = bitmap_17_map;         
-      }
-    
-      else if(hour_offset == 17){
-       globe.data = bitmap_18_map;         
-      }
+    else if(hour_utc == 14){
+      globe.data = bitmap_15_map;         
+    }
 
-      else if(hour_offset == 18){
-       globe.data = bitmap_19_map;         
-     }
-    
-      else if(hour_offset == 19){
-       globe.data = bitmap_20_map;         
-      }
+    else if(hour_utc == 15){
+      globe.data = bitmap_16_map;         
+    }
 
-     else if(hour_offset == 20){
-        globe.data = bitmap_21_map;         
-      }
+    else if(hour_utc == 16){
+      globe.data = bitmap_17_map;          
+    }
+  
+    else if(hour_utc == 17){
+      globe.data = bitmap_18_map;           
+    }
 
-      else if(hour_offset == 21){
-        globe.data = bitmap_22_map;         
-      }
+    else if(hour_utc == 18){
+      globe.data = bitmap_19_map;        
+    }
+  
+    else if(hour_utc == 19){
+      globe.data = bitmap_20_map;         
+    }
 
-      else if(hour_offset == 22){
-        globe.data = bitmap_23_map;         
-      }
+    else if(hour_utc == 20){
+      globe.data = bitmap_21_map;        
+    }
 
-      else if(hour_offset == 23){
-        globe.data = bitmap_24_map;         
-      }
-      
+    else if(hour_utc == 21){
+      globe.data = bitmap_22_map;          
+    }
+
+    else if(hour_utc == 22){
+      globe.data = bitmap_23_map;        
+    }
+
+    else if(hour_utc == 23){
+      globe.data = bitmap_24_map;          
+    }
+
+    img_src_globe = lv_img_create(lv_scr_act(), NULL);         
+
     lv_img_set_src(img_src_globe, &globe);  
     lv_obj_set_pos(img_src_globe, 90, 150);
     }
