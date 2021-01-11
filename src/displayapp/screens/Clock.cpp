@@ -534,7 +534,6 @@ bool Clock::Refresh() {
 ///////////////////////////////////////////////////   
     hour_utc = hour + hour_offset;
 
-    counter++;
     if(counter > 0){
       counter = 0;
         
