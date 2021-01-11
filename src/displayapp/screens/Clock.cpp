@@ -281,72 +281,6 @@ const uint8_t bitmap_map[] = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 
 };
 
-lv_obj_t* img_src;
-lv_obj_t* hour_hand;
-lv_obj_t* minute_hand;
-lv_obj_t* second_hand;
-lv_obj_t* chrono_second_hand;
-lv_obj_t* chrono_minute_hand;
-lv_obj_t* img_src_globe;
-
-int hour_offset = 0;
-
-int hour_utc = 0;
-
-int counter;  
-  
-int chrono_second = 0;
-int chrono_minute = 0;
-
-int hour_angle = 0;
-int minute_angle = 0;
-int second_angle = 0;
-int chrono_second_angle = 0;
-int chrono_minute_angle = 0;
-
-double hour_sin = 0;
-double hour_cos = 1;
-
-double minute_sin = 0;
-double minute_cos = 1;
-
-double second_sin = 0;
-double second_cos = 1;
-
-double chrono_second_sin = 0;
-double chrono_second_cos = 1;
-
-double chrono_minute_sin = 0;
-double chrono_minute_cos = 1;
-
-int hour_x = 0;
-int hour_y = 57;
-
-int minute_x = 0;
-int minute_y = 77;
-
-int second_x = 0;
-int second_y = 97;
-
-int chrono_second_x = 0;
-int chrono_second_y = 25;
-
-int chrono_minute_x = 0;
-int chrono_minute_y = 25;
-
-
-int hour_len = 57;
-int minute_len = 77;
-int second_len = 97;
-int chrono_second_len = 25;
-int chrono_minute_len = 25;
-
-static lv_point_t hour_points[] = { {120, 120}, {hour_x, hour_y} };
-static lv_point_t minute_points[] = { {120, 120}, {minute_x, minute_y} };
-static lv_point_t second_points[] = { {120, 120}, {second_x, second_y} };
-static lv_point_t chrono_second_points[] = { {180, 120}, {chrono_second_x, chrono_second_y} };
-static lv_point_t chrono_minute_points[] = { {60, 120}, {chrono_minute_x, chrono_minute_y} };
-
 }
 
 Clock::Clock(DisplayApp* app,
@@ -404,8 +338,104 @@ Clock::Clock(DisplayApp* app,
   globe.data_size = 4624;
   globe.header.cf = LV_IMG_CF_INDEXED_8BIT;
   globe.data = bitmap_1_map;
-  img_src_globe = lv_img_create(lv_scr_act(), NULL);         
 
+  if(hour_utc == 0){
+    globe.data = bitmap_1_map; 
+  }
+
+  else if(hour_utc == 1){
+    globe.data = bitmap_2_map;         
+  }
+
+  else if(hour_utc == 2){
+    globe.data = bitmap_3_map;      
+  }
+
+  else if(hour_utc == 3){
+    globe.data = bitmap_4_map;         
+  }
+
+  else if(hour_utc == 4){
+    globe.data = bitmap_5_map;          
+  }
+
+  else if(hour_utc == 5){
+    globe.data = bitmap_6_map;        
+  }
+
+  else if(hour_utc == 6){
+    globe.data = bitmap_7_map;          
+  }
+
+  else if(hour_utc == 7){
+    globe.data = bitmap_8_map;           
+  }
+
+  else if(hour_utc == 8){
+    globe.data = bitmap_9_map;           
+  }
+
+  else if(hour_utc == 9){
+    globe.data = bitmap_10_map;         
+  }
+
+  else if(hour_utc == 10){
+    globe.data = bitmap_11_map;           
+  }
+
+  else if(hour_utc == 11){
+    globe.data = bitmap_12_map;        
+  }
+
+  else if(hour_utc == 12){
+    globe.data = bitmap_13_map;          
+  }
+
+  else if(hour_utc == 13){
+    globe.data = bitmap_14_map;         
+  }
+
+  else if(hour_utc == 14){
+    globe.data = bitmap_15_map;         
+  }
+
+  else if(hour_utc == 15){
+    globe.data = bitmap_16_map;         
+  }
+
+  else if(hour_utc == 16){
+    globe.data = bitmap_17_map;          
+  }
+
+  else if(hour_utc == 17){
+    globe.data = bitmap_18_map;           
+  }
+
+  else if(hour_utc == 18){
+    globe.data = bitmap_19_map;        
+  }
+
+  else if(hour_utc == 19){
+    globe.data = bitmap_20_map;         
+  }
+
+  else if(hour_utc == 20){
+    globe.data = bitmap_21_map;        
+  }
+
+  else if(hour_utc == 21){
+    globe.data = bitmap_22_map;          
+  }
+
+  else if(hour_utc == 22){
+    globe.data = bitmap_23_map;        
+  }
+
+  else if(hour_utc == 23){
+    globe.data = bitmap_24_map;          
+  }
+
+  img_src_globe = lv_img_create(lv_scr_act(), NULL);         
   lv_img_set_src(img_src_globe, &globe);  
   lv_obj_set_pos(img_src_globe, 90, 150);
 
@@ -537,116 +567,9 @@ bool Clock::Refresh() {
     if(counter > 0){
       counter = 0;
 
-    globe.header.always_zero = 0;
-    globe.header.w = 60;
-    globe.header.h = 60;
-    globe.data_size = 4624;
-    globe.header.cf = LV_IMG_CF_INDEXED_8BIT;
-    globe.data = bitmap_1_map;
 
-
-    if(hour_utc == 0){
-      globe.data = bitmap_1_map; 
     }
-
-    else if(hour_utc == 1){
-      globe.data = bitmap_2_map;         
-    }
-  
-    else if(hour_utc == 2){
-      globe.data = bitmap_3_map;      
-    }
-
-    else if(hour_utc == 3){
-      globe.data = bitmap_4_map;         
-    }
-
-    else if(hour_utc == 4){
-      globe.data = bitmap_5_map;          
-    }
-
-    else if(hour_utc == 5){
-      globe.data = bitmap_6_map;        
-    }
-
-    else if(hour_utc == 6){
-      globe.data = bitmap_7_map;          
-    }
-  
-    else if(hour_utc == 7){
-      globe.data = bitmap_8_map;           
-    }
-
-    else if(hour_utc == 8){
-      globe.data = bitmap_9_map;           
-    }
-  
-    else if(hour_utc == 9){
-      globe.data = bitmap_10_map;         
-    }
-
-    else if(hour_utc == 10){
-      globe.data = bitmap_11_map;           
-    }
-
-    else if(hour_utc == 11){
-      globe.data = bitmap_12_map;        
-    }
-
-    else if(hour_utc == 12){
-      globe.data = bitmap_13_map;          
-    }
-
-    else if(hour_utc == 13){
-      globe.data = bitmap_14_map;         
-    }
-
-    else if(hour_utc == 14){
-      globe.data = bitmap_15_map;         
-    }
-
-    else if(hour_utc == 15){
-      globe.data = bitmap_16_map;         
-    }
-
-    else if(hour_utc == 16){
-      globe.data = bitmap_17_map;          
-    }
-  
-    else if(hour_utc == 17){
-      globe.data = bitmap_18_map;           
-    }
-
-    else if(hour_utc == 18){
-      globe.data = bitmap_19_map;        
-    }
-  
-    else if(hour_utc == 19){
-      globe.data = bitmap_20_map;         
-    }
-
-    else if(hour_utc == 20){
-      globe.data = bitmap_21_map;        
-    }
-
-    else if(hour_utc == 21){
-      globe.data = bitmap_22_map;          
-    }
-
-    else if(hour_utc == 22){
-      globe.data = bitmap_23_map;        
-    }
-
-    else if(hour_utc == 23){
-      globe.data = bitmap_24_map;          
-    }
-
-    img_src_globe = lv_img_create(lv_scr_act(), NULL);         
-
-    lv_img_set_src(img_src_globe, &globe);  
-    lv_obj_set_pos(img_src_globe, 90, 150);
-    }
-*/   
+*/      
 ////////////////////////////////////////////////////
 
     chrono_second = static_cast<int>(currentTime);    
