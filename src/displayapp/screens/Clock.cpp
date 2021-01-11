@@ -295,7 +295,7 @@ int hour_offset = 0;    // set the hour offset of your timezone from UTC, eg. 2,
 
 int hour_utc = 0;
 
-int counter = 1;   
+int counter;   
 
 int chrono_second = 0;
 int chrono_minute = 0;
@@ -640,6 +640,11 @@ bool Clock::Refresh() {
       else if(hour_utc == 23){
         memcpy(img_buffer, bitmap_24_map, sizeof(bitmap_1_map));          
       }
+
+      img_src_globe = lv_img_create(lv_scr_act(), NULL); 
+      lv_img_set_src(img_src_globe, &globe);  
+      lv_obj_set_pos(img_src_globe, 90, 150);
+
     }
 
 ////////////////////////////////////////////////////
