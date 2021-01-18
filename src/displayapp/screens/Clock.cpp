@@ -224,8 +224,7 @@ char const *Clock::MonthsString[] = {
         "DEC"
 };
 
-void Clock::printwords(int h, int m) 
-{ 
+void Clock::printwords(int h, int m) { 
     char nums[][64] = { "zero", "one", "two", "three", "four", 
                         "five", "six", "seven", "eight", "nine", 
                         "ten", "eleven", "twelve", "thirteen", 
