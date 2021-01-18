@@ -234,35 +234,35 @@ char const *Clock::nums[] = { "zero", "one", "two", "three", "four",
                       }; 
 
 void Clock::printwords(int h, int m) {
-      if (minute == 0) {
+      if (m == 0) {
         sprintf(timeStr, "%s \no' clock\n", nums[h]); 
     }
 
-    else if (minute == 1){ 
+    else if (m == 1){ 
         sprintf(timeStr, "one minute \npast %s\n", nums[h]); 
     }
 
-    else if (minute == 59) {
+    else if (m == 59) {
         sprintf(timeStr, "one minute \nto %s\n", nums[(h % 12) + 1]); 
     }
 
-    else if (minute == 15) {
+    else if (m == 15) {
         sprintf(timeStr, "quarter past \n%s\n", nums[h]); 
     }
 
-    else if (minute == 30) {
+    else if (m == 30) {
         sprintf(timeStr, "half past \n%s\n", nums[h]); 
     }
 
-    else if (minute == 45) {
+    else if (m == 45) {
         sprintf(timeStr, "quarter to \n%s\n", nums[(h % 12) + 1]);
     }     
   
-    else if (minute <= 30) {
+    else if (m <= 30) {
         sprintf(timeStr, "%s minutes \npast %s\n", nums[m], nums[h]); 
     }
 
-    else if (minute > 30){
+    else if (m > 30){
         sprintf(timeStr, "%s minutes \nto %s\n", nums[m], nums[(h % 12) + 1]);  
     }
 } 
