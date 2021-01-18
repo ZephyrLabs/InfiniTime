@@ -57,6 +57,7 @@ namespace Pinetime {
           static char const *MonthsString[];
 
           char displayedChar[5];
+          char timeStr[64];
 
           uint16_t currentYear = 1970;
           Pinetime::Controllers::DateTime::Months currentMonth = Pinetime::Controllers::DateTime::Months::Unknown;
