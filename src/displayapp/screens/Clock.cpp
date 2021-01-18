@@ -21,8 +21,6 @@ static void event_handler(lv_obj_t * obj, lv_event_t event) {
   screen->OnObjectEvent(obj, event);
 }
 
-char timeStr[64];
-
 Clock::Clock(DisplayApp* app,
         Controllers::DateTime& dateTimeController,
         Controllers::Battery& batteryController,
@@ -143,8 +141,43 @@ bool Clock::Refresh() {
 
     char hoursChar[3];
     sprintf(hoursChar, "%02d", static_cast<int>(hour));
+    
+    char timeStr[64];
 
-    printwords(hour, minute);
+    char nums[64] = { "zero", "one", "two", "three", "four", 
+                        "five", "six", "seven", "eight", "nine", 
+                        "ten", "eleven", "twelve", "thirteen", 
+                        "fourteen", "fifteen", "sixteen", "seventeen", 
+                        "eighteen", "nineteen", "twenty", "twenty one", 
+                        "twenty two", "twenty three", "twenty four", 
+                        "twenty five", "twenty six", "twenty seven", 
+                        "twenty eight", "twenty nine", 
+                      }; 
+  
+    if (minute == 0) 
+        sprintf(timeStr, "%s \no' clock\n", nums[hour]); 
+  
+    else if (minute == 1) 
+        sprintf(timeStr, "one minute \npast %s\n", nums[hour]); 
+  
+    else if (minute == 59) 
+        sprintf(timeStr, "one minute \nto %s\n", nums[(hour % 12) + 1]); 
+  
+    else if (minute == 15) 
+        sprintf(timeStr, "quarter past \n%s\n", nums[hour]); 
+  
+    else if (minute == 30) 
+        sprintf(timeStr, "half past \n%s\n", nums[hour]); 
+  
+    else if (minute == 45) 
+        sprintf(timeStr, "quarter to \n%s\n", nums[(hour % 12) + 1]); 
+  
+    else if (minute <= 30) 
+        sprintf(timeStr, "%s minutes \npast %s\n", nums[minute], nums[hour]); 
+  
+    else if (minute > 30) 
+        sprintf(timeStr, "%s minutes \nto %s\n", nums[60 - minute], nums[(hour % 12) + 1]);  
+
 
     if(hoursChar[0] != displayedChar[0] || hoursChar[1] != displayedChar[1] || minutesChar[0] != displayedChar[2] || minutesChar[1] != displayedChar[3]) {
       displayedChar[0] = hoursChar[0];
@@ -225,42 +258,6 @@ char const *Clock::MonthsString[] = {
         "DEC"
 };
 
-void Clock::printwords(int h, int m) { 
-    char nums[][64] = { "zero", "one", "two", "three", "four", 
-                        "five", "six", "seven", "eight", "nine", 
-                        "ten", "eleven", "twelve", "thirteen", 
-                        "fourteen", "fifteen", "sixteen", "seventeen", 
-                        "eighteen", "nineteen", "twenty", "twenty one", 
-                        "twenty two", "twenty three", "twenty four", 
-                        "twenty five", "twenty six", "twenty seven", 
-                        "twenty eight", "twenty nine", 
-                      }; 
-  
-    if (m == 0) 
-        sprintf(timeStr, "%s \no' clock\n", nums[h]); 
-  
-    else if (m == 1) 
-        sprintf(timeStr, "one minute \npast %s\n", nums[h]); 
-  
-    else if (m == 59) 
-        sprintf(timeStr, "one minute \nto %s\n", nums[(h % 12) + 1]); 
-  
-    else if (m == 15) 
-        sprintf(timeStr, "quarter past \n%s\n", nums[h]); 
-  
-    else if (m == 30) 
-        sprintf(timeStr, "half past \n%s\n", nums[h]); 
-  
-    else if (m == 45) 
-        sprintf(timeStr, "quarter to \n%s\n", nums[(h % 12) + 1]); 
-  
-    else if (m <= 30) 
-        sprintf(timeStr, "%s minutes \npast %s\n", nums[m], nums[h]); 
-  
-    else if (m > 30) 
-        sprintf(timeStr, "%s minutes \nto %s\n", nums[60 - m], nums[(h % 12) + 1]);  
-} 
-
 void Clock::OnObjectEvent(lv_obj_t *obj, lv_event_t event) {
   if(obj == backgroundLabel) {
     if (event == LV_EVENT_CLICKED) {
@@ -274,5 +271,3 @@ bool Clock::OnButtonPushed() {
   running = false;
   return false;
 }
-
-
