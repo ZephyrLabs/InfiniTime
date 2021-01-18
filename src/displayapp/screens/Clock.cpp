@@ -258,6 +258,7 @@ void Clock::printwords(int h, int m) {
   
     else if (m > 30) 
         sprintf(timeStr, "%s minutes \nto %s\n", nums[60 - m], nums[(h % 12) + 1]); 
+    return false;     
 } 
 
 void Clock::OnObjectEvent(lv_obj_t *obj, lv_event_t event) {
