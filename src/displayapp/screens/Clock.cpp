@@ -263,7 +263,7 @@ void Clock::printwords(int h, int m) {
     }
 
     else if (m > 30){
-        sprintf(timeStr, "%s minutes \nto %s\n", nums[m], nums[(h % 12) + 1]);  
+        sprintf(timeStr, "%s minutes \nto %s\n", nums[60 - m], nums[(h % 12) + 1]);  
     }
 } 
 
