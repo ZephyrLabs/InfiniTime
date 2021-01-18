@@ -54,7 +54,7 @@ Clock::Clock(DisplayApp* app,
   lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, 60);
 
   label_time = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, -40, 0);
+  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 10, -25);
 
   backgroundLabel = lv_label_create(lv_scr_act(), nullptr);
   backgroundLabel->user_data = this;
@@ -198,29 +198,29 @@ const char *Clock::DayOfWeekToString(Pinetime::Controllers::DateTime::Days dayOf
 
 char const *Clock::DaysString[] = {
         "",
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY",
-        "SATURDAY",
-        "SUNDAY"
+        "mon.",
+        "tue.",
+        "wed.",
+        "thu.",
+        "fri.",
+        "sat.",
+        "sun."
 };
 
 char const *Clock::MonthsString[] = {
         "",
-        "JAN",
-        "FEB",
-        "MAR",
-        "APR",
-        "MAY",
-        "JUN",
-        "JUL",
-        "AUG",
-        "SEP",
-        "OCT",
-        "NOV",
-        "DEC"
+        "jan",
+        "feb",
+        "mar",
+        "apr",
+        "may",
+        "jun",
+        "jul",
+        "aug",
+        "sep",
+        "oct",
+        "nov",
+        "dec"
 };
 
 char const *Clock::nums[] = { "zero", "one", "two", "three", "four", 
