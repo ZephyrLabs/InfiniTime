@@ -1,5 +1,4 @@
 #include "Clock.h"
-
 #include <date/date.h>
 #include <lvgl/lvgl.h>
 #include <cstdio>
@@ -52,12 +51,10 @@ Clock::Clock(DisplayApp* app,
   lv_obj_align(notificationIcon, nullptr, LV_ALIGN_IN_TOP_LEFT, 10, 0);
 
   label_date = lv_label_create(lv_scr_act(), nullptr);
-
   lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, 60);
 
   label_time = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
-  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, 0);
+  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, -40, 0);
 
   backgroundLabel = lv_label_create(lv_scr_act(), nullptr);
   backgroundLabel->user_data = this;
@@ -67,7 +64,6 @@ Clock::Clock(DisplayApp* app,
   lv_obj_set_size(backgroundLabel, 240, 240);
   lv_obj_set_pos(backgroundLabel, 0, 0);
   lv_label_set_text(backgroundLabel, "");
-
 
   heartbeatIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(heartbeatIcon, Symbols::heartBeat);
@@ -146,8 +142,8 @@ bool Clock::Refresh() {
     char hoursChar[3];
     sprintf(hoursChar, "%02d", static_cast<int>(hour));
 
-    char timeStr[6];
-    sprintf(timeStr, "%c%c:%c%c", hoursChar[0],hoursChar[1],minutesChar[0], minutesChar[1]);
+    char timeStr[64];
+    printwords(hour, minute);
 
     if(hoursChar[0] != displayedChar[0] || hoursChar[1] != displayedChar[1] || minutesChar[0] != displayedChar[2] || minutesChar[1] != displayedChar[3]) {
       displayedChar[0] = hoursChar[0];
@@ -227,6 +223,43 @@ char const *Clock::MonthsString[] = {
         "NOV",
         "DEC"
 };
+
+void Clock::printwords(int h, int m) 
+{ 
+    char nums[][64] = { "zero", "one", "two", "three", "four", 
+                        "five", "six", "seven", "eight", "nine", 
+                        "ten", "eleven", "twelve", "thirteen", 
+                        "fourteen", "fifteen", "sixteen", "seventeen", 
+                        "eighteen", "nineteen", "twenty", "twenty one", 
+                        "twenty two", "twenty three", "twenty four", 
+                        "twenty five", "twenty six", "twenty seven", 
+                        "twenty eight", "twenty nine", 
+                      }; 
+  
+    if (m == 0) 
+        sprintf(timeStr, "%s \no' clock\n", nums[h]); 
+  
+    else if (m == 1) 
+        sprintf(timeStr, "one minute \npast %s\n", nums[h]); 
+  
+    else if (m == 59) 
+        sprintf(timeStr, "one minute \nto %s\n", nums[(h % 12) + 1]); 
+  
+    else if (m == 15) 
+        sprintf(timeStr, "quarter past \n%s\n", nums[h]); 
+  
+    else if (m == 30) 
+        sprintf(timeStr, "half past \n%s\n", nums[h]); 
+  
+    else if (m == 45) 
+        sprintf(timeStr, "quarter to \n%s\n", nums[(h % 12) + 1]); 
+  
+    else if (m <= 30) 
+        sprintf(timeStr, "%s minutes \npast %s\n", nums[m], nums[h]); 
+  
+    else if (m > 30) 
+        sprintf(timeStr, "%s minutes \nto %s\n", nums[60 - m], nums[(h % 12) + 1]); 
+} 
 
 void Clock::OnObjectEvent(lv_obj_t *obj, lv_event_t event) {
   if(obj == backgroundLabel) {
