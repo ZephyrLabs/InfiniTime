@@ -144,7 +144,7 @@ bool Clock::Refresh() {
     
     char timeStr[64];
 
-    char nums[][64] = { "zero", "one", "two", "three", "four", 
+    char nums[] = { "zero", "one", "two", "three", "four", 
                         "five", "six", "seven", "eight", "nine", 
                         "ten", "eleven", "twelve", "thirteen", 
                         "fourteen", "fifteen", "sixteen", "seventeen", 
@@ -154,30 +154,37 @@ bool Clock::Refresh() {
                         "twenty eight", "twenty nine", 
                       }; 
   
-    if (minute == 0) 
+    if (minute == 0) {
         sprintf(timeStr, "%s \no' clock\n", nums[static_cast<int>(hour)]); 
-  
-    else if (minute == 1) 
-        sprintf(timeStr, "one minute \npast %s\n", nums[static_cast<int>(hour)]); 
-  
-    else if (minute == 59) 
-        sprintf(timeStr, "one minute \nto %s\n", nums[(static_cast<int>(hour) % 12) + 1]); 
-  
-    else if (minute == 15) 
-        sprintf(timeStr, "quarter past \n%s\n", nums[static_cast<int>(hour)]); 
-  
-    else if (minute == 30) 
-        sprintf(timeStr, "half past \n%s\n", nums[static_cast<int>(hour)]); 
-  
-    else if (minute == 45) 
-        sprintf(timeStr, "quarter to \n%s\n", nums[(static_cast<int>(hour) % 12) + 1]); 
-  
-    else if (minute <= 30) 
-        sprintf(timeStr, "%s minutes \npast %s\n", nums[static_cast<int>(minute)], nums[static_cast<int>(hour)]); 
-  
-    else if (minute > 30) 
-        sprintf(timeStr, "%s minutes \nto %s\n", nums[60 - static_cast<int>(minute)], nums[(static_cast<int>(hour) % 12) + 1]);  
+    }
 
+    else if (minute == 1){ 
+        sprintf(timeStr, "one minute \npast %s\n", nums[static_cast<int>(hour)]); 
+    }
+
+    else if (minute == 59) {
+        sprintf(timeStr, "one minute \nto %s\n", nums[(static_cast<int>(hour) % 12) + 1]); 
+    }
+
+    else if (minute == 15) {
+        sprintf(timeStr, "quarter past \n%s\n", nums[static_cast<int>(hour)]); 
+    }
+
+    else if (minute == 30) {
+        sprintf(timeStr, "half past \n%s\n", nums[static_cast<int>(hour)]); 
+    }
+
+    else if (minute == 45) {
+        sprintf(timeStr, "quarter to \n%s\n", nums[(static_cast<int>(hour) % 12) + 1]);
+    }     
+  
+    else if (minute <= 30) {
+        sprintf(timeStr, "%s minutes \npast %s\n", nums[static_cast<int>(minute)], nums[static_cast<int>(hour)]); 
+    }
+
+    else if (minute > 30){
+        sprintf(timeStr, "%s minutes \nto %s\n", nums[60 - static_cast<int>(minute)], nums[(static_cast<int>(hour) % 12) + 1]);  
+    }
 
     if(hoursChar[0] != displayedChar[0] || hoursChar[1] != displayedChar[1] || minutesChar[0] != displayedChar[2] || minutesChar[1] != displayedChar[3]) {
       displayedChar[0] = hoursChar[0];
