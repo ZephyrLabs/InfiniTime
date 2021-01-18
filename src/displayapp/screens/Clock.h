@@ -55,8 +55,10 @@ namespace Pinetime {
           static const char* DayOfWeekToString(Pinetime::Controllers::DateTime::Days dayOfWeek);
           static char const *DaysString[];
           static char const *MonthsString[];
+          static char const *nums[];
 
           char displayedChar[5];
+          char timeStr[64];
 
           uint16_t currentYear = 1970;
           Pinetime::Controllers::DateTime::Months currentMonth = Pinetime::Controllers::DateTime::Months::Unknown;
