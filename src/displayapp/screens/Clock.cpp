@@ -144,7 +144,7 @@ bool Clock::Refresh() {
     
     char timeStr[64];
 
-    char nums[] = { "zero", "one", "two", "three", "four", 
+    char nums[][64] = { "zero", "one", "two", "three", "four", 
                         "five", "six", "seven", "eight", "nine", 
                         "ten", "eleven", "twelve", "thirteen", 
                         "fourteen", "fifteen", "sixteen", "seventeen", 
