@@ -21,6 +21,10 @@ static void event_handler(lv_obj_t * obj, lv_event_t event) {
   screen->OnObjectEvent(obj, event);
 }
 
+using namespace{
+  char timeStr[64];
+}
+
 Clock::Clock(DisplayApp* app,
         Controllers::DateTime& dateTimeController,
         Controllers::Battery& batteryController,
@@ -142,7 +146,6 @@ bool Clock::Refresh() {
     char hoursChar[3];
     sprintf(hoursChar, "%02d", static_cast<int>(hour));
 
-    char timeStr[64];
     printwords(hour, minute);
 
     if(hoursChar[0] != displayedChar[0] || hoursChar[1] != displayedChar[1] || minutesChar[0] != displayedChar[2] || minutesChar[1] != displayedChar[3]) {
@@ -257,8 +260,7 @@ void Clock::printwords(int h, int m) {
         sprintf(timeStr, "%s minutes \npast %s\n", nums[m], nums[h]); 
   
     else if (m > 30) 
-        sprintf(timeStr, "%s minutes \nto %s\n", nums[60 - m], nums[(h % 12) + 1]); 
-    return false;     
+        sprintf(timeStr, "%s minutes \nto %s\n", nums[60 - m], nums[(h % 12) + 1]);  
 } 
 
 void Clock::OnObjectEvent(lv_obj_t *obj, lv_event_t event) {
