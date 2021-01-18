@@ -21,9 +21,7 @@ static void event_handler(lv_obj_t * obj, lv_event_t event) {
   screen->OnObjectEvent(obj, event);
 }
 
-using namespace{
-  char timeStr[64];
-}
+char timeStr[64];
 
 Clock::Clock(DisplayApp* app,
         Controllers::DateTime& dateTimeController,
