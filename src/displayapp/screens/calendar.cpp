@@ -13,7 +13,8 @@ calendar::calendar(Pinetime::Applications::DisplayApp* app, Pinetime::Components
   app->SetTouchMode(DisplayApp::TouchModes::Polling);
   
   cal = lv_calendar_create(lv_scr_act(), NULL);
-  lv_obj_set_size(cal, LV_HOR_RES_MAX, LV_VER_RES_MAX);
+  //lv_obj_set_size(cal, LV_HOR_RES_MAX, LV_VER_RES_MAX);
+  lv_obj_set_size(cal, 230, 230);
   lv_obj_align(cal, NULL, LV_ALIGN_CENTER, 0, 0);
   lv_obj_set_event_cb(cal, event_handler);
 
