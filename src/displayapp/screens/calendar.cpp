@@ -11,7 +11,7 @@ static void event_handler(lv_obj_t* obj, lv_event_t event)
 calendar::calendar(Pinetime::Applications::DisplayApp* app, Pinetime::Components::LittleVgl& lvgl) : Screen(app), lvgl{lvgl} {
   app->SetTouchMode(DisplayApp::TouchModes::Polling);
 
-  lv_obj_t  * calendar = lv_calendar_create(lv_scr_act(), NULL);
+  lv_obj_t* calendar = lv_calendar_create(lv_scr_act(), NULL);
   lv_obj_set_size(calendar, 235, 235);
   lv_obj_align(calendar, NULL, LV_ALIGN_CENTER, 0, 0);
   lv_obj_set_event_cb(calendar, event_handler);
