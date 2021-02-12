@@ -9,8 +9,10 @@ static void event_handler(lv_obj_t* obj, lv_event_t event) {
   screen->OnCalendarTouchEvent(obj, event);
 }
 
-calendar::calendar(Pinetime::Applications::DisplayApp* app, Pinetime::Components::LittleVgl& lvgl) : Screen(app), lvgl{lvgl} {
-  app->SetTouchMode(DisplayApp::TouchModes::Polling);
+calendar::calendar(Pinetime::Applications::DisplayApp* app, 
+                   Pinetime::Components::LittleVgl& lvgl, 
+                   Pinetime::Controllers::DateTime &dateTimeController) : Screen(app), lvgl{lvgl} {
+  app->SetTouchMode(DisplayApp::TouchModes::Gestures);
   
   cal = lv_calendar_create(lv_scr_act(), NULL);
   //lv_obj_set_size(cal, LV_HOR_RES_MAX, LV_VER_RES_MAX);
@@ -27,12 +29,16 @@ calendar::calendar(Pinetime::Applications::DisplayApp* app, Pinetime::Components
   lv_obj_set_style_local_text_color(cal, LV_CALENDAR_PART_DATE, LV_STATE_CHECKED, LV_COLOR_BLUE);
 
   /*Set today's date*/
-  today.year = 2021;
-  today.month = 2;
-  today.day = 12;
+  today.year = dateTimeController.Year();
+  today.month = static_cast<uint8_t>(dateTimeController.Month());
+  today.day = dateTimeController.Day();
+
+  viewday.year = dateTimeController.Year();
+  viewday.month = static_cast<uint8_t>(dateTimeController.Month());
+  viewday.day = dateTimeController.Day();
 
   lv_calendar_set_today_date(cal, &today);
-  lv_calendar_set_showed_date(cal, &today);
+  lv_calendar_set_showed_date(cal, &viewday);
 }
 
 calendar::~calendar() {
@@ -42,6 +48,7 @@ calendar::~calendar() {
 }
 
 bool calendar::Refresh() {
+  lv_calendar_set_showed_date(cal, &viewday);
   return running;
 }
 
@@ -51,16 +58,30 @@ bool calendar::OnButtonPushed() {
 }
 
 bool calendar::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
-  return true;
-}
+  switch(event) {
+    case TouchEvents::SwipeLeft:
+      if(viewday.month==1){
+        viewday.year -= 1
+        viewday.month = 12
+      }
+      else{
+        viewday.month -= 1
+      }
+    case TouchEvents::SwipeRight:
+      if(viewday.month==12){
+        viewday.year += 1
+        viewday.month = 1
+      }
+      else{
+        viewday.month += 1
+      }
 
-bool calendar::OnTouchEvent(uint16_t x, uint16_t y) {
   return true;
 }
 
 bool calendar::OnCalendarTouchEvent(lv_obj_t* obj, lv_event_t event) {
   if(event == LV_EVENT_VALUE_CHANGED) {
-    lv_calendar_date_t * date = lv_calendar_get_pressed_date(obj);
+    lv_calendar_date_t* date = lv_calendar_get_pressed_date(obj);
     if(date) {
       lv_calendar_set_highlighted_dates(cal, date, 1);
     }
