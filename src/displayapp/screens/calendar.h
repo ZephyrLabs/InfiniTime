@@ -28,10 +28,11 @@ namespace Pinetime {
       private:
         Pinetime::Components::LittleVgl& lvgl;
         Pinetime::Controllers::DateTime& dateTimeController,
-        bool running = true;
         lv_obj_t* cal;
         lv_calendar_date_t today;
         lv_calendar_date_t viewday;
+        
+        bool running = true;
       };
     }
   }

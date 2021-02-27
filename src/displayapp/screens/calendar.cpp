@@ -59,7 +59,7 @@ bool calendar::OnButtonPushed() {
 
 bool calendar::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
   switch(event) {
-    case TouchEvents::SwipeLeft:
+    case TouchEvents::SwipeRight:
       if(viewday.month==1){
         viewday.year -= 1
         viewday.month = 12
@@ -67,7 +67,7 @@ bool calendar::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
       else{
         viewday.month -= 1
       }
-    case TouchEvents::SwipeRight:
+    case TouchEvents::SwipeLeft:
       if(viewday.month==12){
         viewday.year += 1
         viewday.month = 1
