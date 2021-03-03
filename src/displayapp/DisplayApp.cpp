@@ -10,7 +10,6 @@
 #include "displayapp/screens/Clock.h"
 #include "displayapp/screens/FirmwareUpdate.h"
 #include "displayapp/screens/FirmwareValidation.h"
-#include "displayapp/screens/Gauge.h"
 #include "displayapp/screens/InfiniPaint.h"
 #include "displayapp/screens/Paddle.h"
 #include "displayapp/screens/Meter.h"
@@ -46,7 +45,6 @@ DisplayApp::DisplayApp(Drivers::St7789 &lcd, Components::LittleVgl &lvgl, Driver
         heartRateController{heartRateController} {
   msgQueue = xQueueCreate(queueSize, itemSize);
   onClockApp = true;
-  modal.reset(new Screens::Modal(this));
 }
 
 void DisplayApp::Start() {
@@ -110,9 +108,6 @@ void DisplayApp::Refresh() {
         brightnessController.Restore();
         state = States::Running;
         break;
-      case Messages::UpdateDateTime:
-//        modal->Show();
-        break;
       case Messages::UpdateBleConnection:
 //        clockScreen.SetBleConnectionState(bleController.IsConnected() ? Screens::Clock::BleConnectionStates::Connected : Screens::Clock::BleConnectionStates::NotConnected);
         break;
@@ -124,7 +119,7 @@ void DisplayApp::Refresh() {
           currentScreen.reset(nullptr);
           lvgl.SetFullRefresh(Components::LittleVgl::FullRefreshDirections::Up);
           onClockApp = false;
-          currentScreen.reset(new Screens::Notifications(this, notificationManager, Screens::Notifications::Modes::Preview));
+          currentScreen.reset(new Screens::Notifications(this, notificationManager, systemTask.nimble().alertService(), Screens::Notifications::Modes::Preview));
         }
       }
         break;
@@ -204,18 +199,16 @@ void DisplayApp::RunningState() {
         currentScreen.reset(new Screens::Clock(this, dateTimeController, batteryController, bleController, notificationManager, heartRateController));
         onClockApp = true;
         break;
-//      case Apps::Test: currentScreen.reset(new Screens::Message(this)); break;
       case Apps::SysInfo: currentScreen.reset(new Screens::SystemInfo(this, dateTimeController, batteryController, brightnessController, bleController, watchdog)); break;
       case Apps::Meter: currentScreen.reset(new Screens::Meter(this)); break;
       case Apps::Twos: currentScreen.reset(new Screens::Twos(this)); break;
-      case Apps::Gauge: currentScreen.reset(new Screens::Gauge(this)); break;
       case Apps::Paint: currentScreen.reset(new Screens::InfiniPaint(this, lvgl)); break;
       case Apps::Paddle: currentScreen.reset(new Screens::Paddle(this, lvgl)); break;
       case Apps::Brightness : currentScreen.reset(new Screens::Brightness(this, brightnessController)); break;
       case Apps::Music : currentScreen.reset(new Screens::Music(this, systemTask.nimble().music())); break;
       case Apps::Navigation : currentScreen.reset(new Screens::Navigation(this, systemTask.nimble().navigation())); break;
       case Apps::FirmwareValidation: currentScreen.reset(new Screens::FirmwareValidation(this, validator)); break;
-      case Apps::Notifications: currentScreen.reset(new Screens::Notifications(this, notificationManager, Screens::Notifications::Modes::Normal)); break;
+      case Apps::Notifications: currentScreen.reset(new Screens::Notifications(this, notificationManager, systemTask.nimble().alertService(), Screens::Notifications::Modes::Normal)); break;
       case Apps::HeartRate: currentScreen.reset(new Screens::HeartRate(this, heartRateController)); break;
     }
     nextApp = Apps::None;
