@@ -1,8 +1,8 @@
 #include "BrightnessController.h"
 #include <hal/nrf_gpio.h>
+#include "displayapp/screens/Symbols.h"
 
 using namespace Pinetime::Controllers;
-
 
 void BrightnessController::Init() {
   nrf_gpio_cfg_output(pinLcdBacklight1);
@@ -13,7 +13,7 @@ void BrightnessController::Init() {
 
 void BrightnessController::Set(BrightnessController::Levels level) {
   this->level = level;
-  switch(level) {
+  switch (level) {
     default:
     case Levels::High:
       nrf_gpio_pin_clear(pinLcdBacklight1);
@@ -39,20 +39,34 @@ void BrightnessController::Set(BrightnessController::Levels level) {
 }
 
 void BrightnessController::Lower() {
-  switch(level) {
-    case Levels::High: Set(Levels::Medium); break;
-    case Levels::Medium: Set(Levels::Low); break;
-    case Levels::Low: Set(Levels::Off); break;
-    default: break;
+  switch (level) {
+    case Levels::High:
+      Set(Levels::Medium);
+      break;
+    case Levels::Medium:
+      Set(Levels::Low);
+      break;
+    case Levels::Low:
+      Set(Levels::Off);
+      break;
+    default:
+      break;
   }
 }
 
 void BrightnessController::Higher() {
-  switch(level) {
-    case Levels::Off: Set(Levels::Low); break;
-    case Levels::Low: Set(Levels::Medium); break;
-    case Levels::Medium: Set(Levels::High); break;
-    default: break;
+  switch (level) {
+    case Levels::Off:
+      Set(Levels::Low);
+      break;
+    case Levels::Low:
+      Set(Levels::Medium);
+      break;
+    case Levels::Medium:
+      Set(Levels::High);
+      break;
+    default:
+      break;
   }
 }
 
@@ -68,3 +82,45 @@ void BrightnessController::Restore() {
   Set(backupLevel);
 }
 
+void BrightnessController::Step() {
+  switch (level) {
+    case Levels::Low:
+      Set(Levels::Medium);
+      break;
+    case Levels::Medium:
+      Set(Levels::High);
+      break;
+    case Levels::High:
+      Set(Levels::Low);
+      break;
+    default:
+      break;
+  }
+}
+
+const char* BrightnessController::GetIcon() {
+  switch (level) {
+    case Levels::Medium:
+      return Applications::Screens::Symbols::brightnessMedium;
+    case Levels::High:
+      return Applications::Screens::Symbols::brightnessHigh;
+    default:
+      break;
+  }
+  return Applications::Screens::Symbols::brightnessLow;
+}
+
+const char* BrightnessController::ToString() {
+  switch (level) {
+    case Levels::Off:
+      return "Off";
+    case Levels::Low:
+      return "Low";
+    case Levels::Medium:
+      return "Medium";
+    case Levels::High:
+      return "High";
+    default:
+      return "???";
+  }
+}

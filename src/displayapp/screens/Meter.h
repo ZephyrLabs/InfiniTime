@@ -9,21 +9,18 @@ namespace Pinetime {
   namespace Applications {
     namespace Screens {
 
-      class Meter : public Screen{
-        public:
-          Meter(DisplayApp* app);
-          ~Meter() override;
+      class Meter : public Screen {
+      public:
+        Meter(DisplayApp* app);
+        ~Meter() override;
 
-          bool Refresh() override;
-          bool OnButtonPushed() override;
+        bool Refresh() override;
 
-        private:
-          lv_style_t style_lmeter;
-          lv_obj_t * lmeter;
+      private:
+        lv_style_t style_lmeter;
+        lv_obj_t* lmeter;
 
-          uint32_t value=0;
-          bool running = true;
-
+        uint32_t value = 0;
       };
     }
   }

@@ -2,6 +2,34 @@
 
 namespace Pinetime {
   namespace Applications {
-    enum class Apps {None, Launcher, Clock, SysInfo, Meter, Brightness, Music, FirmwareValidation, Paint, Paddle, Notifications, Twos, HeartRate, Navigation};
+    enum class Apps {
+      None,
+      Launcher,
+      Clock,
+      SysInfo,
+      FirmwareUpdate,
+      FirmwareValidation,
+      NotificationsPreview,
+      Notifications,
+      Timer,
+      FlashLight,
+      BatteryInfo,
+      Music,
+      Paint,
+      Paddle,
+      Twos,
+      HeartRate,
+      Navigation,
+      StopWatch,
+      Motion,
+      Steps,
+      QuickSettings,
+      Settings,
+      SettingWatchFace,
+      SettingTimeFormat,
+      SettingDisplay,
+      SettingWakeUp,
+      SettingSteps
+    };
   }
 }

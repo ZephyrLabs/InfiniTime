@@ -1,7 +1,7 @@
 
 # PineTime
 
-![Build PineTime Firmware](https://github.com/JF002/Pinetime/workflows/Build%20PineTime%20Firmware/badge.svg?branch=master)
+[![Build PineTime Firmware](https://github.com/JF002/InfiniTime/workflows/Build%20PineTime%20Firmware/badge.svg?branch=master)](https://github.com/JF002/InfiniTime/actions)
 
 > The PineTime is a free and open source smartwatch capable of running custom-built open operating systems. Some of the notable features include a heart rate monitor, a week-long battery as well as a capacitive touch IPS display that is legible in direct sunlight. It is a fully community driven side-project, which means that it will ultimately be up to the developers and end-users to determine when they deem the PineTime ready to ship.
 
@@ -24,8 +24,7 @@ The goal of this project is to design an open-source firmware for the Pinetime s
 
 ## Overview
 
-![Pinetime screens](images/0.14.0/collage1.png "PinetimeScreens")
-![Pinetime screens](images/0.14.0/collage2.png "PinetimeScreens")
+![Pinetime screens](images/1.0.0/collage.png "PinetimeScreens")
 
 As of now, here is the list of achievements of this project:
 
@@ -34,29 +33,51 @@ As of now, here is the list of achievements of this project:
  - Rich user interface via display, touchscreen and pushbutton
  - Time synchronization via BLE
  - Notification via BLE
- - Multiple 'apps' : 
-    * Clock (displays the date, time, battery level, ble connection status, heart rate)
-    * System info (displays various info : BLE MAC, build date/time, uptime, version,...)
-    * Brightess (allows the user to configure the brightness of the display)
+ - Heart rate measurements
+ - Step counting
+ - Wake-up on wrist rotation
+ - Quick actions 
+    * Disable vibration on notification
+    * Brightness settings
+    * Flashlight
+    * Settings
+ - 2 watch faces:
+    * Digital
+    * Analog
+ - Multiple 'apps' :
     * Music (control the playback of the music on your phone)
     * Heart rate (controls the heart rate sensor and display current heartbeat)
     * Navigation (displays navigation instructions coming from the companion app)
     * Notification (displays the last notification received)
     * Paddle (single player pong-like game)
     * Two (2048 clone game)
- - Supported by 2 companion apps (development is in progress):
+    * Stopwatch (with all the necessary functions such as play, pause, lap, stop)
+    * Motion sensor and step counter (displays the number of steps and the state of the motion sensor in real-time)
+ - User settings:
+    * Display timeout
+    * Wake-up condition
+    * Time format (12/24h)
+    * Default watch face
+    * Battery status
+    * Firmware validation
+    * System information
+ - Supported by 3 companion apps (development is in progress):
     * [Gadgetbridge](https://codeberg.org/Freeyourgadget/Gadgetbridge/) (on Android)
     * [Amazfish](https://openrepos.net/content/piggz/amazfish) (on SailfishOS and Linux)
- - **[Experimental]** OTA (Over-the-air) update via BLE
- - **[Experimental]** Bootloader based on [MCUBoot](https://juullabs-oss.github.io/mcuboot/)
+    * [Siglo](https://github.com/alexr4535/siglo) (on Linux)
+    * **[Experimental]** [WebBLEWatch](https://hubmartin.github.io/WebBLEWatch/) Synchronize time directly from your web browser. [video](https://youtu.be/IakiuhVDdrY)
+ - OTA (Over-the-air) update via BLE
+ - [Bootloader](https://github.com/JF002/pinetime-mcuboot-bootloader) based on [MCUBoot](https://juullabs-oss.github.io/mcuboot/)
  
 ## Documentation
 
 ### Getting started
- - [Flash, upgrade (OTA), time synchronization,...](doc/gettingStarted/gettingStarted.md)
+ - [Getting started with InfiniTime 1.0 (quick user guide, update bootloader and InfiniTime,...)](doc/gettingStarted/gettingStarted-1.0.md)
+ - [Flash, upgrade (OTA), time synchronization,...](doc/gettingStarted/ota-gadgetbridge-nrfconnect.md)
 
 ### Develop
- - [Generate the fonts and symbols](src/displayapp/fonts/Readme.md)
+ - [Generate the fonts and symbols](src/displayapp/fonts/README.md)
+ - [Creating a stopwatch in Pinetime(article)](https://pankajraghav.com/2021/04/03/PINETIME-STOPCLOCK.html)
 
 ### Build, flash and debug
  - [Project branches](doc/branches.md)

@@ -17,8 +17,12 @@ RUN apt-get update -qq \
 # aarch64 packages
       libffi-dev \
       libssl-dev \
-      python3-dev \ 
+      python3-dev \
+      python \
+      git \
     && rm -rf /var/cache/apt/* /var/lib/apt/lists/*;
+
+# Git needed for PROJECT_GIT_COMMIT_HASH variable setting
 
 RUN pip3 install adafruit-nrfutil
 RUN pip3 install -Iv cryptography==3.3

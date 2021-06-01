@@ -14,15 +14,19 @@ RUN apt-get update -qq \
       python3-pip \
       tar \
       unzip \
-      wget \ 
+      wget \
 # aarch64 packages
       libffi-dev \
       libssl-dev \
-      python3-dev \ 
+      python3-dev \
+      git \
     && rm -rf /var/cache/apt/* /var/lib/apt/lists/*;
+
+# Git needed for PROJECT_GIT_COMMIT_HASH variable setting
 
 # Needs to be installed as root
 RUN pip3 install adafruit-nrfutil
+RUN pip3 install -Iv cryptography==3.3
 
 COPY docker/build.sh /opt/
 # Lets get each in a separate docker layer for better downloads
@@ -34,6 +38,6 @@ RUN bash -c "source /opt/build.sh; GetNrfSdk;"
 RUN bash -c "source /opt/build.sh; GetMcuBoot;"
 
 # Link the default checkout workspace in to the default $SOURCES_DIR
-RUN ln -s /workspace/Pinetime /sources
+RUN ln -s /workspace/InfiniTime /sources
 
 USER gitpod

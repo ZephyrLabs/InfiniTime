@@ -21,34 +21,33 @@ namespace Pinetime {
 
     namespace Screens {
       class SystemInfo : public Screen {
-        public:
-          explicit SystemInfo(DisplayApp* app,
-                              Pinetime::Controllers::DateTime& dateTimeController,
-                              Pinetime::Controllers::Battery& batteryController,
-                              Pinetime::Controllers::BrightnessController& brightnessController,
-                              Pinetime::Controllers::Ble& bleController,
-                              Pinetime::Drivers::WatchdogView& watchdog);
-          ~SystemInfo() override;
-          bool Refresh() override;
-          bool OnButtonPushed() override;
-          bool OnTouchEvent(TouchEvents event) override;
-        private:
-          bool running = true;
+      public:
+        explicit SystemInfo(DisplayApp* app,
+                            Pinetime::Controllers::DateTime& dateTimeController,
+                            Pinetime::Controllers::Battery& batteryController,
+                            Pinetime::Controllers::BrightnessController& brightnessController,
+                            Pinetime::Controllers::Ble& bleController,
+                            Pinetime::Drivers::WatchdogView& watchdog);
+        ~SystemInfo() override;
+        bool Refresh() override;
+        bool OnButtonPushed() override;
+        bool OnTouchEvent(TouchEvents event) override;
 
-          Pinetime::Controllers::DateTime& dateTimeController;
-          Pinetime::Controllers::Battery& batteryController;
-          Pinetime::Controllers::BrightnessController& brightnessController;
-          Pinetime::Controllers::Ble& bleController;
-          Pinetime::Drivers::WatchdogView& watchdog;
+      private:
+        bool running = true;
 
-          char t1[200];
-          char t2[200];
-          char t3[200];
+        Pinetime::Controllers::DateTime& dateTimeController;
+        Pinetime::Controllers::Battery& batteryController;
+        Pinetime::Controllers::BrightnessController& brightnessController;
+        Pinetime::Controllers::Ble& bleController;
+        Pinetime::Drivers::WatchdogView& watchdog;
 
-          ScreenList<3> screens;
-          std::unique_ptr<Screen> CreateScreen1();
-          std::unique_ptr<Screen> CreateScreen2();
-          std::unique_ptr<Screen> CreateScreen3();
+        ScreenList<5> screens;
+        std::unique_ptr<Screen> CreateScreen1();
+        std::unique_ptr<Screen> CreateScreen2();
+        std::unique_ptr<Screen> CreateScreen3();
+        std::unique_ptr<Screen> CreateScreen4();
+        std::unique_ptr<Screen> CreateScreen5();
       };
     }
   }
